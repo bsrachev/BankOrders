@@ -15,4 +15,8 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.7" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Data\Models\Enums\" />
+  </ItemGroup>
+
 </Project>

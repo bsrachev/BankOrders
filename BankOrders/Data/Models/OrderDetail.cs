@@ -1,0 +1,51 @@
+﻿namespace PaymentOrders.Data.Models
+{
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+    using BankOrders.Data.Models.Enums;
+
+    public class OrderDetail
+    {
+        public OrderDetail()
+        {
+        }
+
+        //public string Id { get; set; } = Guid.NewGuid().ToString();
+
+        [Required]
+        public int OrderId { get; set; }
+
+        public int Branch { get; set; }
+
+        public int CostCenter { get; set; }
+
+        public int Project { get; set; }
+
+        [Required]
+        [MaxLength(200)]
+        public string Reason { get; set; }
+
+        [Required]
+        [MaxLength(200)]
+        public string Account { get; set; }
+
+        [Required]
+        [MaxLength(2)]
+        public AccountType AccountType { get; set; }
+
+        [Column(TypeName = "decimal(4,2)")] // TODO could make error
+        [Required]
+        public decimal? Sum { get; set; }
+
+        [Required]
+        public Currency Currency { get; set; }
+
+        [Column(TypeName = "decimal(4,2)")] // TODO could make error
+        [Required]
+        public decimal? SumBGN { get; set; }
+
+        public int AccountingNumber { get; set; }
+    }
+}

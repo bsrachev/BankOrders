@@ -6,9 +6,9 @@ using System.Text;
 
 namespace BankOrders.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class BankOrdersDbContext : IdentityDbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        public BankOrdersDbContext(DbContextOptions<BankOrdersDbContext> options)
             : base(options)
         {
         }
