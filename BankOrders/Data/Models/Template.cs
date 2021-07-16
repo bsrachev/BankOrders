@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
-    using PaymentOrders.Data.Models;
+    using BankOrders.Data.Models;
 
     public class Template : BaseDocument
     {

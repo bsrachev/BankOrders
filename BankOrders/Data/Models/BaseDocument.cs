@@ -1,7 +1,6 @@
 ﻿namespace BankOrders.Data.Models
 {
     using BankOrders.Data.Models.Enums;
-    using PaymentOrders.Data.Models;
 
     using System;
     using System.Collections.Generic;

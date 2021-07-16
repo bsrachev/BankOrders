@@ -1,4 +1,4 @@
-﻿namespace PaymentOrders.Data.Models
+﻿namespace BankOrders.Data.Models
 {
     using System;
     using System.Collections.Generic;
@@ -12,10 +12,19 @@
         {
         }
 
+        [Key]
+        public int Id { get; set; }
+
         //public string Id { get; set; } = Guid.NewGuid().ToString();
 
-        [Required]
+        //[Required]
         public int OrderId { get; set; }
+
+        public Order Order { get; set; }
+
+        public int TemplateId { get; set; }
+
+        public Template Template { get; set; }
 
         public int Branch { get; set; }
 

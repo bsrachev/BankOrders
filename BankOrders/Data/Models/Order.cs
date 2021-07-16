@@ -5,7 +5,6 @@
     using System.ComponentModel.DataAnnotations;
 
     using BankOrders.Data.Models.Enums;
-    using PaymentOrders.Data.Models;
 
     public class Order : BaseDocument
     {
@@ -20,9 +19,9 @@
         //[Required]
         //public string Id { get; set; } = Guid.NewGuid().ToString();
 
-        [Required]
-        [MaxLength(20)]
-        public int RefNumber { get; set; }
+        //[Required]
+        //[MaxLength(20)]
+        //public int RefNumber { get; set; }
 
         [Required]
         public DateTime? AccountingDate { get; set; }

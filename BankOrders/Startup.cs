@@ -1,6 +1,7 @@
 namespace BankOrders
 {
     using BankOrders.Data;
+    using BankOrders.Infrastructure;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Identity;
@@ -12,7 +13,7 @@ namespace BankOrders
     public class Startup
     {
         public Startup(IConfiguration configuration)
-            => Configuration = configuration;
+            => this.Configuration = configuration;
 
         public IConfiguration Configuration { get; }
 
@@ -20,7 +21,7 @@ namespace BankOrders
         {
             services
                 .AddDbContext<BankOrdersDbContext>(options => options
-                    .UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                    .UseSqlServer(this.Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -40,6 +41,8 @@ namespace BankOrders
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.PrepareDatabase();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

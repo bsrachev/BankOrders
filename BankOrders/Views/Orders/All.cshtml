@@ -1,0 +1,45 @@
+﻿<section class="py-5">
+    <div class="button-holder">
+        <a href="/Orders/Create" class="btn btn-info text-uppercase">Create New Order</a>
+    </div>
+    <div class="container">
+        <h1 style="margin: 2%; text-align: center;">Нареждания</h1>
+        <div style="padding: 5%;">
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col" style="text-align:center;">Преглед</th>
+                        <th scope="col" style="text-align:center;">Реф. №</th>
+                        <th scope="col" style="text-align:center;">Счетоводна дата</th>
+                        <th scope="col" style="text-align:center;">Система</th>
+                        <th scope="col" style="text-align:center;">Наредител</th>
+                        <th scope="col" style="text-align:center;">Потвърдил</th>
+                        <th scope="col" style="text-align:center;">Осчетоводил</th>
+                        <th scope="col" style="text-align:center;">Потвърдил осчетоводяването</th>
+                        <th scope="col" style="text-align:center;">Статус</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var order in Model)
+                    {
+                        <tr>
+                            <td>
+                                <div class="button-holder">
+                                    <a href="/Orders/Details?orderId=@order.Id" class="btn btn-info text-uppercase">Info</a>
+                                </div>
+                            </td>
+                            <th scope="row">@order.RefNumber</th>
+                            <td>@order.AccountingDate</td>
+                            <td>@order.System</td>
+                            <td>@order.UserCreate</td>
+                            <td>@order.UserApprove</td>
+                            <td>@order.UserAccountant</td>
+                            <td>@order.UserApproveAccounting</td>
+                            <th scope="row">@order.Status</th>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
