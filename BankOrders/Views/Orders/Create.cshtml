@@ -1,35 +1,40 @@
 ﻿@model BankOrders.Models.Orders.CreateOrderFormModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Create New Payment Order";
 }
 
-<h1>Create</h1>
+<h1>Create a new bank order</h1>
 
-<h4>CreateOrderFormModel</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form method="post" asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="AccountingDate" class="control-label"></label>
-                <input asp-for="AccountingDate" class="form-control" />
+                <input asp-for="AccountingDate" class="form-control" placeholder="mm.dd.yyyy"/>
                 <span asp-validation-for="AccountingDate" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="System" class="control-label"></label>
-                <input asp-for="System" class="form-control" />
+                <select asp-for="System" class="form-control">
+                    <option>Internal</option>
+                    <option>External</option>
+                </select>
                 <span asp-validation-for="System" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <button type="submit" value="Create" class="btn btn-primary"> Create </button>
+            </div>
+            <div class="form-group">
+                <button asp-for="Cancel" type="button" value="Cancel" class="btn btn-dark"> Cancel </button>
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="All">Back to List</a>
 </div>
 

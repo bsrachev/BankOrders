@@ -90,5 +90,11 @@
 
             return this.Redirect("/Orders/All");
         }
+
+        [HttpPost]
+        public IActionResult Cancel()
+        {
+            return this.Redirect("/Orders/All");
+        }
     }
 }
