@@ -2,9 +2,11 @@ namespace BankOrders
 {
     using BankOrders.Data;
     using BankOrders.Infrastructure;
+    using BankOrders.Services;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -35,8 +37,15 @@ namespace BankOrders
                 })
                 .AddEntityFrameworkStores<BankOrdersDbContext>();
 
-            services
-                .AddControllersWithViews();
+            //services
+            //    .AddControllersWithViews();
+
+            services.AddControllersWithViews(options =>
+            {
+                options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
+            });
+
+            services.AddTransient<IOrdersService, OrdersService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

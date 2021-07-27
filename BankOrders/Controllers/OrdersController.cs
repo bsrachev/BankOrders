@@ -17,16 +17,16 @@
 
     public class OrdersController : Controller
     {
-        //private readonly IOrdersService ordersService;
+        private readonly IOrdersService ordersService;
         //private readonly IUserService users;
         private readonly BankOrdersDbContext data;
 
         public OrdersController(
-            //IOrdersService ordersService,
+            IOrdersService ordersService,
             // IUserService users,
             BankOrdersDbContext data)
         {
-            //this.ordersService = ordersService;
+            this.ordersService = ordersService;
             // this.users = users;
             this.data = data;
         }
@@ -34,6 +34,7 @@
         //[Authorize]
         public IActionResult All()
         {
+            /*
             var ordersQuery = this.data
                 .Orders
                 .AsQueryable();
@@ -42,6 +43,22 @@
                 .Select(c => new OrderListingViewModel
                 {
                     //Id = c.Id,
+                    RefNumber = c.RefNumber,
+                    AccountingDate = c.AccountingDate,
+                    System = c.System,
+                    UserCreate = c.UserCreate,
+                    UserApprove = c.UserApprove,
+                    UserAccountant = c.UserAccountant,
+                    UserApproveAccounting = c.UserApproveAccounting,
+                })
+                .ToList();*/
+
+            var orders = this.data
+                .Orders
+                .OrderByDescending(c => c.RefNumber)
+                .Select(c => new OrderListingViewModel
+                {
+                    Id = c.Id,
                     RefNumber = c.RefNumber,
                     AccountingDate = c.AccountingDate,
                     System = c.System,
@@ -62,24 +79,27 @@
         }
 
         [HttpPost]
-        public IActionResult Create(CreateOrderFormModel model)
+        public IActionResult Create(CreateOrderFormModel orderModel)
         {
-            /*var modelErrors = this.ordersService.ValidateOrder(model);
+            if (!ModelState.IsValid)
+            { 
+                return this.View(orderModel);
+            }
 
-            if (modelErrors.Any())
+            /*if (orderModel.AccountingDate > 2015)
             {
-                // throw new ArgumentNullException(string.Format("Unable to add the order."));
-
-                // this.TempData["Error"] = "Unable to add the order.";
-
-                return this.Redirect("/Orders"); // TODO
+                var order = .....
+            }
+            else
+            {
+                ......
             }*/
 
             var order = new Order
             {
-                RefNumber = 10000001,
-                AccountingDate = DateTime.ParseExact(model.AccountingDate, "dd.MM.yyyy", CultureInfo.InvariantCulture),
-                System = (OrderSystem)Enum.Parse(typeof(OrderSystem), model.System, true),
+                //RefNumber = 10000001,
+                AccountingDate = DateTime.ParseExact(orderModel.AccountingDate, "dd.MM.yyyy", CultureInfo.InvariantCulture),
+                System = (OrderSystem)Enum.Parse(typeof(OrderSystem), orderModel.System, true),
                 UserCreate = this.User.Identity.Name,
                 Status = 0,
             };
@@ -91,10 +111,17 @@
             return this.Redirect("/Orders/All");
         }
 
-        [HttpPost]
-        public IActionResult Cancel()
+        public IActionResult Details(int id) // public IActionResult Create() / async Task<IActionResult>
         {
-            return this.Redirect("/Orders/All");
+            var order = this.ordersService.Details(id);
+
+            /*return this.View(new CreateOrderFormModel
+            {
+                AccountingDate = DateTime.ParseExact(order.AccountingDate, "dd.MM.yyyy", CultureInfo.InvariantCulture),
+
+            });*/
+
+            return this.View(order);
         }
     }
 }

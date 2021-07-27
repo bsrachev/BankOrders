@@ -1,10 +1,10 @@
-﻿namespace BankOrders.Models.Orders
+﻿namespace BankOrders.Services.Orders
 {
-    using System;
-
     using BankOrders.Data.Models.Enums;
 
-    public class OrderListingViewModel
+    using System;
+
+    public class OrderServiceModel
     {
         public int Id { get; set; }
 

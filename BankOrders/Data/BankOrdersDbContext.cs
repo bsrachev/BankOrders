@@ -30,6 +30,20 @@ namespace BankOrders.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.HasSequence<int>("OrderRefNumSeq")
+                              .StartsAt(10000001).IncrementsBy(1);
+
+            builder.Entity<Order>()
+               .Property(x => x.RefNumber)
+               .HasDefaultValueSql("NEXT VALUE FOR OrderRefNumSeq");
+
+            builder.HasSequence<int>("TemplateOrderRefNumSeq")
+                              .StartsAt(90000001).IncrementsBy(1);
+
+            builder.Entity<Template>()
+               .Property(x => x.RefNumber)
+               .HasDefaultValueSql("NEXT VALUE FOR TemplateOrderRefNumSeq");
+
             builder
                 .Entity<OrderDetail>()
                 .HasOne(c => c.Order)
