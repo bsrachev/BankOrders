@@ -43,6 +43,21 @@
     </dl>
 </div>
 
+<form>
+    <div class="form-row">
+        <div class="form-group col-md-4">
+            <label asp-for="AccountingDate" class="control-label"></label>
+            <input asp-for="AccountingDate" class="form-control" />
+            <span asp-validation-for="AccountingDate" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-4">
+            <label for="inputPassword4">Password</label>
+            <input type="password" class="form-control" id="inputPassword4" placeholder="Password">
+        </div>
+    </div>
+
+</form>
+
 <table class="table">
     <thead>
         <tr>
@@ -62,13 +77,32 @@
     <tbody>
         @foreach (var detail in Model.OrderDetails)
         {
-            if (Model.EditDetailId == null)
+            if (Model.EditDetailId == detail.Id)
+            {
+        <tr>
+            <th class="thead-dark" scope="row">
+                <div class="button-holder">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </th>
+            <td>@detail.Branch</td>
+            <td>@detail.CostCenter</td>
+            <td>@detail.Project</td>
+            <td>@detail.Reason</td>
+            <td>@detail.Account</td>
+            <td>@detail.AccountType</td>
+            <td>@detail.Sum</td>
+            <td>@detail.Currency</td>
+            <td>@detail.SumBGN</td>
+            <td>@detail.AccountingNumber</td>
+        </tr>
+            }
+            else
             {
                 <tr>
                     <th scope="row">
                         <div class="button-holder">
-                            <button type="submit" class="btn btn-primary" href="/Orders/Details?orderId=@Model.Id?editDetailId=@detail.Id">Edit</button>
-                            <a href="/Orders/Details?orderId=@Model.Id?editDetailId=@detail.Id" class="btn btn-info text-uppercase">Edit</a>
+                            <a href="/Orders/Details?orderId=@Model.Id&editDetailId=@detail.Id" class="btn btn-info text-uppercase">Edit</a>
                         </div>
                     </th>
                     <td>@detail.Branch</td>

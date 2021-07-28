@@ -14,6 +14,7 @@
     using System.Linq;
     using System.Security.Claims;
     using System.Threading.Tasks;
+    using BankOrders.Models.OrderDetails;
 
     public class OrdersController : Controller
     {
@@ -111,40 +112,7 @@
             return this.Redirect("/Orders/All");
         }
 
-        public IActionResult Details(int orderId, [FromQuery] OrderDetailListingViewModel query) // public IActionResult Create() / async Task<IActionResult>
-        {
-            //id = 4;
-
-            var order = this.ordersService.Details(orderId);
-
-            /*var order = this.data
-                .Orders
-                .Where(c => c.Id == id)
-                .FirstOrDefault();*/
-
-            var ordersDetailsQuery = this.data.OrderDetails.AsQueryable();
-
-            ordersDetailsQuery = ordersDetailsQuery.Where(x => x.OrderId == order.Id);
-
-            query.Id = order.Id;
-            query.EditDetailId = null;
-            query.AccountingDate = order.AccountingDate;
-            query.RefNumber = order.RefNumber;
-            query.Status = order.Status;
-            query.System = order.System;
-            query.UserCreate = order.UserCreate;
-            query.OrderDetails = ordersDetailsQuery.ToList();
-
-            /*if (editDetailId != null)
-            {
-                query.EditDetailId = editDetailId;
-            }*/
-
-            return View(query);
-        }
-
-        [HttpPost]
-        public IActionResult Details(int orderId, int editDetailId, [FromQuery] OrderDetailListingViewModel query) // public IActionResult Create() / async Task<IActionResult>
+        public IActionResult Details([FromQuery] OrderDetailListingViewModel query, int orderId, int? editDetailId) // public IActionResult Create() / async Task<IActionResult>
         {
             //id = 4;
 
@@ -168,7 +136,40 @@
             query.UserCreate = order.UserCreate;
             query.OrderDetails = ordersDetailsQuery.ToList();
 
+            /*if (editDetailId != null)
+            {
+                query.EditDetailId = editDetailId;
+            }*/
+
             return View(query);
+        }
+
+        [HttpPost]
+        public IActionResult Details([FromQuery] OrderDetailListingViewModel query, CreateOrEditOrderDetailFormModel orderDetailModel, int orderId, int? editDetailId) // public IActionResult Create() / async Task<IActionResult>
+        {
+            //id = 4;
+
+            var order = this.ordersService.Details(orderId);
+        
+            /*var order = this.data
+                .Orders
+                .Where(c => c.Id == id)
+                .FirstOrDefault();*/
+        
+            var ordersDetailsQuery = this.data.OrderDetails.AsQueryable();
+
+            ordersDetailsQuery = ordersDetailsQuery.Where(x => x.OrderId == order.Id);
+
+            query.Id = order.Id;
+            query.EditDetailId = null;
+            query.AccountingDate = order.AccountingDate;
+            query.RefNumber = order.RefNumber;
+            query.Status = order.Status;
+            query.System = order.System;
+            query.UserCreate = order.UserCreate;
+            query.OrderDetails = ordersDetailsQuery.ToList();
+
+            return this.Redirect($"/Orders/Details?orderId={@orderId}");
         }
     }
 }
