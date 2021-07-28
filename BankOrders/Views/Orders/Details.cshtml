@@ -13,68 +13,32 @@
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Id)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Id)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Branch)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.AccountingDate)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Branch)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.AccountingDate)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CostCenter)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.RefNumber)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CostCenter)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.RefNumber)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Project)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.System)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Project)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.System)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Reason)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.UserCreate)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Reason)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Account)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Account)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AccountType)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AccountType)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Sum)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Sum)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Currency)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Currency)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SumBGN)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SumBGN)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AccountingNumber)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AccountingNumber)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.UserCreate)
         </dd>
     </dl>
 </div>
@@ -82,6 +46,7 @@
 <table class="table">
     <thead>
         <tr>
+            <th scope="col">Edit</th>
             <th scope="col">Branch</th>
             <th scope="col">Cost Center</th>
             <th scope="col">Project</th>
@@ -95,20 +60,29 @@
         </tr>
     </thead>
     <tbody>
-        <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-        </tr>
-        <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-        </tr>
-        <tr>
-            <th scope="row">3</th>
-            <td>Larry</td>
-            <td>the Bird</td>
-        </tr>
+        @foreach (var detail in Model.OrderDetails)
+        {
+            if (Model.EditDetailId == null)
+            {
+                <tr>
+                    <th scope="row">
+                        <div class="button-holder">
+                            <button type="submit" class="btn btn-primary" href="/Orders/Details?orderId=@Model.Id?editDetailId=@detail.Id">Edit</button>
+                            <a href="/Orders/Details?orderId=@Model.Id?editDetailId=@detail.Id" class="btn btn-info text-uppercase">Edit</a>
+                        </div>
+                    </th>
+                    <td>@detail.Branch</td>
+                    <td>@detail.CostCenter</td>
+                    <td>@detail.Project</td>
+                    <td>@detail.Reason</td>
+                    <td>@detail.Account</td>
+                    <td>@detail.AccountType</td>
+                    <td>@detail.Sum</td>
+                    <td>@detail.Currency</td>
+                    <td>@detail.SumBGN</td>
+                    <td>@detail.AccountingNumber</td>
+                </tr>
+            }
+        }
     </tbody>
 </table>

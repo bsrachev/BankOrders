@@ -10,5 +10,7 @@
         ICollection<string> ValidateOrder(CreateOrderFormModel model);
 
         OrderDetailsServiceModel Details(int carId);
+
+        OrderDetailListingViewModel CurrentOrderDetails(int currentPage, int ordersPerPage);
     }
 }

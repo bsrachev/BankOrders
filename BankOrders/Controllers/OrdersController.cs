@@ -111,17 +111,64 @@
             return this.Redirect("/Orders/All");
         }
 
-        public IActionResult Details(int id) // public IActionResult Create() / async Task<IActionResult>
+        public IActionResult Details(int orderId, [FromQuery] OrderDetailListingViewModel query) // public IActionResult Create() / async Task<IActionResult>
         {
-            var order = this.ordersService.Details(id);
+            //id = 4;
 
-            /*return this.View(new CreateOrderFormModel
+            var order = this.ordersService.Details(orderId);
+
+            /*var order = this.data
+                .Orders
+                .Where(c => c.Id == id)
+                .FirstOrDefault();*/
+
+            var ordersDetailsQuery = this.data.OrderDetails.AsQueryable();
+
+            ordersDetailsQuery = ordersDetailsQuery.Where(x => x.OrderId == order.Id);
+
+            query.Id = order.Id;
+            query.EditDetailId = null;
+            query.AccountingDate = order.AccountingDate;
+            query.RefNumber = order.RefNumber;
+            query.Status = order.Status;
+            query.System = order.System;
+            query.UserCreate = order.UserCreate;
+            query.OrderDetails = ordersDetailsQuery.ToList();
+
+            /*if (editDetailId != null)
             {
-                AccountingDate = DateTime.ParseExact(order.AccountingDate, "dd.MM.yyyy", CultureInfo.InvariantCulture),
+                query.EditDetailId = editDetailId;
+            }*/
 
-            });*/
+            return View(query);
+        }
 
-            return this.View(order);
+        [HttpPost]
+        public IActionResult Details(int orderId, int editDetailId, [FromQuery] OrderDetailListingViewModel query) // public IActionResult Create() / async Task<IActionResult>
+        {
+            //id = 4;
+
+            var order = this.ordersService.Details(orderId);
+
+            /*var order = this.data
+                .Orders
+                .Where(c => c.Id == id)
+                .FirstOrDefault();*/
+
+            var ordersDetailsQuery = this.data.OrderDetails.AsQueryable();
+
+            ordersDetailsQuery = ordersDetailsQuery.Where(x => x.OrderId == order.Id);
+
+            query.Id = order.Id;
+            query.EditDetailId = editDetailId;
+            query.AccountingDate = order.AccountingDate;
+            query.RefNumber = order.RefNumber;
+            query.Status = order.Status;
+            query.System = order.System;
+            query.UserCreate = order.UserCreate;
+            query.OrderDetails = ordersDetailsQuery.ToList();
+
+            return View(query);
         }
     }
 }

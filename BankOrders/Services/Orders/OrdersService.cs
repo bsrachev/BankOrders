@@ -58,5 +58,10 @@
                     //AccountingNumbers = c. TODO
                 })
                 .FirstOrDefault();
+
+        public OrderDetailListingViewModel CurrentOrderDetails(int currentPage, int ordersPerPage)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
