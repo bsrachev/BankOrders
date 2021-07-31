@@ -2,7 +2,7 @@
 {
     using BankOrders.Data.Models.Enums;
 
-    public class CreateOrEditOrderDetailFormModel
+    public class OrderDetailFormModel
     {
         public int OrderDetailId { get; init; }
 

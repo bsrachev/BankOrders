@@ -2,7 +2,7 @@
 {
     using BankOrders.Data.Models;
     using BankOrders.Data.Models.Enums;
-
+    using BankOrders.Models.OrderDetails;
     using System;
     using System.Collections.Generic;
 
@@ -22,6 +22,6 @@
 
         public OrderStatus Status { get; set; }
 
-        public ICollection<OrderDetail> OrderDetails { get; set; }
+        public ICollection<OrderDetailFormModel> OrderDetails { get; set; }
     }
 }

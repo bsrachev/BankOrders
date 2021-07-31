@@ -1,0 +1,76 @@
+﻿@model BankOrders.Models.OrderDetails.OrderDetailFormModel
+
+<h4>Add a detail</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="_OrderDetailFormModel">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label asp-for="Branch" class="control-label"></label>
+                    <input asp-for="Branch" class="form-control" />
+                    <span asp-validation-for="Branch" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-6">
+                    <label asp-for="CostCenter" class="control-label"></label>
+                    <input asp-for="CostCenter" class="form-control" />
+                    <span asp-validation-for="CostCenter" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label asp-for="Project" class="control-label"></label>
+                    <input asp-for="Project" class="form-control" />
+                    <span asp-validation-for="Project" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-6">
+                    <label asp-for="Reason" class="control-label"></label>
+                    <input asp-for="Reason" class="form-control" />
+                    <span asp-validation-for="Reason" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label asp-for="Account" class="control-label"></label>
+                    <input asp-for="Account" class="form-control" />
+                    <span asp-validation-for="Account" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-6">
+                    <label asp-for="AccountType" class="control-label"></label>
+                    <input asp-for="AccountType" class="form-control" />
+                    <span asp-validation-for="AccountType" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label asp-for="Sum" class="control-label"></label>
+                    <input asp-for="Sum" class="form-control" />
+                    <span asp-validation-for="Sum" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-6">
+                    <label asp-for="Currency" class="control-label"></label>
+                    <input asp-for="Currency" class="form-control" />
+                    <span asp-validation-for="Currency" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group col-md-6">
+                <label asp-for="SumBGN" class="control-label"></label>
+                <input asp-for="SumBGN" class="form-control" />
+                <span asp-validation-for="SumBGN" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-6">
+                <label asp-for="AccountingNumber" class="control-label"></label>
+                <input asp-for="AccountingNumber" class="form-control" />
+                <span asp-validation-for="AccountingNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

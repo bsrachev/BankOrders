@@ -49,6 +49,7 @@
                 .Select(c => new OrderDetailsServiceModel
                 {
                     Id = c.Id,
+                    RefNumber = c.RefNumber,
                     AccountingDate = c.AccountingDate,
                     System = c.System,
                     UserCreate = c.UserCreate,

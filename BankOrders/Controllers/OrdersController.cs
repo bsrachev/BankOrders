@@ -127,6 +127,26 @@
 
             ordersDetailsQuery = ordersDetailsQuery.Where(x => x.OrderId == order.Id);
 
+            var ordersDetailsList = new List<OrderDetailFormModel>();
+
+            foreach (var od in ordersDetailsQuery)
+            {
+                ordersDetailsList.Add(new OrderDetailFormModel
+                {
+                    Account = od.Account,
+                    AccountingNumber = od.AccountingNumber,
+                    Branch = od.Branch,
+                    AccountType = od.AccountType,
+                    CostCenter = od.CostCenter,
+                    Currency = od.Currency,
+                    OrderDetailId = od.Id,
+                    Project = od.Project,
+                    Reason = od.Reason,
+                    Sum = od.Sum,
+                    SumBGN = od.SumBGN
+                });
+            }
+
             query.Id = order.Id;
             query.EditDetailId = editDetailId;
             query.AccountingDate = order.AccountingDate;
@@ -134,7 +154,7 @@
             query.Status = order.Status;
             query.System = order.System;
             query.UserCreate = order.UserCreate;
-            query.OrderDetails = ordersDetailsQuery.ToList();
+            query.OrderDetails = ordersDetailsList;//ordersDetailsQuery.ToList();
 
             /*if (editDetailId != null)
             {
@@ -145,29 +165,53 @@
         }
 
         [HttpPost]
-        public IActionResult Details([FromQuery] OrderDetailListingViewModel query, CreateOrEditOrderDetailFormModel orderDetailModel, int orderId, int? editDetailId) // public IActionResult Create() / async Task<IActionResult>
+        public IActionResult Details([FromQuery] OrderDetailListingViewModel query, OrderDetailFormModel orderDetailModel, int orderId, int? editDetailId) // public IActionResult Create() / async Task<IActionResult>
         {
             //id = 4;
 
             var order = this.ordersService.Details(orderId);
-        
+
             /*var order = this.data
                 .Orders
                 .Where(c => c.Id == id)
                 .FirstOrDefault();*/
-        
+
             var ordersDetailsQuery = this.data.OrderDetails.AsQueryable();
 
             ordersDetailsQuery = ordersDetailsQuery.Where(x => x.OrderId == order.Id);
 
+            var ordersDetailsList = new List<OrderDetailFormModel>();
+
+            if (true)
+            {
+
+            }
+            foreach (var od in ordersDetailsQuery)
+            {
+                ordersDetailsList.Add(new OrderDetailFormModel
+                {
+                    Account = od.Account,
+                    AccountingNumber = od.AccountingNumber,
+                    Branch = od.Branch,
+                    AccountType = od.AccountType,
+                    CostCenter = od.CostCenter,
+                    Currency = od.Currency,
+                    OrderDetailId = od.Id,
+                    Project = od.Project,
+                    Reason = od.Reason,
+                    Sum = od.Sum,
+                    SumBGN = od.SumBGN
+                });
+            }
+
             query.Id = order.Id;
-            query.EditDetailId = null;
+            query.EditDetailId = editDetailId;
             query.AccountingDate = order.AccountingDate;
             query.RefNumber = order.RefNumber;
             query.Status = order.Status;
             query.System = order.System;
             query.UserCreate = order.UserCreate;
-            query.OrderDetails = ordersDetailsQuery.ToList();
+            query.OrderDetails = ordersDetailsList;
 
             return this.Redirect($"/Orders/Details?orderId={@orderId}");
         }

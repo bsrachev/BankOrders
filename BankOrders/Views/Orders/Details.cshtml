@@ -7,26 +7,14 @@
 <h1>Details</h1>
 
 <div>
-    <h4>OrderDetailListingViewModel</h4>
+    <h4>Order №@Html.DisplayFor(model => model.RefNumber)</h4>
     <hr />
     <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Id)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Id)
-        </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.AccountingDate)
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.AccountingDate)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.RefNumber)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.RefNumber)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.System)
@@ -43,20 +31,7 @@
     </dl>
 </div>
 
-<form>
-    <div class="form-row">
-        <div class="form-group col-md-4">
-            <label asp-for="AccountingDate" class="control-label"></label>
-            <input asp-for="AccountingDate" class="form-control" />
-            <span asp-validation-for="AccountingDate" class="text-danger"></span>
-        </div>
-        <div class="form-group col-md-4">
-            <label for="inputPassword4">Password</label>
-            <input type="password" class="form-control" id="inputPassword4" placeholder="Password">
-        </div>
-    </div>
-
-</form>
+<partial name="_OrderDetailFormModel" model=@(Model.EditDetailId != null ? Model.OrderDetails.Where(x => x.OrderDetailId == Model.EditDetailId).First() : null) />
 
 <table class="table">
     <thead>
@@ -77,32 +52,32 @@
     <tbody>
         @foreach (var detail in Model.OrderDetails)
         {
-            if (Model.EditDetailId == detail.Id)
+            if (Model.EditDetailId == detail.OrderDetailId)
             {
-        <tr>
-            <th class="thead-dark" scope="row">
-                <div class="button-holder">
-                    <button type="submit" class="btn btn-primary">Save</button>
-                </div>
-            </th>
-            <td>@detail.Branch</td>
-            <td>@detail.CostCenter</td>
-            <td>@detail.Project</td>
-            <td>@detail.Reason</td>
-            <td>@detail.Account</td>
-            <td>@detail.AccountType</td>
-            <td>@detail.Sum</td>
-            <td>@detail.Currency</td>
-            <td>@detail.SumBGN</td>
-            <td>@detail.AccountingNumber</td>
-        </tr>
+                <tr>
+                    <th class="thead-dark" scope="row">
+                        <div class="button-holder">
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                    </th>
+                    <td>@detail.Branch</td>
+                    <td>@detail.CostCenter</td>
+                    <td>@detail.Project</td>
+                    <td>@detail.Reason</td>
+                    <td>@detail.Account</td>
+                    <td>@detail.AccountType</td>
+                    <td>@detail.Sum</td>
+                    <td>@detail.Currency</td>
+                    <td>@detail.SumBGN</td>
+                    <td>@detail.AccountingNumber</td>
+                </tr>
             }
             else
             {
                 <tr>
                     <th scope="row">
                         <div class="button-holder">
-                            <a href="/Orders/Details?orderId=@Model.Id&editDetailId=@detail.Id" class="btn btn-info text-uppercase">Edit</a>
+                            <a href="/Orders/Details?orderId=@Model.Id&editDetailId=@detail.OrderDetailId" class="btn btn-info text-uppercase">Edit</a>
                         </div>
                     </th>
                     <td>@detail.Branch</td>
@@ -120,3 +95,8 @@
         }
     </tbody>
 </table>
+
+@if (Model.OrderDetails.Count == 0)
+{
+    <strong>Order №@Model.RefNumber has no details.</strong>
+}
