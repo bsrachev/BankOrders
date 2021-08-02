@@ -83,7 +83,7 @@
         public IActionResult Create(CreateOrderFormModel orderModel)
         {
             if (!ModelState.IsValid)
-            { 
+            {
                 return this.View(orderModel);
             }
 
@@ -125,7 +125,7 @@
 
             var ordersDetailsQuery = this.data.OrderDetails.AsQueryable();
 
-            ordersDetailsQuery = ordersDetailsQuery.Where(x => x.OrderId == order.Id);
+            ordersDetailsQuery = ordersDetailsQuery.Where(x => x.OrderOrTemplateRefNum == order.RefNumber);
 
             var ordersDetailsList = new List<OrderDetailFormModel>();
 
@@ -165,53 +165,51 @@
         }
 
         [HttpPost]
-        public IActionResult Details([FromQuery] OrderDetailListingViewModel query, OrderDetailFormModel orderDetailModel, int orderId, int? editDetailId) // public IActionResult Create() / async Task<IActionResult>
+        public IActionResult Details(OrderDetailFormModel orderDetailModel, int orderId, int? editDetailId) // public IActionResult Create() / async Task<IActionResult>
         {
-            //id = 4;
-
-            var order = this.ordersService.Details(orderId);
-
-            /*var order = this.data
-                .Orders
-                .Where(c => c.Id == id)
-                .FirstOrDefault();*/
-
-            var ordersDetailsQuery = this.data.OrderDetails.AsQueryable();
-
-            ordersDetailsQuery = ordersDetailsQuery.Where(x => x.OrderId == order.Id);
-
-            var ordersDetailsList = new List<OrderDetailFormModel>();
-
-            if (true)
+            if (!ModelState.IsValid)
             {
-
+                return this.View(orderDetailModel);
             }
-            foreach (var od in ordersDetailsQuery)
+
+            if (editDetailId == null)
             {
-                ordersDetailsList.Add(new OrderDetailFormModel
+                var order = this.ordersService.Details(orderId);
+
+                var orderDetail = new OrderDetail
                 {
-                    Account = od.Account,
-                    AccountingNumber = od.AccountingNumber,
-                    Branch = od.Branch,
-                    AccountType = od.AccountType,
-                    CostCenter = od.CostCenter,
-                    Currency = od.Currency,
-                    OrderDetailId = od.Id,
-                    Project = od.Project,
-                    Reason = od.Reason,
-                    Sum = od.Sum,
-                    SumBGN = od.SumBGN
-                });
+                    Account = orderDetailModel.Account,
+                    AccountingNumber = orderDetailModel.AccountingNumber,
+                    AccountType = orderDetailModel.AccountType,
+                    Branch = orderDetailModel.Branch,
+                    CostCenter = orderDetailModel.CostCenter,
+                    Currency = orderDetailModel.Currency,
+                    OrderOrTemplateRefNum = order.RefNumber,
+                    Project = orderDetailModel.Project,
+                    Reason = orderDetailModel.Reason,
+                    Sum = orderDetailModel.Sum,
+                    SumBGN = orderDetailModel.SumBGN
+                };
+
+                this.data.OrderDetails.Add(orderDetail);
+            }
+            else
+            {
+                var orderDetail = this.data.OrderDetails.Find(editDetailId);
+
+                orderDetail.Account = orderDetailModel.Account;
+                orderDetail.AccountingNumber = orderDetailModel.AccountingNumber;
+                orderDetail.AccountType = orderDetailModel.AccountType;
+                orderDetail.Branch = orderDetailModel.Branch;
+                orderDetail.CostCenter = orderDetailModel.CostCenter;
+                orderDetail.Currency = orderDetailModel.Currency;
+                orderDetail.Project = orderDetailModel.Project;
+                orderDetail.Reason = orderDetailModel.Reason;
+                orderDetail.Sum = orderDetailModel.Sum;
+                orderDetail.SumBGN = orderDetailModel.SumBGN;
             }
 
-            query.Id = order.Id;
-            query.EditDetailId = editDetailId;
-            query.AccountingDate = order.AccountingDate;
-            query.RefNumber = order.RefNumber;
-            query.Status = order.Status;
-            query.System = order.System;
-            query.UserCreate = order.UserCreate;
-            query.OrderDetails = ordersDetailsList;
+            this.data.SaveChanges();
 
             return this.Redirect($"/Orders/Details?orderId={@orderId}");
         }

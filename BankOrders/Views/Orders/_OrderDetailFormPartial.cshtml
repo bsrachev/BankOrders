@@ -4,7 +4,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="_OrderDetailFormModel">
+        <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-row">
                 <div class="form-group col-md-6">
@@ -26,7 +26,7 @@
                 </div>
                 <div class="form-group col-md-6">
                     <label asp-for="Reason" class="control-label"></label>
-                    <input asp-for="Reason" class="form-control" />
+                    <textarea asp-for="Reason" class="form-control" rows="3"></textarea>
                     <span asp-validation-for="Reason" class="text-danger"></span>
                 </div>
             </div>
@@ -54,23 +54,19 @@
                     <span asp-validation-for="Currency" class="text-danger"></span>
                 </div>
             </div>
-            <div class="form-group col-md-6">
-                <label asp-for="SumBGN" class="control-label"></label>
-                <input asp-for="SumBGN" class="form-control" />
-                <span asp-validation-for="SumBGN" class="text-danger"></span>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label asp-for="SumBGN" class="control-label"></label>
+                    <input asp-for="SumBGN" class="form-control" />
+                    <span asp-validation-for="SumBGN" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-6">
+                    <label asp-for="AccountingNumber" class="control-label"></label>
+                    <input asp-for="AccountingNumber" class="form-control" />
+                    <span asp-validation-for="AccountingNumber" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group col-md-6">
-                <label asp-for="AccountingNumber" class="control-label"></label>
-                <input asp-for="AccountingNumber" class="form-control" />
-                <span asp-validation-for="AccountingNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
+            <button type="submit" class="btn btn-primary">@(Model == null ? "Add Detail" : "Save Detail")</button>
         </form>
     </div>
 </div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

@@ -73,6 +73,9 @@ namespace BankOrders
                 {
                     endpoints.MapDefaultControllerRoute();
                     endpoints.MapRazorPages();
+                    /*endpoints.MapControllerRoute(
+                        name: "default",
+                        pattern: "{controller=Home}/{action=Login}/{id?}");*/
                 });
         }
     }

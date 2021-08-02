@@ -8,23 +8,13 @@
 
     public class OrderDetail
     {
-        public OrderDetail()
-        {
-        }
-
         [Key]
         public int Id { get; set; }
 
         //public string Id { get; set; } = Guid.NewGuid().ToString();
 
-        //[Required]
-        public int OrderId { get; set; }
-
-        public Order Order { get; set; }
-
-        public int TemplateId { get; set; }
-
-        public Template Template { get; set; }
+        [Required]
+        public int OrderOrTemplateRefNum { get; set; }
 
         public int Branch { get; set; }
 

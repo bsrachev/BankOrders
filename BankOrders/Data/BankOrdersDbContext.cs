@@ -44,7 +44,7 @@ namespace BankOrders.Data
                .Property(x => x.RefNumber)
                .HasDefaultValueSql("NEXT VALUE FOR TemplateOrderRefNumSeq");
 
-            builder
+            /*builder
                 .Entity<OrderDetail>()
                 .HasOne(c => c.Order)
                 .WithMany(c => c.OrderDetails)
@@ -56,7 +56,7 @@ namespace BankOrders.Data
                 .HasOne(c => c.Template)
                 .WithMany(c => c.OrderDetails)
                 .HasForeignKey(c => c.TemplateId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Restrict);*/
 
             base.OnModelCreating(builder);
         }

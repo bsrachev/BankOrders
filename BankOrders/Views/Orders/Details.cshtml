@@ -31,7 +31,9 @@
     </dl>
 </div>
 
-<partial name="_OrderDetailFormModel" model=@(Model.EditDetailId != null ? Model.OrderDetails.Where(x => x.OrderDetailId == Model.EditDetailId).First() : null) />
+<div>
+    <partial name="_OrderDetailFormPartial" model="@(Model.EditDetailId != null ? Model.OrderDetails.Where(x => x.OrderDetailId == Model.EditDetailId).First() : null)" />
+</div>
 
 <table class="table">
     <thead>
@@ -57,7 +59,7 @@
                 <tr>
                     <th class="thead-dark" scope="row">
                         <div class="button-holder">
-                            <button type="submit" class="btn btn-primary">Save</button>
+                            <button type="submit" class="btn btn-info" disabled>Edit</button>
                         </div>
                     </th>
                     <td>@detail.Branch</td>
@@ -77,7 +79,7 @@
                 <tr>
                     <th scope="row">
                         <div class="button-holder">
-                            <a href="/Orders/Details?orderId=@Model.Id&editDetailId=@detail.OrderDetailId" class="btn btn-info text-uppercase">Edit</a>
+                            <a href="/Orders/Details?orderId=@Model.Id&editDetailId=@detail.OrderDetailId" class="btn btn-info">Edit</a>
                         </div>
                     </th>
                     <td>@detail.Branch</td>
@@ -99,4 +101,9 @@
 @if (Model.OrderDetails.Count == 0)
 {
     <strong>Order №@Model.RefNumber has no details.</strong>
+}
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
