@@ -3,67 +3,58 @@
 <h4>Add a detail</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-12">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-row">
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-2">
                     <label asp-for="Branch" class="control-label"></label>
                     <input asp-for="Branch" class="form-control" />
                     <span asp-validation-for="Branch" class="text-danger"></span>
+                    <br />
+                    @if (true)
+                    {
+                        <label asp-for="CostCenter" class="control-label">Cost Center</label>
+                        <input asp-for="CostCenter" class="form-control" />
+                        <span asp-validation-for="CostCenter" class="text-danger"></span>
+                    }
+                    else
+                    {
+                        <label asp-for="Project" class="control-label"></label>
+                        <input asp-for="Project" class="form-control" />
+                        <span asp-validation-for="Project" class="text-danger"></span>
+                    }
                 </div>
-                <div class="form-group col-md-6">
-                    <label asp-for="CostCenter" class="control-label"></label>
-                    <input asp-for="CostCenter" class="form-control" />
-                    <span asp-validation-for="CostCenter" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    <label asp-for="Project" class="control-label"></label>
-                    <input asp-for="Project" class="form-control" />
-                    <span asp-validation-for="Project" class="text-danger"></span>
-                </div>
-                <div class="form-group col-md-6">
-                    <label asp-for="Reason" class="control-label"></label>
-                    <textarea asp-for="Reason" class="form-control" rows="3"></textarea>
-                    <span asp-validation-for="Reason" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-3">
                     <label asp-for="Account" class="control-label"></label>
                     <input asp-for="Account" class="form-control" />
                     <span asp-validation-for="Account" class="text-danger"></span>
-                </div>
-                <div class="form-group col-md-6">
+                    <br />
                     <label asp-for="AccountType" class="control-label"></label>
                     <input asp-for="AccountType" class="form-control" />
                     <span asp-validation-for="AccountType" class="text-danger"></span>
                 </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    <label asp-for="Sum" class="control-label"></label>
-                    <input asp-for="Sum" class="form-control" />
-                    <span asp-validation-for="Sum" class="text-danger"></span>
-                </div>
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-1">
                     <label asp-for="Currency" class="control-label"></label>
                     <input asp-for="Currency" class="form-control" />
                     <span asp-validation-for="Currency" class="text-danger"></span>
+                    <br />
+                    <label class="control-label">Rate</label>
+                    <input class="form-control" value="0.00" disabled/>
                 </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-2">
+                    <label asp-for="Sum" class="control-label"></label>
+                    <input asp-for="Sum" class="form-control" />
+                    <span asp-validation-for="Sum" class="text-danger"></span>
+                    <br />
                     <label asp-for="SumBGN" class="control-label"></label>
-                    <input asp-for="SumBGN" class="form-control" />
+                    <input asp-for="SumBGN" class="form-control" disabled/>
                     <span asp-validation-for="SumBGN" class="text-danger"></span>
                 </div>
-                <div class="form-group col-md-6">
-                    <label asp-for="AccountingNumber" class="control-label"></label>
-                    <input asp-for="AccountingNumber" class="form-control" />
-                    <span asp-validation-for="AccountingNumber" class="text-danger"></span>
+                <div class="form-group col-md-3">
+                    <label asp-for="Reason" class="control-label"></label>
+                    <textarea asp-for="Reason" class="form-control" rows="4"></textarea>
+                    <span asp-validation-for="Reason" class="text-danger"></span>
                 </div>
             </div>
             <button type="submit" class="btn btn-primary">@(Model == null ? "Add Detail" : "Save Detail")</button>

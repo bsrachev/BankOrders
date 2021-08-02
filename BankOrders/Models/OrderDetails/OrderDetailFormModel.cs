@@ -18,11 +18,11 @@
 
         public AccountType AccountType { get; init; }
 
-        public decimal? Sum { get; init; }
+        public decimal Sum { get; init; }
 
         public Currency Currency { get; init; }
 
-        public decimal? SumBGN { get; init; }
+        public decimal SumBGN { get; init; }
 
         public int AccountingNumber { get; init; }
     }
