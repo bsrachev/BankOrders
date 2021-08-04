@@ -1,0 +1,78 @@
+﻿@model OrderSearchFormModel
+
+<div class="row">
+    <div class="col-md-12">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-row">
+                <div class="form-group col-md-2">
+                    <label asp-for="RefNumber" class="control-label">Ref. №:</label>
+                    <input asp-for="RefNumber" class="form-control" />
+                    <span asp-validation-for="RefNumber" class="text-danger"></span>
+                    <br />
+                    <label asp-for="Status" class="control-label"></label>
+                    <select asp-for="Status" class="form-control">
+                        <option></option>
+                        <option>Draft</option>
+                        <option>For Approval</option>
+                        <option>For Posting</option>
+                        <option>For Posting Approval</option>
+                    </select>
+                    <span asp-validation-for="Status" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-3">
+                    <label asp-for="AccountingDateFrom" class="control-label">Accounting Date From:</label>
+                    <input asp-for="AccountingDateFrom" class="form-control" placeholder="mm.dd.yyyy"/>
+                    <span asp-validation-for="AccountingDateFrom" class="text-danger"></span>
+                    <br />
+                    <label asp-for="AccountingDateTo" class="control-label">Accounting Date To:</label>
+                    <input asp-for="AccountingDateTo" class="form-control" placeholder="mm.dd.yyyy"/>
+                    <span asp-validation-for="AccountingDateTo" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-2">
+                    <label asp-for="UserCreate" class="control-label">Created By:</label>
+                    <input asp-for="UserCreate" class="form-control" />
+                    <span asp-validation-for="UserCreate" class="text-danger"></span>
+                    <br />
+                    <label asp-for="UserApprove" class="control-label">Approved By:</label>
+                    <input asp-for="UserApprove" class="form-control" />
+                    <span asp-validation-for="UserApprove" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-2">
+                    <label asp-for="UserAccountant" class="control-label">Posting By:</label>
+                    <input asp-for="UserAccountant" class="form-control" />
+                    <span asp-validation-for="UserAccountant" class="text-danger"></span>
+                    <br />
+                    <label asp-for="UserApproveAccounting" class="control-label">Posting Approved By:</label>
+                    <input asp-for="UserApproveAccounting" class="form-control" />
+                    <span asp-validation-for="UserApproveAccounting" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-2">
+                    <label asp-for="System" class="control-label"></label>
+                    <select asp-for="System" class="form-control">
+                        <option></option>
+                        <option>Internal</option>
+                        <option>External</option>
+                    </select>
+                    <span asp-validation-for="System" class="text-danger"></span>
+                    <br />
+                    <label asp-for="IsLocked" class="control-label">Locked For Edit:</label>
+                    <select asp-for="IsLocked" class="form-control">
+                        <option></option>
+                        <option>Yes</option>
+                        <option>No</option>
+                    </select>
+                    <span asp-validation-for="IsLocked" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-1">
+                    <br />
+                    <br />
+                    <button type="submit" class="btn btn-primary align-items-center">Search</button>
+                    <br />
+                    <br />
+                    <button class="btn btn-dark align-self-center">Clear</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

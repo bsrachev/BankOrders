@@ -2,21 +2,28 @@
     <div class="button-holder">
         <a href="/Orders/Create" class="btn btn-info text-uppercase">Create New Order</a>
     </div>
+
     <div class="container">
-        <h1 style="margin: 2%; text-align: center;">Нареждания</h1>
+        <h1 style="margin: 2%; text-align: center;">Orders</h1>
         <div style="padding: 5%;">
+
+            <div>
+                <partial name="_OrderSearchPartial" model="null" />
+            </div>
+            <br />
+
             <table class="table">
                 <thead class="thead-dark">
                     <tr>
-                        <th scope="col" style="text-align:center;">Преглед</th>
-                        <th scope="col" style="text-align:center;">Реф. №</th>
-                        <th scope="col" style="text-align:center;">Счетоводна дата</th>
-                        <th scope="col" style="text-align:center;">Система</th>
-                        <th scope="col" style="text-align:center;">Наредител</th>
-                        <th scope="col" style="text-align:center;">Потвърдил</th>
-                        <th scope="col" style="text-align:center;">Осчетоводил</th>
-                        <th scope="col" style="text-align:center;">Потвърдил осчетоводяването</th>
-                        <th scope="col" style="text-align:center;">Статус</th>
+                        <th scope="col" style="text-align:center;">Details</th>
+                        <th scope="col" style="text-align:center;">Reference №</th>
+                        <th scope="col" style="text-align:center;">Accounting Date</th>
+                        <th scope="col" style="text-align:center;">System</th>
+                        <th scope="col" style="text-align:center;">Created by</th>
+                        <th scope="col" style="text-align:center;">Approved by</th>
+                        <th scope="col" style="text-align:center;">Posting by</th>
+                        <th scope="col" style="text-align:center;">Posting approved<br />by</th>
+                        <th scope="col" style="text-align:center;">Status</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -25,10 +32,10 @@
                         <tr>
                             <td>
                                 <div class="button-holder">
-                                    <a href="/Orders/Details?orderId=@order.Id" class="btn btn-info text-uppercase">Info</a>
+                                    <a href="/Orders/Details?orderId=@order.Id" class="btn btn-info text-uppercase">View</a>
                                 </div>
                             </td>
-                            <th scope="row">@order.RefNumber</th>
+                            <th scope="row">№@order.RefNumber</th>
                             <td>@order.AccountingDate</td>
                             <td>@order.System</td>
                             <td>@order.UserCreate</td>
@@ -40,6 +47,10 @@
                     }
                 </tbody>
             </table>
+            @if (false) //TODO
+            {
+                <strong>There are no orders.</strong>
+            }
         </div>
     </div>
 </section>

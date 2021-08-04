@@ -28,6 +28,8 @@ namespace BankOrders.Data
 
         public DbSet<OrderDetail> OrderDetails { get; init; }
 
+        public DbSet<ExchangeRate> ExchangeRates { get; init; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.HasSequence<int>("OrderRefNumSeq")

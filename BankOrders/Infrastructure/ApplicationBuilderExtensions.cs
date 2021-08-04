@@ -3,6 +3,7 @@
     using System.Linq;
     using BankOrders.Data;
     using BankOrders.Data.Models;
+    using BankOrders.Data.Models.Enums;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.DependencyInjection;
@@ -25,25 +26,20 @@
 
         private static void SeedCategories(BankOrdersDbContext data)
         {
-            /*
-            if (data.Categories.Any())
+            if (data.ExchangeRates.Any())
             {
                 return;
             }
 
-            data.Categories.AddRange(new[]
+            data.ExchangeRates.AddRange(new[]
             {
-                new Category { Name = "Mini" },
-                new Category { Name = "Economy" },
-                new Category { Name = "Midsize" },
-                new Category { Name = "Large" },
-                new Category { Name = "SUV" },
-                new Category { Name = "Vans" },
-                new Category { Name = "Luxury" },
+                new ExchangeRate { Currency = Currency.BGN, Rate = 1.00000m },
+                new ExchangeRate { Currency = Currency.EUR, Rate = 1.95583m },
+                new ExchangeRate { Currency = Currency.GBP, Rate = 2.29141m },
+                new ExchangeRate { Currency = Currency.USD, Rate = 1.64563m },
             });
 
             data.SaveChanges();
-            */
         }
     }
 }

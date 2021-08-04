@@ -1,6 +1,9 @@
 ﻿namespace BankOrders.Models.OrderDetails
 {
+    using BankOrders.Data.Models;
     using BankOrders.Data.Models.Enums;
+
+    using System.Collections.Generic;
 
     public class OrderDetailFormModel
     {
@@ -25,5 +28,9 @@
         public decimal SumBGN { get; init; }
 
         public int AccountingNumber { get; init; }
+
+        public IEnumerable<ExchangeRate> ExchangeRates { get; set; }
+
+        public OrderSystem OrderSystem { get; set; }
     }
 }

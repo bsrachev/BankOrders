@@ -4,8 +4,6 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
-
 <div>
     <h4>Order №@Html.DisplayFor(model => model.RefNumber)</h4>
     <hr />
@@ -32,16 +30,24 @@
 </div>
 
 <div>
-    <partial name="_OrderDetailFormPartial" model="@(Model.EditDetailId != null ? Model.OrderDetails.Where(x => x.OrderDetailId == Model.EditDetailId).First() : null)" />
+    <partial name="_OrderDetailFormPartial" model="@(Model.EditDetailId != null ? Model.OrderDetails.First(x => x.OrderDetailId == Model.EditDetailId) : new OrderDetailFormModel { ExchangeRates = Model.ExchangeRates, OrderSystem = Model.System } )" />
 </div>
+
+<br />
 
 <table class="table">
     <thead>
         <tr>
             <th scope="col">Edit</th>
             <th scope="col">Branch</th>
-            <th scope="col">Cost Center</th>
-            <th scope="col">Project</th>
+            @if (Model.System == OrderSystem.Internal)
+            {
+                <th scope="col">Cost Center</th>
+            }
+            else
+            {
+                <th scope="col">Project</th>
+            }
             <th scope="col">Reason</th>
             <th scope="col">Account</th>
             <th scope="col">Account Type</th>
@@ -63,8 +69,14 @@
                         </div>
                     </th>
                     <td>@detail.Branch</td>
-                    <td>@detail.CostCenter</td>
-                    <td>@detail.Project</td>
+                    @if (Model.System == OrderSystem.Internal)
+                    {
+                        <td>@detail.CostCenter</td>
+                    }
+                    else
+                    {
+                        <td>@detail.Project</td>
+                    }
                     <td>@detail.Reason</td>
                     <td>@detail.Account</td>
                     <td>@detail.AccountType</td>
@@ -83,8 +95,14 @@
                         </div>
                     </th>
                     <td>@detail.Branch</td>
-                    <td>@detail.CostCenter</td>
-                    <td>@detail.Project</td>
+                    @if (Model.System == OrderSystem.Internal)
+                    {
+                        <td>@detail.CostCenter</td>
+                    }
+                    else
+                    {
+                        <td>@detail.Project</td>
+                    }
                     <td>@detail.Reason</td>
                     <td>@detail.Account</td>
                     <td>@detail.AccountType</td>
@@ -103,6 +121,34 @@
     <strong>Order №@Model.RefNumber has no details.</strong>
 }
 
+<div class="container-fluid border-top">
+    <div class="form-group">
+        <br />
+        @if (Model.Status == OrderStatus.Draft)
+        {
+            <a asp-controller="Orders" asp-action="Approve" asp-route-id="@Model.Id" class="btn btn-warning">Send for approval</a>
+        }
+        else if (Model.Status == OrderStatus.ForApproval)
+        {
+            <a asp-controller="Orders" asp-action="Approve" asp-route-id="@Model.Id" class="btn btn-warning">Approve order</a>
+            <a asp-controller="Orders" asp-action="Approve" asp-route-id="@Model.Id" class="btn btn-warning">Send for correction</a>
+        }
+        else if (Model.Status == OrderStatus.ForPosting)
+        {
+            <a asp-controller="Orders" asp-action="Approve" asp-route-id="@Model.Id" class="btn btn-warning">Send for post approval</a>
+            <a asp-controller="Orders" asp-action="Approve" asp-route-id="@Model.Id" class="btn btn-warning">Send for correction</a>
+        }
+        else if (Model.Status == OrderStatus.ForPostingApproval)
+        {
+            <a asp-controller="Orders" asp-action="Approve" asp-route-id="@Model.Id" class="btn btn-warning">Approve posting</a>
+        }
+        else if (Model.Status == OrderStatus.Finished)
+        {
+            <a asp-controller="Orders" asp-action="Approve" asp-route-id="@Model.Id" class="btn btn-warning">Create similar order</a>
+        }
+        <button type="button" onclick="location.href='@Url.Action("All")'" class="btn btn-dark float-right"> Cancel </button>
+    </div>
+</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

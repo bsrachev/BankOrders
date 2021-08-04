@@ -23,5 +23,7 @@
         public OrderStatus Status { get; set; }
 
         public ICollection<OrderDetailFormModel> OrderDetails { get; set; }
+
+        public IEnumerable<ExchangeRate> ExchangeRates { get; set; }
     }
 }

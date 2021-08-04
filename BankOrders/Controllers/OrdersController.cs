@@ -73,6 +73,81 @@
             return this.View(orders);
         }
 
+        [HttpPost]
+        public IActionResult All(OrderSearchFormModel searchModel)
+        {
+            var ordersQuery = this.data.Orders.AsQueryable();
+
+            if (searchModel.RefNumber != null)
+            {
+                ordersQuery = ordersQuery.Where(x => x.RefNumber == int.Parse(searchModel.RefNumber));
+            }
+
+            if (searchModel.Status != null)
+            {
+                ordersQuery = ordersQuery.Where(x => x.Status == (OrderStatus)Enum.Parse(typeof(OrderStatus), searchModel.Status));
+            }
+
+            if (searchModel.AccountingDateFrom != null)
+            {
+                var accDateFrom = DateTime.ParseExact(searchModel.AccountingDateFrom, "dd.MM.yyyy", CultureInfo.InvariantCulture);
+                ordersQuery = ordersQuery.Where(x => x.AccountingDate >= accDateFrom);
+            }
+
+            if (searchModel.AccountingDateTo != null)
+            {
+                var accDateTo = DateTime.ParseExact(searchModel.AccountingDateTo, "dd.MM.yyyy", CultureInfo.InvariantCulture);
+                ordersQuery = ordersQuery.Where(x => x.AccountingDate <= accDateTo);
+            }
+
+            if (searchModel.UserCreate != null)
+            {
+                ordersQuery = ordersQuery.Where(x => x.UserCreate == searchModel.UserCreate);
+            }
+
+            if (searchModel.UserApprove != null)
+            {
+                ordersQuery = ordersQuery.Where(x => x.UserApprove == searchModel.UserApprove);
+            }
+
+            if (searchModel.UserAccountant != null)
+            {
+                ordersQuery = ordersQuery.Where(x => x.UserAccountant == searchModel.UserAccountant);
+            }
+
+            if (searchModel.UserApproveAccounting != null)
+            {
+                ordersQuery = ordersQuery.Where(x => x.UserApproveAccounting == searchModel.UserApproveAccounting);
+            }
+
+            if (searchModel.System != null)
+            {
+                ordersQuery = ordersQuery.Where(x => x.System == (OrderSystem)Enum.Parse(typeof(OrderSystem), searchModel.System));
+            }
+
+            if (searchModel.IsLocked != null)
+            {
+                //ordersQuery = ordersQuery.Where(x => x.RefNumber == int.Parse(searchModel.RefNumber));
+            }
+
+            var orders = ordersQuery
+                .OrderByDescending(c => c.RefNumber)
+                .Select(c => new OrderListingViewModel
+                {
+                    Id = c.Id,
+                    RefNumber = c.RefNumber,
+                    AccountingDate = c.AccountingDate,
+                    System = c.System,
+                    UserCreate = c.UserCreate,
+                    UserApprove = c.UserApprove,
+                    UserAccountant = c.UserAccountant,
+                    UserApproveAccounting = c.UserApproveAccounting,
+                })
+                .ToList();
+
+            return this.View(orders);
+        }
+
         //[HttpGet]
         public IActionResult Create() // public IActionResult Create() / async Task<IActionResult>
         {
@@ -143,7 +218,9 @@
                     Project = od.Project,
                     Reason = od.Reason,
                     Sum = od.Sum,
-                    SumBGN = od.SumBGN
+                    SumBGN = od.SumBGN,
+                    ExchangeRates = this.data.ExchangeRates,
+                    OrderSystem = order.System
                 });
             }
 
@@ -155,6 +232,7 @@
             query.System = order.System;
             query.UserCreate = order.UserCreate;
             query.OrderDetails = ordersDetailsList;//ordersDetailsQuery.ToList();
+            query.ExchangeRates = this.data.ExchangeRates;
 
             /*if (editDetailId != null)
             {
