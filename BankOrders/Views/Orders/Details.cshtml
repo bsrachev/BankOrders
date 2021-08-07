@@ -4,7 +4,7 @@
     ViewData["Title"] = "Details";
 }
 
-@Html.ValidationMessage("CustomError")
+<div asp-validation-summary="All" class="text-danger"></div>
 
 <div>
     <h4>Order №@Html.DisplayFor(model => model.RefNumber)</h4>

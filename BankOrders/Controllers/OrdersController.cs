@@ -8,6 +8,7 @@
     using BankOrders.Data.Models.Enums;
     using BankOrders.Services;
     using BankOrders.Models.Orders;
+    using BankOrders.Infrastructure;
     using System;
     using System.Collections.Generic;
     using System.Globalization;
@@ -15,24 +16,25 @@
     using System.Security.Claims;
     using System.Threading.Tasks;
     using BankOrders.Models.OrderDetails;
+    using BankOrders.Services.Users;
 
     public class OrdersController : Controller
     {
-        private readonly IOrdersService ordersService;
-        //private readonly IUserService users;
+        private readonly IOrderService orderService;
+        private readonly IUserService userService;
         private readonly BankOrdersDbContext data;
 
         public OrdersController(
-            IOrdersService ordersService,
-            // IUserService users,
+            IOrderService orderService,
+            IUserService userService,
             BankOrdersDbContext data)
         {
-            this.ordersService = ordersService;
-            // this.users = users;
+            this.orderService = orderService;
+            this.userService = userService;
             this.data = data;
         }
 
-        [Authorize]
+        //[Authorize]
         public IActionResult All()
         {
             /*
@@ -189,12 +191,17 @@
         }
 
         [Authorize]
-        public IActionResult Details(int orderId, int? editDetailId) // public IActionResult Create() / async Task<IActionResult>
+        public IActionResult Details(int orderId, int? editDetailId, string? errText) // public IActionResult Create() / async Task<IActionResult>
         {
+            if (errText != null)
+            {
+                this.ModelState.AddModelError(String.Empty, errText);
+            }
+
             var query = new OrderDetailListingViewModel();
             //[FromQuery] OrderDetailListingViewModel query
 
-            var order = this.ordersService.Details(orderId);
+            var order = this.orderService.Details(orderId);
 
             /*var order = this.data
                 .Orders
@@ -248,7 +255,7 @@
         [HttpPost]
         public IActionResult Details(OrderDetailFormModel orderDetailModel, int orderId, int? editDetailId) // public IActionResult Create() / async Task<IActionResult>
         {
-            /*if (this.ordersService.Details(orderId).UserCreate == this.User.Identity.Name)
+            /*if (this.orderService.Details(orderId).UserCreate == this.User.Identity.Name)
             {
                 this.ModelState.AddModelError("CustomError", "Cannot appove an order that you have created.");
             }*/
@@ -260,7 +267,7 @@
 
             if (editDetailId == null)
             {
-                var order = this.ordersService.Details(orderId);
+                var order = this.orderService.Details(orderId);
 
                 var orderDetail = new OrderDetail
                 {
@@ -302,7 +309,7 @@
 
         public IActionResult SendForApproval(int id) // public IActionResult Create() / async Task<IActionResult>
         {
-            var changeStatus = this.ordersService.ChangeStatus(id, this.User.Identity.Name, OrderStatus.ForApproval);
+            var changeStatus = this.orderService.ChangeStatus(id, this.User.Identity.Name, OrderStatus.ForApproval);
 
             if (!changeStatus)
             {
@@ -314,20 +321,16 @@
 
         public IActionResult Approve(int id) // public IActionResult Create() / async Task<IActionResult>
         {
-            
+            //var shmest = this.User.Id();
 
-            if (this.ordersService.IsUserCreate(id, this.User.Identity.Name))
+            if (this.userService.IsUserCreate(id, this.User.Identity.Name))
             {
-                this.ModelState.AddModelError("CustomError", "Cannot appove an order that you have created.");
+                var errText = "You cannot appove an order that you have created.";
+
+                return RedirectToAction(nameof(Details), new { orderId = id, errText = errText });
             }
 
-            if (!ModelState.IsValid)
-            {
-                //return this.View(Details(id));
-                //return RedirectToAction(nameof(Details(id)));
-            }
-
-            var changeStatus = this.ordersService.ChangeStatus(id, this.User.Identity.Name, OrderStatus.ForPosting);
+            var changeStatus = this.orderService.ChangeStatus(id, this.User.Identity.Name, OrderStatus.ForPosting);
 
             if (!changeStatus)
             {
@@ -339,7 +342,7 @@
 
         public IActionResult ForCorrection(int id) // public IActionResult Create() / async Task<IActionResult>
         {
-            var changeStatus = this.ordersService.ChangeStatus(id, this.User.Identity.Name, OrderStatus.ForCorrection);
+            var changeStatus = this.orderService.ChangeStatus(id, this.User.Identity.Name, OrderStatus.ForCorrection);
 
             if (!changeStatus)
             {
@@ -351,7 +354,7 @@
 
         public IActionResult SendForPostingApproval(int id) // public IActionResult Create() / async Task<IActionResult>
         {
-            var changeStatus = this.ordersService.ChangeStatus(id, this.User.Identity.Name, OrderStatus.ForPostingApproval);
+            var changeStatus = this.orderService.ChangeStatus(id, this.User.Identity.Name, OrderStatus.ForPostingApproval);
 
             if (!changeStatus)
             {
@@ -363,7 +366,7 @@
 
         public IActionResult ForPostingCorrection(int id) // public IActionResult Create() / async Task<IActionResult>
         {
-            var changeStatus = this.ordersService.ChangeStatus(id, this.User.Identity.Name, OrderStatus.ForPostingCorrection);
+            var changeStatus = this.orderService.ChangeStatus(id, this.User.Identity.Name, OrderStatus.ForPostingCorrection);
 
             if (!changeStatus)
             {
@@ -375,7 +378,7 @@
 
         public IActionResult ApprovePosting(int id) // public IActionResult Create() / async Task<IActionResult>
         {
-            var changeStatus = this.ordersService.ChangeStatus(id, this.User.Identity.Name, OrderStatus.Finished);
+            var changeStatus = this.orderService.ChangeStatus(id, this.User.Identity.Name, OrderStatus.Finished);
 
             if (!changeStatus)
             {

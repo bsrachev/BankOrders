@@ -4,6 +4,7 @@ namespace BankOrders
     using BankOrders.Data.Models;
     using BankOrders.Infrastructure;
     using BankOrders.Services;
+    using BankOrders.Services.Users;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Identity;
@@ -47,7 +48,8 @@ namespace BankOrders
                 options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
             });
 
-            services.AddTransient<IOrdersService, OrdersService>();
+            services.AddTransient<IOrderService, OrderService>();
+            services.AddTransient<IUserService, UserService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

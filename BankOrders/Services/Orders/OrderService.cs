@@ -9,11 +9,11 @@
     using System.Collections.Generic;
     using System.Linq;
 
-    public class OrdersService : IOrdersService
+    public class OrderService : IOrderService
     {
         private readonly BankOrdersDbContext data;
 
-        public OrdersService(BankOrdersDbContext data)
+        public OrderService(BankOrdersDbContext data)
             => this.data = data;
 
         public ICollection<string> ValidateOrder(CreateOrderFormModel model)
@@ -61,21 +61,6 @@
                     //AccountingNumbers = c. TODO
                 })
                 .FirstOrDefault();
-
-        public bool IsUserCreate(int orderId, string userId)
-            => this.data
-                .Orders
-                .Any(o => o.Id == orderId && o.UserCreate == userId);
-
-        public bool IsUserApprove(int orderId, string userId)
-            => this.data
-                .Orders
-                .Any(o => o.Id == orderId && o.UserApprove == userId);
-
-        public bool IsUserAccountant(int orderId, string userId)
-            => this.data
-                .Orders
-                .Any(o => o.Id == orderId && o.UserAccountant == userId);
 
         public bool ChangeStatus(int orderId, string userId, OrderStatus status)
         {
