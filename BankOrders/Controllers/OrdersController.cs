@@ -302,7 +302,7 @@
 
         public IActionResult SendForApproval(int id) // public IActionResult Create() / async Task<IActionResult>
         {
-            var changeStatus = this.ordersService.ChangeStatus(id, OrderStatus.ForApproval);
+            var changeStatus = this.ordersService.ChangeStatus(id, this.User.Identity.Name, OrderStatus.ForApproval);
 
             if (!changeStatus)
             {
@@ -314,17 +314,20 @@
 
         public IActionResult Approve(int id) // public IActionResult Create() / async Task<IActionResult>
         {
-            if (this.ordersService.Details(id).UserCreate == this.User.Identity.Name)
+            
+
+            if (this.ordersService.IsUserCreate(id, this.User.Identity.Name))
             {
                 this.ModelState.AddModelError("CustomError", "Cannot appove an order that you have created.");
             }
 
             if (!ModelState.IsValid)
             {
-                ///return this.View(Details(id));
+                //return this.View(Details(id));
+                //return RedirectToAction(nameof(Details(id)));
             }
 
-            var changeStatus = this.ordersService.ChangeStatus(id, OrderStatus.ForPosting);
+            var changeStatus = this.ordersService.ChangeStatus(id, this.User.Identity.Name, OrderStatus.ForPosting);
 
             if (!changeStatus)
             {
@@ -336,7 +339,7 @@
 
         public IActionResult ForCorrection(int id) // public IActionResult Create() / async Task<IActionResult>
         {
-            var changeStatus = this.ordersService.ChangeStatus(id, OrderStatus.ForCorrection);
+            var changeStatus = this.ordersService.ChangeStatus(id, this.User.Identity.Name, OrderStatus.ForCorrection);
 
             if (!changeStatus)
             {
@@ -348,7 +351,7 @@
 
         public IActionResult SendForPostingApproval(int id) // public IActionResult Create() / async Task<IActionResult>
         {
-            var changeStatus = this.ordersService.ChangeStatus(id, OrderStatus.ForPostingApproval);
+            var changeStatus = this.ordersService.ChangeStatus(id, this.User.Identity.Name, OrderStatus.ForPostingApproval);
 
             if (!changeStatus)
             {
@@ -360,7 +363,7 @@
 
         public IActionResult ForPostingCorrection(int id) // public IActionResult Create() / async Task<IActionResult>
         {
-            var changeStatus = this.ordersService.ChangeStatus(id, OrderStatus.ForPostingCorrection);
+            var changeStatus = this.ordersService.ChangeStatus(id, this.User.Identity.Name, OrderStatus.ForPostingCorrection);
 
             if (!changeStatus)
             {
@@ -372,7 +375,7 @@
 
         public IActionResult ApprovePosting(int id) // public IActionResult Create() / async Task<IActionResult>
         {
-            var changeStatus = this.ordersService.ChangeStatus(id, OrderStatus.Finished);
+            var changeStatus = this.ordersService.ChangeStatus(id, this.User.Identity.Name, OrderStatus.Finished);
 
             if (!changeStatus)
             {

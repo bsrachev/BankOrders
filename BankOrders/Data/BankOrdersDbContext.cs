@@ -15,7 +15,7 @@ namespace BankOrders.Data
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
 
-    public class BankOrdersDbContext : IdentityDbContext
+    public class BankOrdersDbContext : IdentityDbContext<User>
     {
         public BankOrdersDbContext(DbContextOptions<BankOrdersDbContext> options)
             : base(options)

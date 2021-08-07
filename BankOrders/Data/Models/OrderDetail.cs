@@ -34,14 +34,14 @@
         [MaxLength(2)]
         public AccountType AccountType { get; set; }
 
-        //[Column(TypeName = "decimal(4,2)")] // TODO could make error
+        [Column(TypeName = "decimal(18,2)")]
         [Required]
         public decimal Sum { get; set; }
 
         [Required]
         public Currency Currency { get; set; }
 
-        //[Column(TypeName = "decimal(4,2)")] // TODO could make error
+        [Column(TypeName = "decimal(18,2)")]
         [Required]
         public decimal SumBGN { get; set; }
 

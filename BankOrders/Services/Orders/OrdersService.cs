@@ -62,25 +62,43 @@
                 })
                 .FirstOrDefault();
 
-        public bool ChangeStatus(int id, OrderStatus status)
+        public bool IsUserCreate(int orderId, string userId)
+            => this.data
+                .Orders
+                .Any(o => o.Id == orderId && o.UserCreate == userId);
+
+        public bool IsUserApprove(int orderId, string userId)
+            => this.data
+                .Orders
+                .Any(o => o.Id == orderId && o.UserApprove == userId);
+
+        public bool IsUserAccountant(int orderId, string userId)
+            => this.data
+                .Orders
+                .Any(o => o.Id == orderId && o.UserAccountant == userId);
+
+        public bool ChangeStatus(int orderId, string userId, OrderStatus status)
         {
-            var orderData = this.data.Orders.Find(id);
+            var orderData = this.data.Orders.Find(orderId);
 
             orderData.Status = status;
 
-            /*switch (status)
+            switch (status)
             {
-                case OrderStatus.ForPosting: orderData.UserApprove = this.User.Identity.Name;
-                    // code block
-                    break;
-                case y:
-                    // code block
-                    break;
-                default:
-                    // code block
-                    break;
-            }*/
 
+                case OrderStatus.ForPosting: 
+                    orderData.UserApprove = userId;
+                    break;
+                case OrderStatus.ForPostingApproval:
+                    orderData.UserAccountant = userId;
+                    break;
+                case OrderStatus.Finished:
+                    orderData.UserApproveAccounting = userId;
+                    break;
+                case OrderStatus.ForPostingCorrection:
+                    orderData.UserAccountant = null;
+                    break;
+            }
 
             data.SaveChanges();
 

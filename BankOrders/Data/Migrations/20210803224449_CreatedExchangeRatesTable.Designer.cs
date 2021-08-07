@@ -38,7 +38,7 @@ namespace BankOrders.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("Rate")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,5)");
 
                     b.HasKey("Id");
 

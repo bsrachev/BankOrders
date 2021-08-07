@@ -14,6 +14,12 @@
 
         //OrderDetailListingViewModel CurrentOrderDetails(int currentPage, int ordersPerPage);
 
-        public bool ChangeStatus(int id, OrderStatus status);
+        public bool IsUserCreate(int orderId, string userId);
+
+        public bool IsUserApprove(int orderId, string userId);
+
+        public bool IsUserAccountant(int orderId, string userId);
+
+        public bool ChangeStatus(int orderId, string userId, OrderStatus status);
     }
 }

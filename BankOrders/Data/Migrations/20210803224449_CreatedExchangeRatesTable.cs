@@ -13,7 +13,7 @@ namespace BankOrders.Data.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Currency = table.Column<int>(type: "int", nullable: false),
-                    Rate = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    Rate = table.Column<decimal>(type: "decimal(18,5)", nullable: false)
                 },
                 constraints: table =>
                 {
