@@ -32,7 +32,7 @@
             this.data = data;
         }
 
-        //[Authorize]
+        [Authorize]
         public IActionResult All()
         {
             /*
@@ -67,6 +67,7 @@
                     UserApprove = c.UserApprove,
                     UserAccountant = c.UserAccountant,
                     UserApproveAccounting = c.UserApproveAccounting,
+                    Status = c.Status
                 })
                 .ToList();
 
@@ -148,7 +149,7 @@
             return this.View(orders);
         }
 
-        //[HttpGet]
+        [Authorize]
         public IActionResult Create() // public IActionResult Create() / async Task<IActionResult>
         {
             return this.View();
@@ -187,9 +188,11 @@
             return this.Redirect("/Orders/All");
         }
 
-        public IActionResult Details([FromQuery] OrderDetailListingViewModel query, int orderId, int? editDetailId) // public IActionResult Create() / async Task<IActionResult>
+        [Authorize]
+        public IActionResult Details(int orderId, int? editDetailId) // public IActionResult Create() / async Task<IActionResult>
         {
-            //id = 4;
+            var query = new OrderDetailListingViewModel();
+            //[FromQuery] OrderDetailListingViewModel query
 
             var order = this.ordersService.Details(orderId);
 
@@ -245,6 +248,11 @@
         [HttpPost]
         public IActionResult Details(OrderDetailFormModel orderDetailModel, int orderId, int? editDetailId) // public IActionResult Create() / async Task<IActionResult>
         {
+            /*if (this.ordersService.Details(orderId).UserCreate == this.User.Identity.Name)
+            {
+                this.ModelState.AddModelError("CustomError", "Cannot appove an order that you have created.");
+            }*/
+
             if (!ModelState.IsValid)
             {
                 return this.View(orderDetailModel);
@@ -290,6 +298,88 @@
             this.data.SaveChanges();
 
             return this.Redirect($"/Orders/Details?orderId={@orderId}");
+        }
+
+        public IActionResult SendForApproval(int id) // public IActionResult Create() / async Task<IActionResult>
+        {
+            var changeStatus = this.ordersService.ChangeStatus(id, OrderStatus.ForApproval);
+
+            if (!changeStatus)
+            {
+                return BadRequest();
+            }
+
+            return RedirectToAction(nameof(All));
+        }
+
+        public IActionResult Approve(int id) // public IActionResult Create() / async Task<IActionResult>
+        {
+            if (this.ordersService.Details(id).UserCreate == this.User.Identity.Name)
+            {
+                this.ModelState.AddModelError("CustomError", "Cannot appove an order that you have created.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                ///return this.View(Details(id));
+            }
+
+            var changeStatus = this.ordersService.ChangeStatus(id, OrderStatus.ForPosting);
+
+            if (!changeStatus)
+            {
+                return BadRequest();
+            }
+
+            return RedirectToAction(nameof(All));
+        }
+
+        public IActionResult ForCorrection(int id) // public IActionResult Create() / async Task<IActionResult>
+        {
+            var changeStatus = this.ordersService.ChangeStatus(id, OrderStatus.ForCorrection);
+
+            if (!changeStatus)
+            {
+                return BadRequest();
+            }
+
+            return RedirectToAction(nameof(All));
+        }
+
+        public IActionResult SendForPostingApproval(int id) // public IActionResult Create() / async Task<IActionResult>
+        {
+            var changeStatus = this.ordersService.ChangeStatus(id, OrderStatus.ForPostingApproval);
+
+            if (!changeStatus)
+            {
+                return BadRequest();
+            }
+
+            return RedirectToAction(nameof(All));
+        }
+
+        public IActionResult ForPostingCorrection(int id) // public IActionResult Create() / async Task<IActionResult>
+        {
+            var changeStatus = this.ordersService.ChangeStatus(id, OrderStatus.ForPostingCorrection);
+
+            if (!changeStatus)
+            {
+                return BadRequest();
+            }
+
+            return RedirectToAction(nameof(All));
+        }
+
+        public IActionResult ApprovePosting(int id) // public IActionResult Create() / async Task<IActionResult>
+        {
+            var changeStatus = this.ordersService.ChangeStatus(id, OrderStatus.Finished);
+
+            if (!changeStatus)
+            {
+                return BadRequest();
+            }
+
+            return RedirectToAction(nameof(All));
         }
     }
 }

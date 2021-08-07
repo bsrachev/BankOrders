@@ -1,5 +1,6 @@
 ﻿namespace BankOrders.Services
 {
+    using BankOrders.Data.Models.Enums;
     using BankOrders.Models.Orders;
     using BankOrders.Services.Orders;
 
@@ -11,6 +12,8 @@
 
         OrderDetailsServiceModel Details(int carId);
 
-        OrderDetailListingViewModel CurrentOrderDetails(int currentPage, int ordersPerPage);
+        //OrderDetailListingViewModel CurrentOrderDetails(int currentPage, int ordersPerPage);
+
+        public bool ChangeStatus(int id, OrderStatus status);
     }
 }

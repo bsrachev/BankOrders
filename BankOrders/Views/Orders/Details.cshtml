@@ -1,8 +1,10 @@
-﻿@model BankOrders.Models.Orders.OrderDetailListingViewModel
+﻿@model OrderDetailListingViewModel
 
 @{
     ViewData["Title"] = "Details";
 }
+
+@Html.ValidationMessage("CustomError")
 
 <div>
     <h4>Order №@Html.DisplayFor(model => model.RefNumber)</h4>
@@ -25,6 +27,12 @@
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.UserCreate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Status)
         </dd>
     </dl>
 </div>
@@ -124,29 +132,25 @@
 <div class="container-fluid border-top">
     <div class="form-group">
         <br />
-        @if (Model.Status == OrderStatus.Draft)
+        @if (Model.Status == OrderStatus.Draft || Model.Status == OrderStatus.ForCorrection)
         {
-            <a asp-controller="Orders" asp-action="Approve" asp-route-id="@Model.Id" class="btn btn-warning">Send for approval</a>
+            <a asp-controller="Orders" asp-action="SendForApproval" asp-route-id="@Model.Id" class="btn btn-warning">Send for approval</a>
         }
         else if (Model.Status == OrderStatus.ForApproval)
         {
             <a asp-controller="Orders" asp-action="Approve" asp-route-id="@Model.Id" class="btn btn-warning">Approve order</a>
-            <a asp-controller="Orders" asp-action="Approve" asp-route-id="@Model.Id" class="btn btn-warning">Send for correction</a>
+            <a asp-controller="Orders" asp-action="ForCorrection" asp-route-id="@Model.Id" class="btn btn-warning">Send for correction</a>
         }
-        else if (Model.Status == OrderStatus.ForPosting)
+        else if (Model.Status == OrderStatus.ForPosting || Model.Status == OrderStatus.ForPostingCorrection)
         {
-            <a asp-controller="Orders" asp-action="Approve" asp-route-id="@Model.Id" class="btn btn-warning">Send for post approval</a>
-            <a asp-controller="Orders" asp-action="Approve" asp-route-id="@Model.Id" class="btn btn-warning">Send for correction</a>
+            <a asp-controller="Orders" asp-action="SendForPostingApproval" asp-route-id="@Model.Id" class="btn btn-warning">Send for post approval</a>
         }
         else if (Model.Status == OrderStatus.ForPostingApproval)
         {
-            <a asp-controller="Orders" asp-action="Approve" asp-route-id="@Model.Id" class="btn btn-warning">Approve posting</a>
+            <a asp-controller="Orders" asp-action="ApprovePosting" asp-route-id="@Model.Id" class="btn btn-warning">Approve posting</a>
+            <a asp-controller="Orders" asp-action="ForPostingCorrection" asp-route-id="@Model.Id" class="btn btn-warning">Send for correction</a>
         }
-        else if (Model.Status == OrderStatus.Finished)
-        {
-            <a asp-controller="Orders" asp-action="Approve" asp-route-id="@Model.Id" class="btn btn-warning">Create similar order</a>
-        }
-        <button type="button" onclick="location.href='@Url.Action("All")'" class="btn btn-dark float-right"> Cancel </button>
+        <a asp-controller="Orders" asp-action="All" class="btn btn-dark float-right">Cancel</a>
     </div>
 </div>
 

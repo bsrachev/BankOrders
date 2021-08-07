@@ -7,7 +7,12 @@
             <div class="form-row">
                 <div class="form-group col-md-2">
                     <label asp-for="RefNumber" class="control-label">Ref. №:</label>
-                    <input asp-for="RefNumber" class="form-control" />
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">№</div>
+                        </div>
+                        <input asp-for="RefNumber" class="form-control" />
+                    </div>
                     <span asp-validation-for="RefNumber" class="text-danger"></span>
                     <br />
                     <label asp-for="Status" class="control-label"></label>
@@ -70,7 +75,7 @@
                     <button type="submit" class="btn btn-primary align-items-center">Search</button>
                     <br />
                     <br />
-                    <button class="btn btn-dark align-self-center">Clear</button>
+                    <button type="button" onclick="location.href='@Url.Action("All")'" class="btn btn-dark">Clear</button>
                 </div>
             </div>
         </form>

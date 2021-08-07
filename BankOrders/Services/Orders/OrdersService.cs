@@ -1,6 +1,7 @@
 ﻿namespace BankOrders.Services
 {
     using BankOrders.Data;
+    using BankOrders.Data.Models.Enums;
     using BankOrders.Models.Orders;
     using BankOrders.Services.Orders;
 
@@ -55,14 +56,35 @@
                     UserCreate = c.UserCreate,
                     UserApprove = c.UserApprove,
                     UserAccountant = c.UserAccountant,
-                    UserApproveAccounting = c.UserApproveAccounting
+                    UserApproveAccounting = c.UserApproveAccounting,
+                    Status = c.Status
                     //AccountingNumbers = c. TODO
                 })
                 .FirstOrDefault();
 
-        public OrderDetailListingViewModel CurrentOrderDetails(int currentPage, int ordersPerPage)
+        public bool ChangeStatus(int id, OrderStatus status)
         {
-            throw new NotImplementedException();
+            var orderData = this.data.Orders.Find(id);
+
+            orderData.Status = status;
+
+            /*switch (status)
+            {
+                case OrderStatus.ForPosting: orderData.UserApprove = this.User.Identity.Name;
+                    // code block
+                    break;
+                case y:
+                    // code block
+                    break;
+                default:
+                    // code block
+                    break;
+            }*/
+
+
+            data.SaveChanges();
+
+            return true;
         }
     }
 }
