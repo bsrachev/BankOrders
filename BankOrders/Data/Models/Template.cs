@@ -8,12 +8,11 @@
 
     public class Template : BaseDocument
     {
-        public Template(string name)
+        public Template()
         {
             //this.Id = Guid.NewGuid().ToString();
             this.OrderDetails = new HashSet<OrderDetail>();
             this.TimesUsed = 0;
-            this.Name = name;
         }
 
         [Required]

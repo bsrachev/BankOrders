@@ -1,4 +1,4 @@
-﻿namespace BankOrders.Services
+﻿namespace BankOrders.Services.Orders
 {
     using BankOrders.Data;
     using BankOrders.Data.Models.Enums;
@@ -16,23 +16,6 @@
         public OrderService(BankOrdersDbContext data)
             => this.data = data;
 
-        public ICollection<string> ValidateOrder(CreateOrderFormModel model)
-        {
-            var errors = new List<string>();
-
-            if (model.System != "Internal" && model.System != "External")
-            {
-                errors.Add($"Invalid payment system.");
-            }
-
-            DateTime temp;
-            if (!DateTime.TryParse(model.AccountingDate, out temp)) // TODO
-            {
-                errors.Add($"Invalid date.");
-            }
-
-            return errors;
-        }
 
         /*public int RefNumber { get; set; }
         public DateTime? AccountingDate { get; set; }
@@ -43,11 +26,11 @@
         public string UserApproveAccounting { get; set; }
         public OrderStatus Status { get; set; }*/
 
-        public OrderDetailsServiceModel Details(int id)
+        public OrderServiceModel Details(int id)
             => this.data
                 .Orders
                 .Where(c => c.Id == id)
-                .Select(c => new OrderDetailsServiceModel
+                .Select(c => new OrderServiceModel
                 {
                     Id = c.Id,
                     RefNumber = c.RefNumber,

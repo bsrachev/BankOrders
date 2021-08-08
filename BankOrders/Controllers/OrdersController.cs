@@ -6,7 +6,7 @@
     using BankOrders.Data;
     using BankOrders.Data.Models;
     using BankOrders.Data.Models.Enums;
-    using BankOrders.Services;
+    using BankOrders.Services.Orders;
     using BankOrders.Models.Orders;
     using BankOrders.Infrastructure;
     using System;
@@ -17,24 +17,28 @@
     using System.Threading.Tasks;
     using BankOrders.Models.OrderDetails;
     using BankOrders.Services.Users;
+    using BankOrders.Services.OrderDetails;
 
     public class OrdersController : Controller
     {
         private readonly IOrderService orderService;
+        private readonly IOrderDetailService orderDetailService;
         private readonly IUserService userService;
         private readonly BankOrdersDbContext data;
 
         public OrdersController(
             IOrderService orderService,
+            IOrderDetailService orderDetailService,
             IUserService userService,
             BankOrdersDbContext data)
         {
             this.orderService = orderService;
+            this.orderDetailService = orderDetailService;
             this.userService = userService;
             this.data = data;
         }
 
-        //[Authorize]
+        [Authorize]
         public IActionResult All()
         {
             /*
@@ -191,7 +195,7 @@
         }
 
         [Authorize]
-        public IActionResult Details(int orderId, int? editDetailId, string? errText) // public IActionResult Create() / async Task<IActionResult>
+        public IActionResult Details(int orderId, int? editDetailId, string errText = null) // public IActionResult Create() / async Task<IActionResult>
         {
             if (errText != null)
             {
@@ -309,6 +313,13 @@
 
         public IActionResult SendForApproval(int id) // public IActionResult Create() / async Task<IActionResult>
         {
+            if (this.userService.IsUserCreate(id, this.User.Identity.Name))
+            {
+                var errText = "You cannot appove an order that you have created.";
+
+                return RedirectToAction(nameof(Details), new { orderId = id, errText = errText });
+            }
+
             var changeStatus = this.orderService.ChangeStatus(id, this.User.Identity.Name, OrderStatus.ForApproval);
 
             if (!changeStatus)

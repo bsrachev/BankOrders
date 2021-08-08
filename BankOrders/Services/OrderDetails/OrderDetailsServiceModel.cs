@@ -1,9 +1,11 @@
-﻿namespace BankOrders.Services.Orders
+﻿namespace BankOrders.Services.OrderDetails
 {
     using BankOrders.Data.Models.Enums;
 
-    public class OrderDetailsServiceModel : OrderServiceModel
+    public class OrderDetailsServiceModel
     {
+        public int Id { get; set; }
+
         public int Branch { get; set; }
 
         public int CostCenter { get; set; }

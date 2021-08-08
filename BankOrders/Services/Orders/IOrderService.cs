@@ -1,4 +1,4 @@
-﻿namespace BankOrders.Services
+﻿namespace BankOrders.Services.Orders
 {
     using BankOrders.Data.Models.Enums;
     using BankOrders.Models.Orders;
@@ -8,9 +8,7 @@
 
     public interface IOrderService
     {
-        ICollection<string> ValidateOrder(CreateOrderFormModel model);
-
-        OrderDetailsServiceModel Details(int carId);
+        OrderServiceModel Details(int carId);
 
         public bool ChangeStatus(int orderId, string userId, OrderStatus status);
     }

@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <Folder Include="Data\Models\Enums\" />
+    <Folder Include="Views\Templates\" />
   </ItemGroup>
 
 </Project>

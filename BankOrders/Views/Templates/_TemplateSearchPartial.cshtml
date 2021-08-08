@@ -1,0 +1,48 @@
+﻿@model TemplateSearchFormModel
+
+<div class="row">
+    <div class="col-md-12">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-row">
+                <div class="form-group col-md-2">
+                    <label asp-for="RefNumber" class="control-label">Ref. №:</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">№</div>
+                        </div>
+                        <input asp-for="RefNumber" class="form-control" />
+                    </div>
+                    <span asp-validation-for="RefNumber" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-4">
+                    <label asp-for="Name" class="control-label">Name:</label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-2">
+                    <label asp-for="UserCreate" class="control-label">Created By:</label>
+                    <input asp-for="UserCreate" class="form-control" />
+                    <span asp-validation-for="UserCreate" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-2">
+                    <label asp-for="System" class="control-label"></label>
+                    <select asp-for="System" class="form-control">
+                        <option></option>
+                        <option>Internal</option>
+                        <option>External</option>
+                    </select>
+                    <span asp-validation-for="System" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-1">
+                    <br />
+                    <button type="submit" class="btn btn-primary align-items-center">Search</button>
+                </div>
+                <div class="form-group col-md-1">
+                    <br />
+                    <button type="button" onclick="location.href='@Url.Action("All")'" class="btn btn-dark">Clear</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
