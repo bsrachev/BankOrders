@@ -23,18 +23,18 @@
     public class TemplatesController : Controller
     {
         private readonly ITemplateService templateService;
-        private readonly IOrderDetailService templateDetailService;
+        private readonly IOrderDetailService orderDetailService;
         private readonly IUserService userService;
         private readonly BankOrdersDbContext data;
 
         public TemplatesController(
             ITemplateService templateService,
-            IOrderDetailService templateDetailService,
+            IOrderDetailService orderDetailService,
             IUserService userService,
             BankOrdersDbContext data)
         {
             this.templateService = templateService;
-            this.templateDetailService = templateDetailService;
+            this.orderDetailService = orderDetailService;
             this.userService = userService;
             this.data = data;
         }

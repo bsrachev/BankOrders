@@ -18,20 +18,24 @@
     using BankOrders.Models.OrderDetails;
     using BankOrders.Services.Users;
     using BankOrders.Services.OrderDetails;
+    using BankOrders.Services.Templates;
 
     public class OrdersController : Controller
     {
+        private readonly ITemplateService templateService;
         private readonly IOrderService orderService;
         private readonly IOrderDetailService orderDetailService;
         private readonly IUserService userService;
         private readonly BankOrdersDbContext data;
 
         public OrdersController(
+            ITemplateService templateService,
             IOrderService orderService,
             IOrderDetailService orderDetailService,
             IUserService userService,
             BankOrdersDbContext data)
         {
+            this.templateService = templateService;
             this.orderService = orderService;
             this.orderDetailService = orderDetailService;
             this.userService = userService;
@@ -247,6 +251,7 @@
             query.UserCreate = order.UserCreate;
             query.OrderDetails = ordersDetailsList;//ordersDetailsQuery.ToList();
             query.ExchangeRates = this.data.ExchangeRates;
+            query.Templates = this.templateService.AllTemplatesBySystem(query.System);
 
             /*if (editDetailId != null)
             {

@@ -30,5 +30,20 @@
                     TimesUsed = c.TimesUsed
                 })
                 .FirstOrDefault();
+
+        public IEnumerable<TemplateServiceModel> AllTemplatesBySystem(OrderSystem system)
+            => this.data
+                .Templates
+                .Where(c => c.System == system)
+                .Select(c => new TemplateServiceModel
+                {
+                    Id = c.Id,
+                    RefNumber = c.RefNumber,
+                    Name = c.Name,
+                    System = c.System,
+                    UserCreate = c.UserCreate,
+                    TimesUsed = c.TimesUsed
+                })
+                .ToList();
     }
 }

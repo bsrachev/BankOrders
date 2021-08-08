@@ -37,6 +37,22 @@
     </dl>
 </div>
 
+<div class="form-row">
+    <div class="form-group col-md-12">
+        <hr />
+        <h4>Copy details from template:</h4>
+        <select asp-for="TemplateId" class="form-control">
+            <option>123</option>
+            <option>345</option>
+            <option>567</option>
+            <option>789</option>
+        </select>
+        <a asp-controller="Orders" asp-action="SendForPostingApproval" asp-route-id="@Model.Id" class="btn btn-warning">Copy</a>
+        <br />
+        <h4>or</h4>
+    </div>
+</div>
+
 <div>
     <partial name="_OrderDetailFormPartial" model="@(Model.EditDetailId != null ? Model.OrderDetails.First(x => x.OrderDetailId == Model.EditDetailId) : new OrderDetailFormModel { ExchangeRates = Model.ExchangeRates, OrderSystem = Model.System } )" />
 </div>

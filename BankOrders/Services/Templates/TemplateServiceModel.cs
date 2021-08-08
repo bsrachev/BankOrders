@@ -2,8 +2,6 @@
 {
     using BankOrders.Data.Models.Enums;
 
-    using System;
-
     public class TemplateServiceModel
     {
         public int Id { get; set; }
