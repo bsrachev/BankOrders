@@ -10,5 +10,12 @@
             public const int PasswordMaxLength = 100;
         }
 
+        public class Errors
+        {
+            public const string NoOrderDetailsError = "You cannot sent for approval an order with no details.";
+            public const string UserCreateAndUserApproveCannotBeTheSameError = "You cannot appove an order that you have created.";
+            public const string UserApproveAndUserAccountantCannotBeTheSameError = "You cannot do the posting for an order that you have approved.";
+            public const string UserAccountantAndUserApproveAccountingCannotBeTheSameError = "You cannot approve the posting for an order that you have posted.";
+        }
     }
 }

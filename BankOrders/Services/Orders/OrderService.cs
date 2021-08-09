@@ -2,11 +2,7 @@
 {
     using BankOrders.Data;
     using BankOrders.Data.Models.Enums;
-    using BankOrders.Models.Orders;
-    using BankOrders.Services.Orders;
 
-    using System;
-    using System.Collections.Generic;
     using System.Linq;
 
     public class OrderService : IOrderService
@@ -26,7 +22,7 @@
         public string UserApproveAccounting { get; set; }
         public OrderStatus Status { get; set; }*/
 
-        public OrderServiceModel Details(int id)
+        public OrderServiceModel GetOrderInfo(int id)
             => this.data
                 .Orders
                 .Where(c => c.Id == id)

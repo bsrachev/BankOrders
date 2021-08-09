@@ -1,9 +1,9 @@
 ﻿namespace BankOrders.Services.OrderDetails
 {
-    using BankOrders.Services.Orders;
+    using System.Collections.Generic;
 
     public interface IOrderDetailService
     {
-        OrderDetailsServiceModel Details(int carId);
+        ICollection<OrderDetailsServiceModel> GetDetails(int orderId);
     }
 }

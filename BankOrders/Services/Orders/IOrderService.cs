@@ -8,7 +8,7 @@
 
     public interface IOrderService
     {
-        OrderServiceModel Details(int carId);
+        OrderServiceModel GetOrderInfo(int carId);
 
         public bool ChangeStatus(int orderId, string userId, OrderStatus status);
     }

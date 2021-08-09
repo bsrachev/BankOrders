@@ -20,6 +20,8 @@
     using BankOrders.Services.OrderDetails;
     using BankOrders.Services.Templates;
 
+    using static Data.DataConstants.Errors;
+
     public class OrdersController : Controller
     {
         private readonly ITemplateService templateService;
@@ -209,7 +211,7 @@
             var query = new OrderDetailListingViewModel();
             //[FromQuery] OrderDetailListingViewModel query
 
-            var order = this.orderService.Details(orderId);
+            var order = this.orderService.GetOrderInfo(orderId);
 
             /*var order = this.data
                 .Orders
@@ -276,7 +278,7 @@
 
             if (editDetailId == null)
             {
-                var order = this.orderService.Details(orderId);
+                var order = this.orderService.GetOrderInfo(orderId);
 
                 var orderDetail = new OrderDetail
                 {
@@ -318,9 +320,11 @@
 
         public IActionResult SendForApproval(int id) // public IActionResult Create() / async Task<IActionResult>
         {
-            if (this.userService.IsUserCreate(id, this.User.Identity.Name))
+            var orderDetails = this.orderDetailService.GetDetails(id);
+
+            if (orderDetails.Count == 0)
             {
-                var errText = "You cannot appove an order that you have created.";
+                var errText = NoOrderDetailsError;
 
                 return RedirectToAction(nameof(Details), new { orderId = id, errText = errText });
             }
@@ -341,7 +345,7 @@
 
             if (this.userService.IsUserCreate(id, this.User.Identity.Name))
             {
-                var errText = "You cannot appove an order that you have created.";
+                var errText = UserCreateAndUserApproveCannotBeTheSameError;
 
                 return RedirectToAction(nameof(Details), new { orderId = id, errText = errText });
             }
@@ -370,6 +374,13 @@
 
         public IActionResult SendForPostingApproval(int id) // public IActionResult Create() / async Task<IActionResult>
         {
+            if (this.userService.IsUserApprove(id, this.User.Identity.Name))
+            {
+                var errText = UserApproveAndUserAccountantCannotBeTheSameError;
+
+                return RedirectToAction(nameof(Details), new { orderId = id, errText = errText });
+            }
+
             var changeStatus = this.orderService.ChangeStatus(id, this.User.Identity.Name, OrderStatus.ForPostingApproval);
 
             if (!changeStatus)
@@ -394,6 +405,13 @@
 
         public IActionResult ApprovePosting(int id) // public IActionResult Create() / async Task<IActionResult>
         {
+            if (this.userService.IsUserAccountant(id, this.User.Identity.Name))
+            {
+                var errText = UserAccountantAndUserApproveAccountingCannotBeTheSameError;
+
+                return RedirectToAction(nameof(Details), new { orderId = id, errText = errText });
+            }
+
             var changeStatus = this.orderService.ChangeStatus(id, this.User.Identity.Name, OrderStatus.Finished);
 
             if (!changeStatus)

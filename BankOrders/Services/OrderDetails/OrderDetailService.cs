@@ -2,7 +2,7 @@
 {
     using BankOrders.Data;
     using BankOrders.Services.Orders;
-
+    using System.Collections.Generic;
     using System.Linq;
 
     public class OrderDetailService : IOrderDetailService
@@ -12,7 +12,7 @@
         public OrderDetailService(BankOrdersDbContext data)
             => this.data = data;
 
-        public OrderDetailsServiceModel Details(int orderId)
+        public ICollection<OrderDetailsServiceModel> GetDetails(int orderId)
             => this.data
                 .OrderDetails
                 .Where(c => c.OrderOrTemplateRefNum == orderId)
@@ -29,6 +29,6 @@
                     Sum = c.Sum,
                     SumBGN = c.SumBGN
                 })
-                .FirstOrDefault();
+                .ToList();
     }
 }
