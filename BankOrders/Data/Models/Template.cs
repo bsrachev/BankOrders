@@ -11,7 +11,7 @@
         public Template()
         {
             //this.Id = Guid.NewGuid().ToString();
-            this.OrderDetails = new HashSet<OrderDetail>();
+            this.Details = new HashSet<Detail>();
             this.TimesUsed = 0;
         }
 

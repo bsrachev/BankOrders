@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BankOrders.Data.Migrations
 {
     [DbContext(typeof(BankOrdersDbContext))]
-    [Migration("20210802115815_OrderDetailsTableRemoveForeignKeys")]
-    partial class OrderDetailsTableRemoveForeignKeys
+    [Migration("20210802115815_DetailsTableRemoveForeignKeys")]
+    partial class DetailsTableRemoveForeignKeys
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -68,7 +68,7 @@ namespace BankOrders.Data.Migrations
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("BankOrders.Data.Models.OrderDetail", b =>
+            modelBuilder.Entity("BankOrders.Data.Models.Detail", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -127,7 +127,7 @@ namespace BankOrders.Data.Migrations
 
                     b.HasIndex("TemplateId");
 
-                    b.ToTable("OrderDetails");
+                    b.ToTable("Details");
                 });
 
             modelBuilder.Entity("BankOrders.Data.Models.Template", b =>
@@ -362,14 +362,14 @@ namespace BankOrders.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("BankOrders.Data.Models.OrderDetail", b =>
+            modelBuilder.Entity("BankOrders.Data.Models.Detail", b =>
                 {
                     b.HasOne("BankOrders.Data.Models.Order", null)
-                        .WithMany("OrderDetails")
+                        .WithMany("Details")
                         .HasForeignKey("OrderId");
 
                     b.HasOne("BankOrders.Data.Models.Template", null)
-                        .WithMany("OrderDetails")
+                        .WithMany("Details")
                         .HasForeignKey("TemplateId");
                 });
 
@@ -426,12 +426,12 @@ namespace BankOrders.Data.Migrations
 
             modelBuilder.Entity("BankOrders.Data.Models.Order", b =>
                 {
-                    b.Navigation("OrderDetails");
+                    b.Navigation("Details");
                 });
 
             modelBuilder.Entity("BankOrders.Data.Models.Template", b =>
                 {
-                    b.Navigation("OrderDetails");
+                    b.Navigation("Details");
                 });
 #pragma warning restore 612, 618
         }

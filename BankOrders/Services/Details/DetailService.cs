@@ -1,22 +1,22 @@
-﻿namespace BankOrders.Services.OrderDetails
+﻿namespace BankOrders.Services.Details
 {
     using BankOrders.Data;
     using BankOrders.Services.Orders;
     using System.Collections.Generic;
     using System.Linq;
 
-    public class OrderDetailService : IOrderDetailService
+    public class DetailService : IDetailService
     {
         private readonly BankOrdersDbContext data;
 
-        public OrderDetailService(BankOrdersDbContext data)
+        public DetailService(BankOrdersDbContext data)
             => this.data = data;
 
-        public ICollection<OrderDetailsServiceModel> GetDetails(int orderId)
+        public ICollection<DetailsServiceModel> GetDetails(int refNum)
             => this.data
-                .OrderDetails
-                .Where(c => c.OrderOrTemplateRefNum == orderId)
-                .Select(c => new OrderDetailsServiceModel
+                .Details
+                .Where(c => c.OrderOrTemplateRefNum == refNum)
+                .Select(c => new DetailsServiceModel
                 {
                     Account = c.Account,
                     AccountingNumber = c.AccountingNumber,

@@ -12,7 +12,7 @@
         public Order()
         {
             //this.Id = Guid.NewGuid().ToString();
-            this.OrderDetails = new HashSet<OrderDetail>();
+            this.Details = new HashSet<Detail>();
             this.Status = 0;
         }
 

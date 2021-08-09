@@ -15,26 +15,26 @@
     using System.Linq;
     using System.Security.Claims;
     using System.Threading.Tasks;
-    using BankOrders.Models.OrderDetails;
+    using BankOrders.Models.Details;
     using BankOrders.Models.Templates;
     using BankOrders.Services.Users;
-    using BankOrders.Services.OrderDetails;
+    using BankOrders.Services.Details;
 
     public class TemplatesController : Controller
     {
         private readonly ITemplateService templateService;
-        private readonly IOrderDetailService orderDetailService;
+        private readonly IDetailService detailService;
         private readonly IUserService userService;
         private readonly BankOrdersDbContext data;
 
         public TemplatesController(
             ITemplateService templateService,
-            IOrderDetailService orderDetailService,
+            IDetailService detailService,
             IUserService userService,
             BankOrdersDbContext data)
         {
             this.templateService = templateService;
-            this.orderDetailService = orderDetailService;
+            this.detailService = detailService;
             this.userService = userService;
             this.data = data;
         }
@@ -64,7 +64,7 @@
             var templates = this.data
                 .Templates
                 .OrderByDescending(c => c.RefNumber)
-                .Select(c => new TemplateListingViewModel
+                .Select(c => new TemplateServiceModel
                 {
                     Id = c.Id,
                     RefNumber = c.RefNumber,
@@ -105,7 +105,7 @@
 
             var templates = templatesQuery
                 .OrderByDescending(c => c.RefNumber)
-                .Select(c => new TemplateListingViewModel
+                .Select(c => new TemplateServiceModel
                 {
                     Id = c.Id,
                     RefNumber = c.RefNumber,
@@ -170,15 +170,15 @@
                 .Where(c => c.Id == id)
                 .FirstOrDefault();*/
 
-            var templatesDetailsQuery = this.data.OrderDetails.AsQueryable();
+            var templatesDetailsQuery = this.data.Details.AsQueryable();
 
             templatesDetailsQuery = templatesDetailsQuery.Where(x => x.OrderOrTemplateRefNum == template.RefNumber);
 
-            var templatesDetailsList = new List<OrderDetailFormModel>();
+            var templatesDetailsList = new List<DetailFormModel>();
 
             foreach (var od in templatesDetailsQuery)
             {
-                templatesDetailsList.Add(new OrderDetailFormModel
+                templatesDetailsList.Add(new DetailFormModel
                 {
                     Account = od.Account,
                     AccountingNumber = od.AccountingNumber,
@@ -186,7 +186,7 @@
                     AccountType = od.AccountType,
                     CostCenter = od.CostCenter,
                     Currency = od.Currency,
-                    OrderDetailId = od.Id,
+                    DetailId = od.Id,
                     Project = od.Project,
                     Reason = od.Reason,
                     Sum = od.Sum,
@@ -203,7 +203,7 @@
             query.TimesUsed = template.TimesUsed;
             query.System = template.System;
             query.UserCreate = template.UserCreate;
-            query.OrderDetails = templatesDetailsList;//templatesDetailsQuery.ToList();
+            query.Details = templatesDetailsList;//templatesDetailsQuery.ToList();
             query.ExchangeRates = this.data.ExchangeRates;
 
             /*if (editDetailId != null)
@@ -215,7 +215,7 @@
         }
 
         [HttpPost]
-        public IActionResult Details(OrderDetailFormModel templateDetailModel, int templateId, int? editDetailId) // public IActionResult Create() / async Task<IActionResult>
+        public IActionResult Details(DetailFormModel templateDetailModel, int templateId, int? editDetailId) // public IActionResult Create() / async Task<IActionResult>
         {
             /*if (this.templateService.Details(templateId).UserCreate == this.User.Identity.Name)
             {
@@ -231,7 +231,7 @@
             {
                 var template = this.templateService.Details(templateId);
 
-                var templateDetail = new OrderDetail
+                var templateDetail = new Detail
                 {
                     Account = templateDetailModel.Account,
                     AccountingNumber = templateDetailModel.AccountingNumber,
@@ -246,11 +246,11 @@
                     SumBGN = templateDetailModel.SumBGN
                 };
 
-                this.data.OrderDetails.Add(templateDetail);
+                this.data.Details.Add(templateDetail);
             }
             else
             {
-                var templateDetail = this.data.OrderDetails.Find(editDetailId);
+                var templateDetail = this.data.Details.Find(editDetailId);
 
                 templateDetail.Account = templateDetailModel.Account;
                 templateDetail.AccountingNumber = templateDetailModel.AccountingNumber;

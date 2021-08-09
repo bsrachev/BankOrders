@@ -4,7 +4,7 @@ namespace BankOrders.Models.Templates
 {
     public class CreateTemplateFormModel
     {
-        [Required(ErrorMessage = "Name cannot be empty.")]
+        [Required]
         public string Name { get; init; }
 
         [Required]

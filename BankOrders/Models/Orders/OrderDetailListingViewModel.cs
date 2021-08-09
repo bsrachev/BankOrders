@@ -2,7 +2,7 @@
 {
     using BankOrders.Data.Models;
     using BankOrders.Data.Models.Enums;
-    using BankOrders.Models.OrderDetails;
+    using BankOrders.Models.Details;
     using BankOrders.Services.Templates;
     using System;
     using System.Collections.Generic;
@@ -23,7 +23,7 @@
 
         public OrderStatus Status { get; set; }
 
-        public ICollection<OrderDetailFormModel> OrderDetails { get; set; }
+        public ICollection<DetailFormModel> Details { get; set; }
 
         public IEnumerable<ExchangeRate> ExchangeRates { get; set; }
 

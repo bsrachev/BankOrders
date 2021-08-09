@@ -1,4 +1,4 @@
-﻿namespace BankOrders.Models.OrderDetails
+﻿namespace BankOrders.Models.Details
 {
     using BankOrders.Data.Models;
     using BankOrders.Data.Models.Enums;
@@ -6,9 +6,9 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
-    public class OrderDetailFormModel
+    public class DetailFormModel
     {
-        public int OrderDetailId { get; init; }
+        public int DetailId { get; init; }
         
         [Required]
         public int Branch { get; init; }

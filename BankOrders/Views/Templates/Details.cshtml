@@ -32,7 +32,7 @@
 </div>
 
 <div>
-    <partial name="_OrderDetailFormPartial" model="@(Model.EditDetailId != null ? Model.OrderDetails.First(x => x.OrderDetailId == Model.EditDetailId) : new OrderDetailFormModel { ExchangeRates = Model.ExchangeRates, OrderSystem = Model.System } )" />
+    <partial name="_DetailFormPartial" model="@(Model.EditDetailId != null ? Model.Details.First(x => x.DetailId == Model.EditDetailId) : new DetailFormModel { ExchangeRates = Model.ExchangeRates, OrderSystem = Model.System } )" />
 </div>
 
 <br />
@@ -60,9 +60,9 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var detail in Model.OrderDetails)
+        @foreach (var detail in Model.Details)
         {
-            if (Model.EditDetailId == detail.OrderDetailId)
+            if (Model.EditDetailId == detail.DetailId)
             {
                 <tr>
                     <th class="thead-dark" scope="row">
@@ -93,7 +93,7 @@
                 <tr>
                     <th scope="row">
                         <div class="button-holder">
-                            <a href="/Orders/Details?orderId=@Model.Id&editDetailId=@detail.OrderDetailId" class="btn btn-info">Edit</a>
+                            <a href="/Orders/Details?orderId=@Model.Id&editDetailId=@detail.DetailId" class="btn btn-info">Edit</a>
                         </div>
                     </th>
                     <td>@detail.Branch</td>
@@ -118,7 +118,7 @@
     </tbody>
 </table>
 
-@if (Model.OrderDetails.Count == 0)
+@if (Model.Details.Count == 0)
 {
     <strong>Template №@Model.RefNumber has no details.</strong>
 }

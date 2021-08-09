@@ -6,7 +6,7 @@
     using System.ComponentModel.DataAnnotations.Schema;
     using BankOrders.Data.Models.Enums;
 
-    public class OrderDetail
+    public class Detail
     {
         [Key]
         public int Id { get; set; }

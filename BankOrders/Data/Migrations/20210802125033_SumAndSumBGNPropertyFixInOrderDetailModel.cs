@@ -2,13 +2,13 @@
 
 namespace BankOrders.Data.Migrations
 {
-    public partial class SumAndSumBGNPropertyFixInOrderDetailModel : Migration
+    public partial class SumAndSumBGNPropertyFixInDetailModel : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<decimal>(
                 name: "SumBGN",
-                table: "OrderDetails",
+                table: "Details",
                 type: "decimal(18,2)",
                 nullable: false,
                 oldClrType: typeof(decimal),
@@ -16,7 +16,7 @@ namespace BankOrders.Data.Migrations
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "Sum",
-                table: "OrderDetails",
+                table: "Details",
                 type: "decimal(18,2)",
                 nullable: false,
                 oldClrType: typeof(decimal),
@@ -27,7 +27,7 @@ namespace BankOrders.Data.Migrations
         {
             migrationBuilder.AlterColumn<decimal>(
                 name: "SumBGN",
-                table: "OrderDetails",
+                table: "Details",
                 type: "decimal(4,2)",
                 nullable: false,
                 oldClrType: typeof(decimal),
@@ -35,7 +35,7 @@ namespace BankOrders.Data.Migrations
 
             migrationBuilder.AlterColumn<decimal>(
                 name: "Sum",
-                table: "OrderDetails",
+                table: "Details",
                 type: "decimal(4,2)",
                 nullable: false,
                 oldClrType: typeof(decimal),

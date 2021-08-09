@@ -21,6 +21,6 @@
         [Required]
         public string UserCreate { get; set; }
 
-        public ICollection<OrderDetail> OrderDetails { get; set; }
+        public ICollection<Detail> Details { get; set; }
     }
 }

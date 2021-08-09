@@ -4,7 +4,7 @@ namespace BankOrders
     using BankOrders.Data.Models;
     using BankOrders.Infrastructure;
     using BankOrders.Services.Orders;
-    using BankOrders.Services.OrderDetails;
+    using BankOrders.Services.Details;
     using BankOrders.Services.Templates;
     using BankOrders.Services.Users;
     using Microsoft.AspNetCore.Builder;
@@ -52,7 +52,7 @@ namespace BankOrders
 
             services.AddTransient<IOrderService, OrderService>();
             services.AddTransient<IUserService, UserService>();
-            services.AddTransient<IOrderDetailService, OrderDetailService>();
+            services.AddTransient<IDetailService, DetailService>();
             services.AddTransient<ITemplateService, TemplateService>();
         }
 

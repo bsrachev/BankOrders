@@ -68,7 +68,7 @@ namespace BankOrders.Data.Migrations
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("BankOrders.Data.Models.OrderDetail", b =>
+            modelBuilder.Entity("BankOrders.Data.Models.Detail", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -124,7 +124,7 @@ namespace BankOrders.Data.Migrations
 
                     b.HasIndex("TemplateId");
 
-                    b.ToTable("OrderDetails");
+                    b.ToTable("Details");
                 });
 
             modelBuilder.Entity("BankOrders.Data.Models.Template", b =>
@@ -359,16 +359,16 @@ namespace BankOrders.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("BankOrders.Data.Models.OrderDetail", b =>
+            modelBuilder.Entity("BankOrders.Data.Models.Detail", b =>
                 {
                     b.HasOne("BankOrders.Data.Models.Order", "Order")
-                        .WithMany("OrderDetails")
+                        .WithMany("Details")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("BankOrders.Data.Models.Template", "Template")
-                        .WithMany("OrderDetails")
+                        .WithMany("Details")
                         .HasForeignKey("TemplateId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -431,12 +431,12 @@ namespace BankOrders.Data.Migrations
 
             modelBuilder.Entity("BankOrders.Data.Models.Order", b =>
                 {
-                    b.Navigation("OrderDetails");
+                    b.Navigation("Details");
                 });
 
             modelBuilder.Entity("BankOrders.Data.Models.Template", b =>
                 {
-                    b.Navigation("OrderDetails");
+                    b.Navigation("Details");
                 });
 #pragma warning restore 612, 618
         }

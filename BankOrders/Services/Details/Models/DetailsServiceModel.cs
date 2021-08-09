@@ -1,8 +1,8 @@
-﻿namespace BankOrders.Services.OrderDetails
+﻿namespace BankOrders.Services.Details
 {
     using BankOrders.Data.Models.Enums;
 
-    public class OrderDetailsServiceModel
+    public class DetailsServiceModel
     {
         public int Id { get; set; }
 

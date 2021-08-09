@@ -26,7 +26,7 @@ namespace BankOrders.Data
 
         public DbSet<Template> Templates { get; init; }
 
-        public DbSet<OrderDetail> OrderDetails { get; init; }
+        public DbSet<Detail> Details { get; init; }
 
         public DbSet<ExchangeRate> ExchangeRates { get; init; }
 
@@ -47,16 +47,16 @@ namespace BankOrders.Data
                .HasDefaultValueSql("NEXT VALUE FOR TemplateOrderRefNumSeq");
 
             /*builder
-                .Entity<OrderDetail>()
+                .Entity<Detail>()
                 .HasOne(c => c.Order)
-                .WithMany(c => c.OrderDetails)
+                .WithMany(c => c.Details)
                 .HasForeignKey(c => c.OrderId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder
-                .Entity<OrderDetail>()
+                .Entity<Detail>()
                 .HasOne(c => c.Template)
-                .WithMany(c => c.OrderDetails)
+                .WithMany(c => c.Details)
                 .HasForeignKey(c => c.TemplateId)
                 .OnDelete(DeleteBehavior.Restrict);*/
 

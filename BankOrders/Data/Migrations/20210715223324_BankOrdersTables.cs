@@ -45,7 +45,7 @@ namespace BankOrders.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "OrderDetails",
+                name: "Details",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -65,15 +65,15 @@ namespace BankOrders.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OrderDetails", x => x.Id);
+                    table.PrimaryKey("PK_Details", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_OrderDetails_Orders_OrderId",
+                        name: "FK_Details_Orders_OrderId",
                         column: x => x.OrderId,
                         principalTable: "Orders",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_OrderDetails_Templates_TemplateId",
+                        name: "FK_Details_Templates_TemplateId",
                         column: x => x.TemplateId,
                         principalTable: "Templates",
                         principalColumn: "Id",
@@ -81,20 +81,20 @@ namespace BankOrders.Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrderDetails_OrderId",
-                table: "OrderDetails",
+                name: "IX_Details_OrderId",
+                table: "Details",
                 column: "OrderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrderDetails_TemplateId",
-                table: "OrderDetails",
+                name: "IX_Details_TemplateId",
+                table: "Details",
                 column: "TemplateId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "OrderDetails");
+                name: "Details");
 
             migrationBuilder.DropTable(
                 name: "Orders");

@@ -2,13 +2,13 @@
 
 namespace BankOrders.Data.Migrations
 {
-    public partial class OrderDetailsTableRemoveForeignKeys : Migration
+    public partial class DetailsTableRemoveForeignKeys : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<int>(
                 name: "TemplateId",
-                table: "OrderDetails",
+                table: "Details",
                 type: "int",
                 nullable: true,
                 oldClrType: typeof(int),
@@ -16,7 +16,7 @@ namespace BankOrders.Data.Migrations
 
             migrationBuilder.AlterColumn<int>(
                 name: "OrderId",
-                table: "OrderDetails",
+                table: "Details",
                 type: "int",
                 nullable: true,
                 oldClrType: typeof(int),
@@ -24,7 +24,7 @@ namespace BankOrders.Data.Migrations
 
             migrationBuilder.AddColumn<int>(
                 name: "OrderOrTemplateRefNum",
-                table: "OrderDetails",
+                table: "Details",
                 type: "int",
                 nullable: false,
                 defaultValue: 0);
@@ -34,11 +34,11 @@ namespace BankOrders.Data.Migrations
         {
             migrationBuilder.DropColumn(
                 name: "OrderOrTemplateRefNum",
-                table: "OrderDetails");
+                table: "Details");
 
             migrationBuilder.AlterColumn<int>(
                 name: "TemplateId",
-                table: "OrderDetails",
+                table: "Details",
                 type: "int",
                 nullable: false,
                 defaultValue: 0,
@@ -48,7 +48,7 @@ namespace BankOrders.Data.Migrations
 
             migrationBuilder.AlterColumn<int>(
                 name: "OrderId",
-                table: "OrderDetails",
+                table: "Details",
                 type: "int",
                 nullable: false,
                 defaultValue: 0,

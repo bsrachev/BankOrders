@@ -4,10 +4,12 @@ namespace BankOrders.Models.Orders
 {
     public class CreateOrderFormModel
     {
-        [Required(ErrorMessage = "Cannot be null")]
+        [Required]
+        [Display(Name = "Accounting Date")]
         //[IsDateValidationAttribute]
-        public string AccountingDate { get; init; } // init
+        public string AccountingDate { get; init; }
 
+        [Required]
         public string System { get; init; }
     }
 }

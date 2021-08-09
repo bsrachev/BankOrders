@@ -8,21 +8,19 @@
 
 <hr />
 <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-3">
         <form method="post" asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group row">
-                <div class="col-md-4">
+                <div class="col-md-7">
                     <label asp-for="AccountingDate" class="control-label"></label>
                     <input asp-for="AccountingDate" class="form-control" placeholder="mm.dd.yyyy" />
                     <span asp-validation-for="AccountingDate" class="text-danger"></span>
                 </div>
-                <fieldset disabled>
-                    <div class="col-md-10 disabled">
-                        <label for="disabledStaticEmail" class="control-label">Orderer</label>
-                        <input type="email" class="form-control" value="@this.User.Identity.Name">
-                    </div>
-                </fieldset>
+                <div class="col-md-5 float-right">
+                    <label class="control-label">Orderer</label>
+                    <input class="form-control" value="@this.User.Identity.Name" disabled>
+                </div>
             </div>
             <div class="form-group">
                 <label asp-for="System" class="control-label"></label>
@@ -33,7 +31,7 @@
                 <span asp-validation-for="System" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <button type="submit" value="Add Order" class="btn btn-primary"> Add Order </button>
+                <button type="submit" value="Add Order" class="btn btn-primary"> Create </button>
                 <button type="button" onclick="location.href='@Url.Action("All")'" class="btn btn-dark float-right"> Cancel </button>
             </div>
         </form>

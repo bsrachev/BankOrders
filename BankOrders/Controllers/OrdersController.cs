@@ -15,9 +15,9 @@
     using System.Linq;
     using System.Security.Claims;
     using System.Threading.Tasks;
-    using BankOrders.Models.OrderDetails;
+    using BankOrders.Models.Details;
     using BankOrders.Services.Users;
-    using BankOrders.Services.OrderDetails;
+    using BankOrders.Services.Details;
     using BankOrders.Services.Templates;
 
     using static Data.DataConstants.Errors;
@@ -26,20 +26,20 @@
     {
         private readonly ITemplateService templateService;
         private readonly IOrderService orderService;
-        private readonly IOrderDetailService orderDetailService;
+        private readonly IDetailService detailService;
         private readonly IUserService userService;
         private readonly BankOrdersDbContext data;
 
         public OrdersController(
             ITemplateService templateService,
             IOrderService orderService,
-            IOrderDetailService orderDetailService,
+            IDetailService detailService,
             IUserService userService,
             BankOrdersDbContext data)
         {
             this.templateService = templateService;
             this.orderService = orderService;
-            this.orderDetailService = orderDetailService;
+            this.detailService = detailService;
             this.userService = userService;
             this.data = data;
         }
@@ -69,7 +69,7 @@
             var orders = this.data
                 .Orders
                 .OrderByDescending(c => c.RefNumber)
-                .Select(c => new OrderListingViewModel
+                .Select(c => new OrderServiceModel
                 {
                     Id = c.Id,
                     RefNumber = c.RefNumber,
@@ -87,6 +87,7 @@
         }
 
         [HttpPost]
+        [Authorize]
         public IActionResult All(OrderSearchFormModel searchModel)
         {
             var ordersQuery = this.data.Orders.AsQueryable();
@@ -145,7 +146,7 @@
 
             var orders = ordersQuery
                 .OrderByDescending(c => c.RefNumber)
-                .Select(c => new OrderListingViewModel
+                .Select(c => new OrderServiceModel
                 {
                     Id = c.Id,
                     RefNumber = c.RefNumber,
@@ -209,7 +210,7 @@
             }
 
             var query = new OrderDetailListingViewModel();
-            //[FromQuery] OrderDetailListingViewModel query
+            //[FromQuery] DetailListingViewModel query
 
             var order = this.orderService.GetOrderInfo(orderId);
 
@@ -218,15 +219,15 @@
                 .Where(c => c.Id == id)
                 .FirstOrDefault();*/
 
-            var ordersDetailsQuery = this.data.OrderDetails.AsQueryable();
+            var ordersDetailsQuery = this.data.Details.AsQueryable();
 
             ordersDetailsQuery = ordersDetailsQuery.Where(x => x.OrderOrTemplateRefNum == order.RefNumber);
 
-            var ordersDetailsList = new List<OrderDetailFormModel>();
+            var ordersDetailsList = new List<DetailFormModel>();
 
             foreach (var od in ordersDetailsQuery)
             {
-                ordersDetailsList.Add(new OrderDetailFormModel
+                ordersDetailsList.Add(new DetailFormModel
                 {
                     Account = od.Account,
                     AccountingNumber = od.AccountingNumber,
@@ -234,7 +235,7 @@
                     AccountType = od.AccountType,
                     CostCenter = od.CostCenter,
                     Currency = od.Currency,
-                    OrderDetailId = od.Id,
+                    DetailId = od.Id,
                     Project = od.Project,
                     Reason = od.Reason,
                     Sum = od.Sum,
@@ -251,7 +252,7 @@
             query.Status = order.Status;
             query.System = order.System;
             query.UserCreate = order.UserCreate;
-            query.OrderDetails = ordersDetailsList;//ordersDetailsQuery.ToList();
+            query.Details = ordersDetailsList;//ordersDetailsQuery.ToList();
             query.ExchangeRates = this.data.ExchangeRates;
             query.Templates = this.templateService.AllTemplatesBySystem(query.System);
 
@@ -264,7 +265,7 @@
         }
 
         [HttpPost]
-        public IActionResult Details(OrderDetailFormModel orderDetailModel, int orderId, int? editDetailId) // public IActionResult Create() / async Task<IActionResult>
+        public IActionResult Details(DetailFormModel detailModel, int orderId, int? editDetailId) // public IActionResult Create() / async Task<IActionResult>
         {
             /*if (this.orderService.Details(orderId).UserCreate == this.User.Identity.Name)
             {
@@ -273,44 +274,44 @@
 
             if (!ModelState.IsValid)
             {
-                return this.View(orderDetailModel);
+                return this.View(detailModel);
             }
 
             if (editDetailId == null)
             {
                 var order = this.orderService.GetOrderInfo(orderId);
 
-                var orderDetail = new OrderDetail
+                var detail = new Detail
                 {
-                    Account = orderDetailModel.Account,
-                    AccountingNumber = orderDetailModel.AccountingNumber,
-                    AccountType = orderDetailModel.AccountType,
-                    Branch = orderDetailModel.Branch,
-                    CostCenter = orderDetailModel.CostCenter,
-                    Currency = orderDetailModel.Currency,
+                    Account = detailModel.Account,
+                    AccountingNumber = detailModel.AccountingNumber,
+                    AccountType = detailModel.AccountType,
+                    Branch = detailModel.Branch,
+                    CostCenter = detailModel.CostCenter,
+                    Currency = detailModel.Currency,
                     OrderOrTemplateRefNum = order.RefNumber,
-                    Project = orderDetailModel.Project,
-                    Reason = orderDetailModel.Reason,
-                    Sum = orderDetailModel.Sum,
-                    SumBGN = orderDetailModel.SumBGN
+                    Project = detailModel.Project,
+                    Reason = detailModel.Reason,
+                    Sum = detailModel.Sum,
+                    SumBGN = detailModel.SumBGN
                 };
 
-                this.data.OrderDetails.Add(orderDetail);
+                this.data.Details.Add(detail);
             }
             else
             {
-                var orderDetail = this.data.OrderDetails.Find(editDetailId);
+                var detail = this.data.Details.Find(editDetailId);
 
-                orderDetail.Account = orderDetailModel.Account;
-                orderDetail.AccountingNumber = orderDetailModel.AccountingNumber;
-                orderDetail.AccountType = orderDetailModel.AccountType;
-                orderDetail.Branch = orderDetailModel.Branch;
-                orderDetail.CostCenter = orderDetailModel.CostCenter;
-                orderDetail.Currency = orderDetailModel.Currency;
-                orderDetail.Project = orderDetailModel.Project;
-                orderDetail.Reason = orderDetailModel.Reason;
-                orderDetail.Sum = orderDetailModel.Sum;
-                orderDetail.SumBGN = orderDetailModel.SumBGN;
+                detail.Account = detailModel.Account;
+                detail.AccountingNumber = detailModel.AccountingNumber;
+                detail.AccountType = detailModel.AccountType;
+                detail.Branch = detailModel.Branch;
+                detail.CostCenter = detailModel.CostCenter;
+                detail.Currency = detailModel.Currency;
+                detail.Project = detailModel.Project;
+                detail.Reason = detailModel.Reason;
+                detail.Sum = detailModel.Sum;
+                detail.SumBGN = detailModel.SumBGN;
             }
 
             this.data.SaveChanges();
@@ -320,11 +321,13 @@
 
         public IActionResult SendForApproval(int id) // public IActionResult Create() / async Task<IActionResult>
         {
-            var orderDetails = this.orderDetailService.GetDetails(id);
+            var order = this.orderService.GetOrderInfo(id);
 
-            if (orderDetails.Count == 0)
+            var details = this.detailService.GetDetails(order.RefNumber);
+
+            if (details.Count == 0)
             {
-                var errText = NoOrderDetailsError;
+                var errText = NoDetailsError;
 
                 return RedirectToAction(nameof(Details), new { orderId = id, errText = errText });
             }
