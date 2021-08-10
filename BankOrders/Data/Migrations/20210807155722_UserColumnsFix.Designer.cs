@@ -27,7 +27,7 @@ namespace BankOrders.Data.Migrations
             modelBuilder.HasSequence<int>("TemplateOrderRefNumSeq")
                 .StartsAt(90000001L);
 
-            modelBuilder.Entity("BankOrders.Data.Models.ExchangeRate", b =>
+            modelBuilder.Entity("BankOrders.Data.Models.Currency", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -37,12 +37,12 @@ namespace BankOrders.Data.Migrations
                     b.Property<int>("Currency")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("Rate")
+                    b.Property<decimal>("ExchangeRate")
                         .HasColumnType("decimal(18,5)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("ExchangeRates");
+                    b.ToTable("Currencies");
                 });
 
             modelBuilder.Entity("BankOrders.Data.Models.Order", b =>

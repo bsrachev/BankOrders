@@ -21,6 +21,12 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
+                        @if (true)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="Admin" asp-controller="Currencies" asp-action="Index">Administration</a>
+                            </li>
+                        }
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Orders" asp-action="All">Orders</a>
                         </li>
@@ -34,6 +40,18 @@
         </nav>
     </header>
     <div class="container">
+        @if (TempData.ContainsKey(WebConstants.GlobalMessageKey))
+        {
+            <div class="alert alert-success text-center" role="alert">
+                @TempData[WebConstants.GlobalMessageKey]
+            </div>
+        }
+        @if (TempData.ContainsKey(WebConstants.GlobalErrorKey))
+        {
+            <div class="alert alert-danger text-center" role="alert">
+                @TempData[WebConstants.GlobalErrorKey]
+            </div>
+        }
         <main role="main" class="pb-3">
             @RenderBody()
         </main>

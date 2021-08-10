@@ -39,6 +39,9 @@
         public decimal Sum { get; set; }
 
         [Required]
+        public int CurrencyId { get; set; }
+
+        [Required]
         public Currency Currency { get; set; }
 
         [Column(TypeName = "decimal(18,2)")]

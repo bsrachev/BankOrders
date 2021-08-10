@@ -24,6 +24,6 @@
 
         public ICollection<DetailFormModel> Details { get; set; }
 
-        public IEnumerable<ExchangeRate> ExchangeRates { get; set; }
+        public IEnumerable<Currency> Currencies { get; set; }
     }
 }

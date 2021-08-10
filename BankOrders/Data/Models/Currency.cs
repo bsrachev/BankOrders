@@ -5,15 +5,16 @@
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    public class ExchangeRate
+    public class Currency
     {
         public int Id { get; init; }
 
         [Required]
-        public Currency Currency { get; init; }
+        [StringLength(3, MinimumLength = 3, ErrorMessage = "The currency code has to be exactly 3 characters.")]
+        public string Code { get; init; }
 
         [Required]
         [Column(TypeName = "decimal(18,5)")]
-        public decimal Rate { get; set; }
+        public decimal ExchangeRate { get; set; }
     }
 }

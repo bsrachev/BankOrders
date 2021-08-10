@@ -43,8 +43,8 @@
                     </select>
                     <span asp-validation-for="Currency" class="text-danger"></span>
                     <br />
-                    <label class="control-label">Rate</label>
-                    <input id="exchangeRate" class="form-control" value="1" readonly />
+                    <label class="control-label">ExchangeRate</label>
+                    <input id="exchangeExchangeRate" class="form-control" value="1" readonly />
                 </div>
                 <div class="form-group col-md-2">
                     <label asp-for="Sum" class="control-label"></label>
@@ -71,26 +71,17 @@
         var sum = document.getElementById("sum");
         var sumBGN = document.getElementById("sumBGN");
         var curr = document.getElementById("currency");
-        var exchangeRate = document.getElementById("exchangeRate");
+        var exchangeExchangeRate = document.getElementById("exchangeExchangeRate");
         var rate;
 
         switch (curr.value) {
-            case 'BGN':
-                rate = @Model.ExchangeRates.First(x => x.Currency == Currency.BGN).Rate;
-                break;
-            case 'GBP':
-                rate = @Model.ExchangeRates.First(x => x.Currency == Currency.GBP).Rate;
-                break;
             case 'EUR':
-                rate = @Model.ExchangeRates.First(x => x.Currency == Currency.EUR).Rate;
-                break;
-            case 'USD':
-                rate = @Model.ExchangeRates.First(x => x.Currency == Currency.USD).Rate;
+                rate = @Model.Currencies.First(x => x.Code == "EUR").ExchangeRate;
                 break;
         }
 
-        exchangeRate.value = rate;
+        exchangeExchangeRate.value = rate;
 
-        sumBGN.value = sum.value * exchangeRate.value;
+        sumBGN.value = sum.value * exchangeExchangeRate.value;
     }
 </script>

@@ -21,6 +21,7 @@
     using BankOrders.Services.Templates;
 
     using static Data.DataConstants.Errors;
+    using static WebConstants;
 
     public class OrdersController : Controller
     {
@@ -240,7 +241,7 @@
                     Reason = od.Reason,
                     Sum = od.Sum,
                     SumBGN = od.SumBGN,
-                    ExchangeRates = this.data.ExchangeRates,
+                    Currencies = this.data.Currencies,
                     OrderSystem = order.System
                 });
             }
@@ -253,7 +254,7 @@
             query.System = order.System;
             query.UserCreate = order.UserCreate;
             query.Details = ordersDetailsList;//ordersDetailsQuery.ToList();
-            query.ExchangeRates = this.data.ExchangeRates;
+            query.Currencies = this.data.Currencies;
             query.Templates = this.templateService.AllTemplatesBySystem(query.System);
 
             /*if (editDetailId != null)
@@ -327,9 +328,9 @@
 
             if (details.Count == 0)
             {
-                var errText = NoDetailsError;
+                TempData[GlobalErrorKey] = NoDetailsError;
 
-                return RedirectToAction(nameof(Details), new { orderId = id, errText = errText });
+                return RedirectToAction(nameof(Details), new { orderId = id });
             }
 
             var changeStatus = this.orderService.ChangeStatus(id, this.User.Identity.Name, OrderStatus.ForApproval);

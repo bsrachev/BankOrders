@@ -16,7 +16,7 @@ namespace BankOrders.Data.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.7")
+                .HasAnnotation("ProductVersion", "5.0.8")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.HasSequence<int>("OrderRefNumSeq")
@@ -25,22 +25,86 @@ namespace BankOrders.Data.Migrations
             modelBuilder.HasSequence<int>("TemplateOrderRefNumSeq")
                 .StartsAt(90000001L);
 
-            modelBuilder.Entity("BankOrders.Data.Models.ExchangeRate", b =>
+            modelBuilder.Entity("BankOrders.Data.Models.Currency", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Currency")
-                        .HasColumnType("int");
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(3)
+                        .HasColumnType("nvarchar(3)");
 
-                    b.Property<decimal>("Rate")
+                    b.Property<decimal>("ExchangeRate")
                         .HasColumnType("decimal(18,5)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("ExchangeRates");
+                    b.ToTable("Currencies");
+                });
+
+            modelBuilder.Entity("BankOrders.Data.Models.Detail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Account")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int>("AccountType")
+                        .HasMaxLength(2)
+                        .HasColumnType("int");
+
+                    b.Property<int>("AccountingNumber")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Branch")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CostCenter")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CurrencyId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OrderOrTemplateRefNum")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Project")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Reason")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<decimal>("Sum")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("SumBGN")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int?>("TemplateId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CurrencyId");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("TemplateId");
+
+                    b.ToTable("Details");
                 });
 
             modelBuilder.Entity("BankOrders.Data.Models.Order", b =>
@@ -82,66 +146,6 @@ namespace BankOrders.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Orders");
-                });
-
-            modelBuilder.Entity("BankOrders.Data.Models.Detail", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Account")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<int>("AccountType")
-                        .HasMaxLength(2)
-                        .HasColumnType("int");
-
-                    b.Property<int>("AccountingNumber")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Branch")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CostCenter")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Currency")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("OrderId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OrderOrTemplateRefNum")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Project")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Reason")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<decimal>("Sum")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("SumBGN")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int?>("TemplateId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderId");
-
-                    b.HasIndex("TemplateId");
-
-                    b.ToTable("Details");
                 });
 
             modelBuilder.Entity("BankOrders.Data.Models.Template", b =>
@@ -385,6 +389,12 @@ namespace BankOrders.Data.Migrations
 
             modelBuilder.Entity("BankOrders.Data.Models.Detail", b =>
                 {
+                    b.HasOne("BankOrders.Data.Models.Currency", "Currency")
+                        .WithMany()
+                        .HasForeignKey("CurrencyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("BankOrders.Data.Models.Order", null)
                         .WithMany("Details")
                         .HasForeignKey("OrderId");
@@ -392,6 +402,8 @@ namespace BankOrders.Data.Migrations
                     b.HasOne("BankOrders.Data.Models.Template", null)
                         .WithMany("Details")
                         .HasForeignKey("TemplateId");
+
+                    b.Navigation("Currency");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

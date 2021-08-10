@@ -32,7 +32,7 @@
 </div>
 
 <div>
-    <partial name="_DetailFormPartial" model="@(Model.EditDetailId != null ? Model.Details.First(x => x.DetailId == Model.EditDetailId) : new DetailFormModel { ExchangeRates = Model.ExchangeRates, OrderSystem = Model.System } )" />
+    <partial name="_DetailFormPartial" model="@(Model.EditDetailId != null ? Model.Details.First(x => x.DetailId == Model.EditDetailId) : new DetailFormModel { Currencies = Model.Currencies, OrderSystem = Model.System } )" />
 </div>
 
 <br />

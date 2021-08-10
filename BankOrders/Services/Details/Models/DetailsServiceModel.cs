@@ -1,5 +1,6 @@
 ﻿namespace BankOrders.Services.Details
 {
+    using BankOrders.Data.Models;
     using BankOrders.Data.Models.Enums;
 
     public class DetailsServiceModel

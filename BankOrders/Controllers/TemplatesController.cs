@@ -191,7 +191,7 @@
                     Reason = od.Reason,
                     Sum = od.Sum,
                     SumBGN = od.SumBGN,
-                    ExchangeRates = this.data.ExchangeRates,
+                    Currencies = this.data.Currencies,
                     OrderSystem = template.System
                 });
             }
@@ -204,7 +204,7 @@
             query.System = template.System;
             query.UserCreate = template.UserCreate;
             query.Details = templatesDetailsList;//templatesDetailsQuery.ToList();
-            query.ExchangeRates = this.data.ExchangeRates;
+            query.Currencies = this.data.Currencies;
 
             /*if (editDetailId != null)
             {

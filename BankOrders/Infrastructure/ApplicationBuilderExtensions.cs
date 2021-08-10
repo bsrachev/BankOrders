@@ -23,7 +23,7 @@
 
             MigrateDatabase(serviceProvider);
 
-            SeedExchangeRates(serviceProvider);
+            SeedCurrencies(serviceProvider);
             SeedAdministrator(serviceProvider);
 
             return app;
@@ -36,21 +36,18 @@
             data.Database.Migrate();
         }
 
-        private static void SeedExchangeRates(IServiceProvider services)
+        private static void SeedCurrencies(IServiceProvider services)
         {
             var data = services.GetRequiredService<BankOrdersDbContext>();
 
-            if (data.ExchangeRates.Any())
+            if (data.Currencies.Any())
             {
                 return;
             }
 
-            data.ExchangeRates.AddRange(new[]
+            data.Currencies.AddRange(new[]
             {
-                new ExchangeRate { Currency = Currency.BGN, Rate = 1.00000m },
-                new ExchangeRate { Currency = Currency.EUR, Rate = 1.95583m },
-                new ExchangeRate { Currency = Currency.GBP, Rate = 2.29141m },
-                new ExchangeRate { Currency = Currency.USD, Rate = 1.64563m },
+                new Currency { Code = "EUR", ExchangeRate = 1.95583m },
             });
 
             data.SaveChanges();

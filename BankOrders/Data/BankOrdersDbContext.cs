@@ -28,7 +28,7 @@ namespace BankOrders.Data
 
         public DbSet<Detail> Details { get; init; }
 
-        public DbSet<ExchangeRate> ExchangeRates { get; init; }
+        public DbSet<Currency> Currencies { get; init; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

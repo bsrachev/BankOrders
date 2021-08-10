@@ -39,7 +39,7 @@
 
         public int AccountingNumber { get; init; }
 
-        public IEnumerable<ExchangeRate> ExchangeRates { get; set; }
+        public IEnumerable<Currency> Currencies { get; set; }
 
         [Required]
         public OrderSystem OrderSystem { get; set; }
