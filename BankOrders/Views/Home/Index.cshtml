@@ -12,7 +12,7 @@
     <h1 class="display-4" style="font-family: Georgia, serif">Bank Orders</h1>
     @if (this.User.Identity.IsAuthenticated)
     {
-        <p style="font-family: Georgia, serif">Welcome, Employee №@(this.User.Identity.Name)! Would you like to <a href="/Orders/Create">create an order</a>?</p>
+        <p style="font-family: Georgia, serif">Welcome, @(User.IsAdmin() ? "Admin" : "Employee") №@(this.User.Identity.Name)! Would you like to <a href="/Orders/Create">create an order</a>?</p>
     }
     else
     {

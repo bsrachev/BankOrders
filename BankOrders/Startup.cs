@@ -79,6 +79,7 @@ namespace BankOrders
                 .UseAuthorization()
                 .UseEndpoints(endpoints =>
                 {
+                    endpoints.MapDefaultAreaRoute();
                     endpoints.MapDefaultControllerRoute();
                     endpoints.MapRazorPages();
                     /*endpoints.MapControllerRoute(

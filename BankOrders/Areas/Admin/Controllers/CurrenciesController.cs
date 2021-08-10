@@ -15,7 +15,7 @@
             this.data = data;
         }
 
-        public IActionResult All()
+        public IActionResult Index()
         {
             var currencies = this.data
                 .Currencies
