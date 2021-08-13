@@ -47,6 +47,7 @@
 
             data.Currencies.AddRange(new[]
             {
+                new Currency { Code = "BGN", ExchangeRate = 1.00000m },
                 new Currency { Code = "EUR", ExchangeRate = 1.95583m },
             });
 

@@ -1,9 +1,10 @@
 ﻿namespace BankOrders.Models.Orders
 {
-    using BankOrders.Data.Models;
     using BankOrders.Data.Models.Enums;
     using BankOrders.Models.Details;
+    using BankOrders.Services.Currencies.Models;
     using BankOrders.Services.Templates;
+    
     using System;
     using System.Collections.Generic;
 
@@ -25,7 +26,7 @@
 
         public ICollection<DetailFormModel> Details { get; set; }
 
-        public IEnumerable<Currency> Currencies { get; set; }
+        public IEnumerable<CurrencyServiceModel> Currencies { get; set; }
 
         public int TemplateId { get; init; }
 

@@ -1,48 +1,41 @@
-﻿@model IEnumerable<CurrencyListingViewModel>
+﻿@model IEnumerable<CurrencyServiceModel>
 
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Code)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ExchangeRate)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Code)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ExchangeRate)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<h1>Currencies</h1>
+<hr />
+<div class="row">
+    <div class="col-md-8">
+        <partial name="_AddCurrencyPartial" model="null" />
+    </div>
+    <div class="col-md-4">
+        <table class="table">
+            <thead class="thead-light">
+                <tr>
+                    <th>Currency</th>
+                    <th>Exchange Rate</th>
+                    <th>Remove</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Code)
+                        </td>
+                        <td>
+                            @string.Format("{0:n5}", item.ExchangeRate)
+                        </td>
+                        <td>
+                            <a class="nav-link text-danger" asp-area="Admin" asp-controller="Currencies" asp-action="Delete" asp-route-id="@item.Id">X</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

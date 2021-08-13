@@ -1,9 +1,9 @@
 ﻿namespace BankOrders.Models.Templates
 {
-    using BankOrders.Data.Models;
     using BankOrders.Data.Models.Enums;
     using BankOrders.Models.Details;
-    using System;
+    using BankOrders.Services.Currencies.Models;
+    
     using System.Collections.Generic;
 
     public class TemplateDetailListingViewModel
@@ -24,6 +24,6 @@
 
         public ICollection<DetailFormModel> Details { get; set; }
 
-        public IEnumerable<Currency> Currencies { get; set; }
+        public IEnumerable<CurrencyServiceModel> Currencies { get; set; }
     }
 }

@@ -15,6 +15,7 @@ namespace BankOrders
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
+    using BankOrders.Services.Currencies;
 
     public class Startup
     {
@@ -54,6 +55,7 @@ namespace BankOrders
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IDetailService, DetailService>();
             services.AddTransient<ITemplateService, TemplateService>();
+            services.AddTransient<ICurrencyService, CurrencyService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

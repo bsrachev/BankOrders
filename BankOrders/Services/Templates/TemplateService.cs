@@ -16,7 +16,7 @@
         public TemplateService(BankOrdersDbContext data)
             => this.data = data;
 
-        public TemplateServiceModel Details(int id)
+        public TemplateServiceModel GetTemplateInfo(int id)
             => this.data
                 .Templates
                 .Where(c => c.Id == id)
@@ -31,7 +31,7 @@
                 })
                 .FirstOrDefault();
 
-        public IEnumerable<TemplateServiceModel> AllTemplatesBySystem(OrderSystem system)
+        public IEnumerable<TemplateServiceModel> GetAllTemplatesBySystem(OrderSystem system)
             => this.data
                 .Templates
                 .Where(c => c.System == system)
@@ -44,6 +44,7 @@
                     UserCreate = c.UserCreate,
                     TimesUsed = c.TimesUsed
                 })
+                .OrderBy(n => n.Name)
                 .ToList();
     }
 }

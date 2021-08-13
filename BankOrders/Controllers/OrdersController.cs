@@ -22,9 +22,11 @@
 
     using static Data.DataConstants.Errors;
     using static WebConstants;
+    using BankOrders.Services.Currencies;
 
     public class OrdersController : Controller
     {
+        private readonly ICurrencyService currencyService;
         private readonly ITemplateService templateService;
         private readonly IOrderService orderService;
         private readonly IDetailService detailService;
@@ -32,12 +34,14 @@
         private readonly BankOrdersDbContext data;
 
         public OrdersController(
+            ICurrencyService currencyService,
             ITemplateService templateService,
             IOrderService orderService,
             IDetailService detailService,
             IUserService userService,
             BankOrdersDbContext data)
         {
+            this.currencyService = currencyService;
             this.templateService = templateService;
             this.orderService = orderService;
             this.detailService = detailService;
@@ -203,12 +207,12 @@
         }
 
         [Authorize]
-        public IActionResult Details(int orderId, int? editDetailId, string errText = null) // public IActionResult Create() / async Task<IActionResult>
+        public IActionResult Details(int orderId, int? editDetailId) // public IActionResult Create() / async Task<IActionResult>
         {
-            if (errText != null)
+            /*if (errText != null)
             {
                 this.ModelState.AddModelError(String.Empty, errText);
-            }
+            }*/
 
             var query = new OrderDetailListingViewModel();
             //[FromQuery] DetailListingViewModel query
@@ -228,6 +232,8 @@
 
             foreach (var od in ordersDetailsQuery)
             {
+                //var currency = this.currencyService.GetCurrencyInfo(od.CurrencyId);
+
                 ordersDetailsList.Add(new DetailFormModel
                 {
                     Account = od.Account,
@@ -235,13 +241,14 @@
                     Branch = od.Branch,
                     AccountType = od.AccountType,
                     CostCenter = od.CostCenter,
-                    Currency = od.Currency,
+                    CurrencyId = od.CurrencyId,
                     DetailId = od.Id,
                     Project = od.Project,
                     Reason = od.Reason,
                     Sum = od.Sum,
                     SumBGN = od.SumBGN,
-                    Currencies = this.data.Currencies,
+                    Currencies = this.currencyService.GetCurrencies(),
+                    AllTemplates = this.templateService.GetAllTemplatesBySystem(order.System),
                     OrderSystem = order.System
                 });
             }
@@ -254,8 +261,8 @@
             query.System = order.System;
             query.UserCreate = order.UserCreate;
             query.Details = ordersDetailsList;//ordersDetailsQuery.ToList();
-            query.Currencies = this.data.Currencies;
-            query.Templates = this.templateService.AllTemplatesBySystem(query.System);
+            query.Currencies = this.currencyService.GetCurrencies();
+            query.Templates = this.templateService.GetAllTemplatesBySystem(query.System);
 
             /*if (editDetailId != null)
             {
@@ -278,44 +285,34 @@
                 return this.View(detailModel);
             }
 
+            var order = this.orderService.GetOrderInfo(orderId);
+
             if (editDetailId == null)
             {
-                var order = this.orderService.GetOrderInfo(orderId);
-
-                var detail = new Detail
-                {
-                    Account = detailModel.Account,
-                    AccountingNumber = detailModel.AccountingNumber,
-                    AccountType = detailModel.AccountType,
-                    Branch = detailModel.Branch,
-                    CostCenter = detailModel.CostCenter,
-                    Currency = detailModel.Currency,
-                    OrderOrTemplateRefNum = order.RefNumber,
-                    Project = detailModel.Project,
-                    Reason = detailModel.Reason,
-                    Sum = detailModel.Sum,
-                    SumBGN = detailModel.SumBGN
-                };
-
-                this.data.Details.Add(detail);
+                this.detailService.AddDetail(detailModel.Account,
+                                             detailModel.AccountType,
+                                             detailModel.Branch,
+                                             detailModel.CostCenter,
+                                             detailModel.CurrencyId,
+                                             order.RefNumber,
+                                             detailModel.Project,
+                                             detailModel.Reason,
+                                             detailModel.Sum,
+                                             detailModel.SumBGN);
             }
             else
             {
-                var detail = this.data.Details.Find(editDetailId);
-
-                detail.Account = detailModel.Account;
-                detail.AccountingNumber = detailModel.AccountingNumber;
-                detail.AccountType = detailModel.AccountType;
-                detail.Branch = detailModel.Branch;
-                detail.CostCenter = detailModel.CostCenter;
-                detail.Currency = detailModel.Currency;
-                detail.Project = detailModel.Project;
-                detail.Reason = detailModel.Reason;
-                detail.Sum = detailModel.Sum;
-                detail.SumBGN = detailModel.SumBGN;
+                this.detailService.EditDetail(Convert.ToInt32(editDetailId),
+                                              detailModel.Account,
+                                              detailModel.AccountType,
+                                              detailModel.Branch,
+                                              detailModel.CostCenter,
+                                              detailModel.CurrencyId,
+                                              detailModel.Project,
+                                              detailModel.Reason,
+                                              detailModel.Sum,
+                                              detailModel.SumBGN);
             }
-
-            this.data.SaveChanges();
 
             return this.Redirect($"/Orders/Details?orderId={@orderId}");
         }
@@ -326,7 +323,7 @@
 
             var details = this.detailService.GetDetails(order.RefNumber);
 
-            if (details.Count == 0)
+            if (details.Count() == 0)
             {
                 TempData[GlobalErrorKey] = NoDetailsError;
 
@@ -424,6 +421,20 @@
             }
 
             return RedirectToAction(nameof(All));
+        }
+
+        public IActionResult CopyDetailsFromTemplate(int orderId, int templateId)
+        {
+            this.detailService.CopyFromTemplate(orderId, templateId);
+
+            return this.Redirect($"/Orders/Details?orderId={@orderId}");
+        }
+
+        public IActionResult DeleteDetail(int orderId, int detailId)
+        {
+            this.detailService.DeleteDetail(detailId);
+
+            return this.Redirect($"/Orders/Details?orderId={@orderId}");
         }
     }
 }

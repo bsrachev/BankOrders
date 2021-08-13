@@ -1,7 +1,5 @@
 ﻿@model DetailFormModel
 
-<h4>Add a detail</h4>
-<hr />
 <div class="row">
     <div class="col-md-12">
         <form method="post">
@@ -34,17 +32,17 @@
                     <span asp-validation-for="AccountType" class="text-danger"></span>
                 </div>
                 <div class="form-group col-md-1">
-                    <label asp-for="Currency" class="control-label"></label>
-                    <select asp-for="Currency" id="currency" class="form-control" onchange="changeSumBGN()">
-                        <option>BGN</option>
-                        <option>USD</option>
-                        <option>EUR</option>
-                        <option>GBP</option>
+                    <label asp-for="CurrencyId" class="control-label">Currency</label>
+                    <select asp-for="CurrencyId" id="currency" class="form-control" onchange="changeSumBGN()">
+                        @foreach (var c in Model.Currencies)
+                        {
+                            <option data-exchange-rate="@c.ExchangeRate" value="@c.Id">@c.Code</option>
+                        }
                     </select>
-                    <span asp-validation-for="Currency" class="text-danger"></span>
+                    <span asp-validation-for="CurrencyId" class="text-danger"></span>
                     <br />
-                    <label class="control-label">ExchangeRate</label>
-                    <input id="exchangeExchangeRate" class="form-control" value="1" readonly />
+                    <label class="control-label">Rate</label>
+                    <input id="exchangeRate" class="form-control" value="1" readonly />
                 </div>
                 <div class="form-group col-md-2">
                     <label asp-for="Sum" class="control-label"></label>
@@ -52,12 +50,12 @@
                     <span asp-validation-for="Sum" class="text-danger"></span>
                     <br />
                     <label asp-for="SumBGN" class="control-label"></label>
-                    <input asp-for="SumBGN" id="sumBGN" class="form-control" readonly/>
+                    <input asp-for="SumBGN" id="sumBGN" class="form-control" readonly />
                     <span asp-validation-for="SumBGN" class="text-danger"></span>
                 </div>
                 <div class="form-group col-md-3">
                     <label asp-for="Reason" class="control-label"></label>
-                    <textarea asp-for="Reason" class="form-control" rows="4"></textarea>
+                    <textarea id="reason" asp-for="Reason" class="form-control" rows="4"></textarea>
                     <span asp-validation-for="Reason" class="text-danger"></span>
                 </div>
             </div>
@@ -68,20 +66,17 @@
 
 <script>
     function changeSumBGN() {
+
         var sum = document.getElementById("sum");
         var sumBGN = document.getElementById("sumBGN");
         var curr = document.getElementById("currency");
-        var exchangeExchangeRate = document.getElementById("exchangeExchangeRate");
-        var rate;
+        var exchangeRate = document.getElementById("exchangeRate");
 
-        switch (curr.value) {
-            case 'EUR':
-                rate = @Model.Currencies.First(x => x.Code == "EUR").ExchangeRate;
-                break;
-        }
+        var rate = curr.options[curr.selectedIndex].getAttribute("data-exchange-rate");
 
-        exchangeExchangeRate.value = rate;
+        exchangeRate.value = rate;
 
-        sumBGN.value = sum.value * exchangeExchangeRate.value;
+        sumBGN.value = (sum.value * rate).toFixed(2);
+
     }
 </script>

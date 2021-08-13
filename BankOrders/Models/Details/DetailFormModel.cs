@@ -1,8 +1,8 @@
 ﻿namespace BankOrders.Models.Details
 {
-    using BankOrders.Data.Models;
     using BankOrders.Data.Models.Enums;
-
+    using BankOrders.Services.Currencies.Models;
+    using BankOrders.Services.Templates;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
@@ -32,16 +32,18 @@
         public decimal Sum { get; init; }
 
         [Required]
-        public Currency Currency { get; init; }
+        public int CurrencyId { get; init; }
 
         [Required]
         public decimal SumBGN { get; init; }
 
         public int AccountingNumber { get; init; }
 
-        public IEnumerable<Currency> Currencies { get; set; }
-
         [Required]
         public OrderSystem OrderSystem { get; set; }
+
+        public IEnumerable<CurrencyServiceModel> Currencies { get; set; }
+
+        public IEnumerable<TemplateServiceModel> AllTemplates { get; set; }
     }
 }

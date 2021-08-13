@@ -31,6 +31,8 @@
     </dl>
 </div>
 
+<h4>Add a detail</h4>
+<hr />
 <div>
     <partial name="_DetailFormPartial" model="@(Model.EditDetailId != null ? Model.Details.First(x => x.DetailId == Model.EditDetailId) : new DetailFormModel { Currencies = Model.Currencies, OrderSystem = Model.System } )" />
 </div>
@@ -83,7 +85,7 @@
                     <td>@detail.Account</td>
                     <td>@detail.AccountType</td>
                     <td>@detail.Sum</td>
-                    <td>@detail.Currency</td>
+                    <td>@detail.CurrencyId</td>
                     <td>@detail.SumBGN</td>
                     <td>@detail.AccountingNumber</td>
                 </tr>
@@ -93,7 +95,7 @@
                 <tr>
                     <th scope="row">
                         <div class="button-holder">
-                            <a href="/Orders/Details?orderId=@Model.Id&editDetailId=@detail.DetailId" class="btn btn-info">Edit</a>
+                            <a href="/Templates/Details?templateId=@Model.Id&editDetailId=@detail.DetailId" class="btn btn-info">Edit</a>
                         </div>
                     </th>
                     <td>@detail.Branch</td>
@@ -109,7 +111,7 @@
                     <td>@detail.Account</td>
                     <td>@detail.AccountType</td>
                     <td>@detail.Sum</td>
-                    <td>@detail.Currency</td>
+                    <td>@detail.CurrencyId</td>
                     <td>@detail.SumBGN</td>
                     <td>@detail.AccountingNumber</td>
                 </tr>

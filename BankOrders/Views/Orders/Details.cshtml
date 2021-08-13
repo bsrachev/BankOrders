@@ -35,22 +35,35 @@
     </dl>
 </div>
 
-<div class="form-row">
-    <div class="form-group col-md-12">
-        <hr />
-        <h4>Copy details from template:</h4>
-        <select asp-for="TemplateId" class="form-control">
-            <option>123</option>
-            <option>345</option>
-            <option>567</option>
-            <option>789</option>
-        </select>
-        <a asp-controller="Orders" asp-action="SendForPostingApproval" asp-route-id="@Model.Id" class="btn btn-warning">Copy</a>
+@if (Model.EditDetailId == null)
+{
+    <div class="form-row">
+        <div class="form-group col-md-12">
+            <hr />
+            <div class="row col-md-12">
+                <h4>Copy details from template:</h4>
+                <div class="col-md-1"></div>
+                <div class="col-md-6">
+                    <select id="templateId" asp-for="TemplateId" class="form-control col-md-12">
+                        @foreach (var template in Model.Templates)
+                        {
+                            <option value="@template.Id">@template.Name</option>
+                        }
+                    </select>
+                    <span asp-validation-for="TemplateId" class="text-danger"></span>
+                </div>
+                <div class="col-md-1">
+                    <a class="btn btn-info" onclick="copyFromTemplate(this,'@Url.Action("CopyDetailsFromTemplate", "Orders")')">Copy</a>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
+}
 
+<h4>@(Model.EditDetailId == null ? "or add a detail:" : "Edit the detail:")</h4>
+<hr />
 <div>
-    <partial name="_DetailFormPartial" model="@(Model.EditDetailId != null ? Model.Details.First(x => x.DetailId == Model.EditDetailId) : new DetailFormModel { Currencies = Model.Currencies, OrderSystem = Model.System } )" />
+    <partial name="_DetailFormPartial" model="@(Model.EditDetailId != null ? Model.Details.First(x => x.DetailId == Model.EditDetailId) : new DetailFormModel { CurrencyId = 1, Currencies = Model.Currencies, OrderSystem = Model.System } )" />
 </div>
 
 <br />
@@ -75,6 +88,7 @@
             <th scope="col">Currency</th>
             <th scope="col">Sum in BGN</th>
             <th scope="col">Accounting Number</th>
+            <th scope="col"></th>
         </tr>
     </thead>
     <tbody>
@@ -101,7 +115,7 @@
                     <td>@detail.Account</td>
                     <td>@detail.AccountType</td>
                     <td>@detail.Sum</td>
-                    <td>@detail.Currency</td>
+                    <td>@detail.CurrencyId</td>
                     <td>@detail.SumBGN</td>
                     <td>@detail.AccountingNumber</td>
                 </tr>
@@ -127,9 +141,12 @@
                     <td>@detail.Account</td>
                     <td>@detail.AccountType</td>
                     <td>@detail.Sum</td>
-                    <td>@detail.Currency</td>
+                    <td>@detail.CurrencyId</td>
                     <td>@detail.SumBGN</td>
                     <td>@detail.AccountingNumber</td>
+                    <td>
+                        <a class="nav-link text-danger" asp-controller="Orders" asp-action="DeleteDetail" asp-route-orderId="@Model.Id" asp-route-detailId="@detail.DetailId">X</a>
+                    </td>
                 </tr>
             }
         }
@@ -169,3 +186,11 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+
+<script>
+    function copyFromTemplate(item, baseUrl) {
+        var templateId = document.getElementById("templateId");
+
+        window.location.href = baseUrl + '?orderId=' + @Model.Id + '&templateId=' + templateId.value;
+    }
+</script>

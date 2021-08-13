@@ -19,20 +19,24 @@
     using BankOrders.Models.Templates;
     using BankOrders.Services.Users;
     using BankOrders.Services.Details;
+    using BankOrders.Services.Currencies;
 
     public class TemplatesController : Controller
     {
+        private readonly ICurrencyService currencyService;
         private readonly ITemplateService templateService;
         private readonly IDetailService detailService;
         private readonly IUserService userService;
         private readonly BankOrdersDbContext data;
 
         public TemplatesController(
+            ICurrencyService currencyService,
             ITemplateService templateService,
             IDetailService detailService,
             IUserService userService,
             BankOrdersDbContext data)
         {
+            this.currencyService = currencyService;
             this.templateService = templateService;
             this.detailService = detailService;
             this.userService = userService;
@@ -163,7 +167,7 @@
             var query = new TemplateDetailListingViewModel();
             //[FromQuery] TemplateDetailListingViewModel query
 
-            var template = this.templateService.Details(templateId);
+            var template = this.templateService.GetTemplateInfo(templateId);
 
             /*var template = this.data
                 .Templates
@@ -185,13 +189,13 @@
                     Branch = od.Branch,
                     AccountType = od.AccountType,
                     CostCenter = od.CostCenter,
-                    Currency = od.Currency,
+                    CurrencyId = od.CurrencyId,
                     DetailId = od.Id,
                     Project = od.Project,
                     Reason = od.Reason,
                     Sum = od.Sum,
                     SumBGN = od.SumBGN,
-                    Currencies = this.data.Currencies,
+                    Currencies = this.currencyService.GetCurrencies(),
                     OrderSystem = template.System
                 });
             }
@@ -204,7 +208,7 @@
             query.System = template.System;
             query.UserCreate = template.UserCreate;
             query.Details = templatesDetailsList;//templatesDetailsQuery.ToList();
-            query.Currencies = this.data.Currencies;
+            query.Currencies = this.currencyService.GetCurrencies();
 
             /*if (editDetailId != null)
             {
@@ -227,44 +231,34 @@
                 return this.View(templateDetailModel);
             }
 
+            var template = this.templateService.GetTemplateInfo(templateId);
+
             if (editDetailId == null)
             {
-                var template = this.templateService.Details(templateId);
-
-                var templateDetail = new Detail
-                {
-                    Account = templateDetailModel.Account,
-                    AccountingNumber = templateDetailModel.AccountingNumber,
-                    AccountType = templateDetailModel.AccountType,
-                    Branch = templateDetailModel.Branch,
-                    CostCenter = templateDetailModel.CostCenter,
-                    Currency = templateDetailModel.Currency,
-                    OrderOrTemplateRefNum = template.RefNumber,
-                    Project = templateDetailModel.Project,
-                    Reason = templateDetailModel.Reason,
-                    Sum = templateDetailModel.Sum,
-                    SumBGN = templateDetailModel.SumBGN
-                };
-
-                this.data.Details.Add(templateDetail);
+                this.detailService.AddDetail(templateDetailModel.Account,
+                                             templateDetailModel.AccountType,
+                                             templateDetailModel.Branch,
+                                             templateDetailModel.CostCenter,
+                                             templateDetailModel.CurrencyId,
+                                             template.RefNumber,
+                                             templateDetailModel.Project,
+                                             templateDetailModel.Reason,
+                                             templateDetailModel.Sum,
+                                             templateDetailModel.SumBGN);
             }
             else
             {
-                var templateDetail = this.data.Details.Find(editDetailId);
-
-                templateDetail.Account = templateDetailModel.Account;
-                templateDetail.AccountingNumber = templateDetailModel.AccountingNumber;
-                templateDetail.AccountType = templateDetailModel.AccountType;
-                templateDetail.Branch = templateDetailModel.Branch;
-                templateDetail.CostCenter = templateDetailModel.CostCenter;
-                templateDetail.Currency = templateDetailModel.Currency;
-                templateDetail.Project = templateDetailModel.Project;
-                templateDetail.Reason = templateDetailModel.Reason;
-                templateDetail.Sum = templateDetailModel.Sum;
-                templateDetail.SumBGN = templateDetailModel.SumBGN;
+                this.detailService.EditDetail(Convert.ToInt32(editDetailId),
+                                              templateDetailModel.Account,
+                                              templateDetailModel.AccountType,
+                                              templateDetailModel.Branch,
+                                              templateDetailModel.CostCenter,
+                                              templateDetailModel.CurrencyId,
+                                              templateDetailModel.Project,
+                                              templateDetailModel.Reason,
+                                              templateDetailModel.Sum,
+                                              templateDetailModel.SumBGN);
             }
-
-            this.data.SaveChanges();
 
             return this.Redirect($"/Templates/Details?templateId={@templateId}");
         }

@@ -1,6 +1,7 @@
 ﻿namespace BankOrders.Services.Orders
 {
     using BankOrders.Data;
+    using BankOrders.Data.Models;
     using BankOrders.Data.Models.Enums;
 
     using System.Linq;
@@ -12,20 +13,10 @@
         public OrderService(BankOrdersDbContext data)
             => this.data = data;
 
-
-        /*public int RefNumber { get; set; }
-        public DateTime? AccountingDate { get; set; }
-        public OrderSystem System { get; set; }
-        public string UserCreate { get; set; }
-        public string UserApprove { get; set; }
-        public string UserAccountant { get; set; }
-        public string UserApproveAccounting { get; set; }
-        public OrderStatus Status { get; set; }*/
-
-        public OrderServiceModel GetOrderInfo(int id)
+        public OrderServiceModel GetOrderInfo(int orderId)
             => this.data
                 .Orders
-                .Where(c => c.Id == id)
+                .Where(c => c.Id == orderId)
                 .Select(c => new OrderServiceModel
                 {
                     Id = c.Id,

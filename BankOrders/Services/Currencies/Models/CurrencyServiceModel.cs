@@ -1,6 +1,6 @@
-﻿namespace BankOrders.Areas.Admin.Models.Currencies
+﻿namespace BankOrders.Services.Currencies.Models
 {
-    public class CurrencyListingViewModel
+    public class CurrencyServiceModel
     {
         public int Id { get; init; }
 

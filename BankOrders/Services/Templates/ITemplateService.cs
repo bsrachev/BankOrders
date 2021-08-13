@@ -6,8 +6,8 @@
 
     public interface ITemplateService
     {
-        TemplateServiceModel Details(int carId);
+        TemplateServiceModel GetTemplateInfo(int carId);
 
-        public IEnumerable<TemplateServiceModel> AllTemplatesBySystem(OrderSystem system);
+        public IEnumerable<TemplateServiceModel> GetAllTemplatesBySystem(OrderSystem system);
     }
 }
