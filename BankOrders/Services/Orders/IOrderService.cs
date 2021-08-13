@@ -11,5 +11,7 @@
         OrderServiceModel GetOrderInfo(int orderId);
 
         public bool ChangeStatus(int orderId, string userId, OrderStatus status);
+
+        IEnumerable<OrderServiceModel> GetAllOrders(OrderSearchFormModel searchModel = null);
     }
 }

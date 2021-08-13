@@ -98,6 +98,9 @@
                           detail.Sum,
                           detail.SumBGN);
             }
+
+            template.TimesUsed++;
+            this.data.SaveChanges();
         }
     }
 }

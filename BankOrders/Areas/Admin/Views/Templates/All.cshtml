@@ -1,0 +1,50 @@
+﻿<section class="py-5">
+    <div class="button-holder">
+        <a href="/Templates/Create" class="btn btn-info text-uppercase">New Template</a>
+    </div>
+
+    <div class="container">
+        <h1 style="margin: 2%; text-align: center;">Templates</h1>
+        <div style="padding: 5%;">
+
+            <div>
+                <partial name="_TemplateSearchPartial" model="null" />
+            </div>
+            <br />
+
+            <table class="table table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col" style="text-align:center;">Details</th>
+                        <th scope="col" style="text-align:center;">Reference №</th>
+                        <th scope="col" style="text-align:center;">Name</th>
+                        <th scope="col" style="text-align:center;">System</th>
+                        <th scope="col" style="text-align:center;">Created by</th>
+                        <th scope="col" style="text-align:center;">Times Used</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var template in Model)
+                    {
+                        <tr>
+                            <td>
+                                <div class="button-holder">
+                                    <a href="/Templates/Details?templateId=@template.Id" class="btn btn-info text-uppercase">View</a>
+                                </div>
+                            </td>
+                            <th scope="row">№@template.RefNumber</th>
+                            <td>@template.Name</td>
+                            <td>@template.System</td>
+                            <td>@template.UserCreate</td>
+                            <td>@template.TimesUsed</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            @if (false) //TODO
+            {
+                <strong>There are no templates.</strong>
+            }
+        </div>
+    </div>
+</section>

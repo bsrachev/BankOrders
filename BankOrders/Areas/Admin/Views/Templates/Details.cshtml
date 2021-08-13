@@ -1,0 +1,141 @@
+﻿@model BankOrders.Models.Templates.TemplateDetailListingViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div asp-validation-summary="All" class="text-danger"></div>
+
+<div>
+    <h4>Template №@Html.DisplayFor(model => model.RefNumber)</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.System)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.System)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.UserCreate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.UserCreate)
+        </dd>
+    </dl>
+</div>
+
+<h4>Add a detail</h4>
+<hr />
+<div>
+    <partial name="_DetailFormPartial" model="@(Model.EditDetailId != null ? Model.Details.First(x => x.DetailId == Model.EditDetailId) : new DetailFormModel { Currencies = Model.Currencies, OrderSystem = Model.System } )" />
+</div>
+
+<br />
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Edit</th>
+            <th scope="col">Branch</th>
+            @if (Model.System == OrderSystem.Internal)
+            {
+                <th scope="col">Cost Center</th>
+            }
+            else
+            {
+                <th scope="col">Project</th>
+            }
+            <th scope="col">Reason</th>
+            <th scope="col">Account</th>
+            <th scope="col">Account Type</th>
+            <th scope="col">Sum</th>
+            <th scope="col">Currency</th>
+            <th scope="col">Sum in BGN</th>
+            <th scope="col">Accounting Number</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var detail in Model.Details)
+        {
+            if (Model.EditDetailId == detail.DetailId)
+            {
+                <tr>
+                    <th class="thead-dark" scope="row">
+                        <div class="button-holder">
+                            <button type="submit" class="btn btn-info" disabled>Edit</button>
+                        </div>
+                    </th>
+                    <td>@detail.Branch</td>
+                    @if (Model.System == OrderSystem.Internal)
+                    {
+                        <td>@detail.CostCenter</td>
+                    }
+                    else
+                    {
+                        <td>@detail.Project</td>
+                    }
+                    <td>@detail.Reason</td>
+                    <td>@detail.Account</td>
+                    <td>@detail.AccountType</td>
+                    <td>@detail.Sum</td>
+                    <td>@detail.CurrencyId</td>
+                    <td>@detail.SumBGN</td>
+                    <td>@detail.AccountingNumber</td>
+                </tr>
+            }
+            else
+            {
+                <tr>
+                    <th scope="row">
+                        <div class="button-holder">
+                            <a href="/Templates/Details?templateId=@Model.Id&editDetailId=@detail.DetailId" class="btn btn-info">Edit</a>
+                        </div>
+                    </th>
+                    <td>@detail.Branch</td>
+                    @if (Model.System == OrderSystem.Internal)
+                    {
+                        <td>@detail.CostCenter</td>
+                    }
+                    else
+                    {
+                        <td>@detail.Project</td>
+                    }
+                    <td>@detail.Reason</td>
+                    <td>@detail.Account</td>
+                    <td>@detail.AccountType</td>
+                    <td>@detail.Sum</td>
+                    <td>@detail.CurrencyId</td>
+                    <td>@detail.SumBGN</td>
+                    <td>@detail.AccountingNumber</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+@if (Model.Details.Count == 0)
+{
+    <strong>Template №@Model.RefNumber has no details.</strong>
+}
+
+<div class="container-fluid border-top">
+    <div class="form-group">
+        <br />
+        @if (this.User.IsInRole(AdministratorRoleName))
+        {
+            <a asp-controller="Templates" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-warning">Delete Template</a>
+        }
+        <a asp-controller="Orders" asp-action="All" class="btn btn-dark float-right">Cancel</a>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

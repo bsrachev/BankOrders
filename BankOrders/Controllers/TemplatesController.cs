@@ -46,25 +46,6 @@
         [Authorize]
         public IActionResult All()
         {
-            /*
-            var templatesQuery = this.data
-                .Templates
-                .AsQueryable();
-
-            var templates = templatesQuery
-                .Select(c => new TemplateListingViewModel
-                {
-                    //Id = c.Id,
-                    RefNumber = c.RefNumber,
-                    AccountingDate = c.AccountingDate,
-                    System = c.System,
-                    UserCreate = c.UserCreate,
-                    UserApprove = c.UserApprove,
-                    UserAccountant = c.UserAccountant,
-                    UserApproveAccounting = c.UserApproveAccounting,
-                })
-                .ToList();*/
-
             var templates = this.data
                 .Templates
                 .OrderByDescending(c => c.RefNumber)
