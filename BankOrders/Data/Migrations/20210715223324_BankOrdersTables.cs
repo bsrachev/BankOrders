@@ -14,13 +14,13 @@ namespace BankOrders.Data.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     AccountingDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserApprove = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserAccountant = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserApproveAccounting = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserApproveId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserPostingId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserApprovePostingId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Status = table.Column<int>(type: "int", nullable: false),
                     RefNumber = table.Column<int>(type: "int", maxLength: 20, nullable: false),
                     System = table.Column<int>(type: "int", nullable: false),
-                    UserCreate = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    UserCreateId = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -37,7 +37,7 @@ namespace BankOrders.Data.Migrations
                     TimesUsed = table.Column<int>(type: "int", nullable: false),
                     RefNumber = table.Column<int>(type: "int", maxLength: 20, nullable: false),
                     System = table.Column<int>(type: "int", nullable: false),
-                    UserCreate = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    UserCreateId = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {

@@ -1,50 +1,37 @@
 ﻿namespace BankOrders.Areas.Admin.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
+    using BankOrders.Services.Templates;
+    using BankOrders.Infrastructure;
+    using BankOrders.Models.Templates;
+
+    using static WebConstants;
 
     public class TemplatesController : AdminController
     {
+        private readonly ITemplateService templateService;
 
-        public IActionResult All()
+        public TemplatesController(ITemplateService templateService)
         {
-            /*
-            var templatesQuery = this.data
-                .Templates
-                .AsQueryable();
+            this.templateService = templateService;
+        }
 
-            var templates = templatesQuery
-                .Select(c => new TemplateListingViewModel
-                {
-                    //Id = c.Id,
-                    RefNumber = c.RefNumber,
-                    AccountingDate = c.AccountingDate,
-                    System = c.System,
-                    UserCreate = c.UserCreate,
-                    UserApprove = c.UserApprove,
-                    UserAccountant = c.UserAccountant,
-                    UserApproveAccounting = c.UserApproveAccounting,
-                })
-                .ToList();*/
+        public IActionResult Create()
+        {
+            return this.View();
+        }
 
-            /*var templates = this.data
-                .Templates
-                .OrderByDescending(c => c.RefNumber)
-                .Select(c => new TemplateServiceModel
-                {
-                    Id = c.Id,
-                    RefNumber = c.RefNumber,
-                    Name = c.Name,
-                    System = c.System,
-                    UserCreate = c.UserCreate,
-                    TimesUsed = c.TimesUsed
-                })
-                .ToList();*/
+        [HttpPost]
+        public IActionResult Create(CreateTemplateFormModel templateModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return this.View(templateModel);
+            }
 
-            return this.View(null); //templates
+            int templateId = this.templateService.Create(templateModel.Name, templateModel.System, this.User.Id());
+
+            return this.Redirect($"/Templates/Details/?templateId={templateId}");
         }
     }
 }

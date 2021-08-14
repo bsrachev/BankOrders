@@ -19,7 +19,7 @@
         public OrderSystem System { get; set; }
 
         [Required]
-        public string UserCreate { get; set; }
+        public string UserCreateId { get; set; }
 
         public ICollection<Detail> Details { get; set; }
     }

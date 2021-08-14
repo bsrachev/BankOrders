@@ -42,16 +42,16 @@ namespace BankOrders.Data.Migrations
                     b.Property<int>("System")
                         .HasColumnType("int");
 
-                    b.Property<string>("UserAccountant")
+                    b.Property<string>("UserPostingId")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserApprove")
+                    b.Property<string>("UserApproveId")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserApproveAccounting")
+                    b.Property<string>("UserApprovePostingId")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserCreate")
+                    b.Property<string>("UserCreateId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -140,7 +140,7 @@ namespace BankOrders.Data.Migrations
                     b.Property<int>("TimesUsed")
                         .HasColumnType("int");
 
-                    b.Property<string>("UserCreate")
+                    b.Property<string>("UserCreateId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

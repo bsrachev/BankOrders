@@ -13,19 +13,19 @@
             => this.data = data;
 
 
-        public bool IsUserCreate(int orderId, string user)
+        public bool IsUserCreateId(int orderId, string user)
             => this.data
                 .Orders
-                .Any(o => o.Id == orderId && o.UserCreate == user);
+                .Any(o => o.Id == orderId && o.UserCreateId == user);
 
-        public bool IsUserApprove(int orderId, string user)
+        public bool IsUserApproveId(int orderId, string user)
             => this.data
                 .Orders
-                .Any(o => o.Id == orderId && o.UserApprove == user);
+                .Any(o => o.Id == orderId && o.UserApproveId == user);
 
-        public bool IsUserAccountant(int orderId, string user)
+        public bool IsUserPostingId(int orderId, string user)
             => this.data
                 .Orders
-                .Any(o => o.Id == orderId && o.UserAccountant == user);
+                .Any(o => o.Id == orderId && o.UserPostingId == user);
     }
 }

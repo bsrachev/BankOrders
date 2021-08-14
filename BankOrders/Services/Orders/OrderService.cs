@@ -44,24 +44,24 @@
                     ordersQuery = ordersQuery.Where(x => x.AccountingDate <= accDateTo);
                 }
 
-                if (searchModel.UserCreate != null)
+                if (searchModel.UserCreateId != null)
                 {
-                    ordersQuery = ordersQuery.Where(x => x.UserCreate == searchModel.UserCreate);
+                    ordersQuery = ordersQuery.Where(x => x.UserCreateId == searchModel.UserCreateId);
                 }
 
-                if (searchModel.UserApprove != null)
+                if (searchModel.UserApproveId != null)
                 {
-                    ordersQuery = ordersQuery.Where(x => x.UserApprove == searchModel.UserApprove);
+                    ordersQuery = ordersQuery.Where(x => x.UserApproveId == searchModel.UserApproveId);
                 }
 
-                if (searchModel.UserAccountant != null)
+                if (searchModel.UserPostingId != null)
                 {
-                    ordersQuery = ordersQuery.Where(x => x.UserAccountant == searchModel.UserAccountant);
+                    ordersQuery = ordersQuery.Where(x => x.UserPostingId == searchModel.UserPostingId);
                 }
 
-                if (searchModel.UserApproveAccounting != null)
+                if (searchModel.UserApprovePostingId != null)
                 {
-                    ordersQuery = ordersQuery.Where(x => x.UserApproveAccounting == searchModel.UserApproveAccounting);
+                    ordersQuery = ordersQuery.Where(x => x.UserApprovePostingId == searchModel.UserApprovePostingId);
                 }
 
                 if (searchModel.System != null)
@@ -83,10 +83,10 @@
                     RefNumber = c.RefNumber,
                     AccountingDate = c.AccountingDate,
                     System = c.System,
-                    UserCreate = c.UserCreate,
-                    UserApprove = c.UserApprove,
-                    UserAccountant = c.UserAccountant,
-                    UserApproveAccounting = c.UserApproveAccounting,
+                    UserCreateId = c.UserCreateId,
+                    UserApproveId = c.UserApproveId,
+                    UserPostingId = c.UserPostingId,
+                    UserApprovePostingId = c.UserApprovePostingId,
                 })
                 .ToList();
         }
@@ -101,10 +101,10 @@
                     RefNumber = c.RefNumber,
                     AccountingDate = c.AccountingDate,
                     System = c.System,
-                    UserCreate = c.UserCreate,
-                    UserApprove = c.UserApprove,
-                    UserAccountant = c.UserAccountant,
-                    UserApproveAccounting = c.UserApproveAccounting,
+                    UserCreateId = c.UserCreateId,
+                    UserApproveId = c.UserApproveId,
+                    UserPostingId = c.UserPostingId,
+                    UserApprovePostingId = c.UserApprovePostingId,
                     Status = c.Status
                     //AccountingNumbers = c. TODO
                 })
@@ -120,16 +120,16 @@
             {
 
                 case OrderStatus.ForPosting: 
-                    orderData.UserApprove = userId;
+                    orderData.UserApproveId = userId;
                     break;
                 case OrderStatus.ForPostingApproval:
-                    orderData.UserAccountant = userId;
+                    orderData.UserPostingId = userId;
                     break;
                 case OrderStatus.Finished:
-                    orderData.UserApproveAccounting = userId;
+                    orderData.UserApprovePostingId = userId;
                     break;
                 case OrderStatus.ForPostingCorrection:
-                    orderData.UserAccountant = null;
+                    orderData.UserPostingId = null;
                     break;
             }
 

@@ -19,10 +19,10 @@
     using BankOrders.Services.Users;
     using BankOrders.Services.Details;
     using BankOrders.Services.Templates;
+    using BankOrders.Services.Currencies;
 
     using static Data.DataConstants.Errors;
     using static WebConstants;
-    using BankOrders.Services.Currencies;
 
     public class OrdersController : Controller
     {
@@ -91,10 +91,9 @@
 
             var order = new Order
             {
-                //RefNumber = 10000001,
                 AccountingDate = DateTime.ParseExact(orderModel.AccountingDate, "dd.MM.yyyy", CultureInfo.InvariantCulture),
                 System = (OrderSystem)Enum.Parse(typeof(OrderSystem), orderModel.System, true),
-                UserCreate = this.User.Identity.Name,
+                UserCreateId = this.User.Identity.Name,
                 Status = 0,
             };
 
@@ -158,7 +157,7 @@
             query.RefNumber = order.RefNumber;
             query.Status = order.Status;
             query.System = order.System;
-            query.UserCreate = order.UserCreate;
+            query.UserCreateId = order.UserCreateId;
             query.Details = ordersDetailsList;//ordersDetailsQuery.ToList();
             query.Currencies = this.currencyService.GetCurrencies();
             query.Templates = this.templateService.GetAllTemplatesBySystem(query.System);
@@ -174,7 +173,7 @@
         [HttpPost]
         public IActionResult Details(DetailFormModel detailModel, int orderId, int? editDetailId) // public IActionResult Create() / async Task<IActionResult>
         {
-            /*if (this.orderService.Details(orderId).UserCreate == this.User.Identity.Name)
+            /*if (this.orderService.Details(orderId).UserCreateId == this.User.Identity.Name)
             {
                 this.ModelState.AddModelError("CustomError", "Cannot appove an order that you have created.");
             }*/
@@ -241,11 +240,11 @@
 
         public IActionResult Approve(int id) // public IActionResult Create() / async Task<IActionResult>
         {
-            //var shmest = this.User.Id();
+            var shmest = this.User.Id();
 
-            if (this.userService.IsUserCreate(id, this.User.Identity.Name))
+            if (this.userService.IsUserCreateId(id, this.User.Identity.Name))
             {
-                var errText = UserCreateAndUserApproveCannotBeTheSameError;
+                var errText = UserCreateIdAndUserApproveIdCannotBeTheSameError;
 
                 return RedirectToAction(nameof(Details), new { orderId = id, errText = errText });
             }
@@ -274,9 +273,9 @@
 
         public IActionResult SendForPostingApproval(int id) // public IActionResult Create() / async Task<IActionResult>
         {
-            if (this.userService.IsUserApprove(id, this.User.Identity.Name))
+            if (this.userService.IsUserApproveId(id, this.User.Identity.Name))
             {
-                var errText = UserApproveAndUserAccountantCannotBeTheSameError;
+                var errText = UserApproveIdAndUserPostingIdCannotBeTheSameError;
 
                 return RedirectToAction(nameof(Details), new { orderId = id, errText = errText });
             }
@@ -305,9 +304,9 @@
 
         public IActionResult ApprovePosting(int id) // public IActionResult Create() / async Task<IActionResult>
         {
-            if (this.userService.IsUserAccountant(id, this.User.Identity.Name))
+            if (this.userService.IsUserPostingId(id, this.User.Identity.Name))
             {
-                var errText = UserAccountantAndUserApproveAccountingCannotBeTheSameError;
+                var errText = UserPostingIdAndUserApprovePostingIdCannotBeTheSameError;
 
                 return RedirectToAction(nameof(Details), new { orderId = id, errText = errText });
             }

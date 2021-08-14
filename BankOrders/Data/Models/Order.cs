@@ -27,11 +27,11 @@
         [Required]
         public DateTime? AccountingDate { get; set; }
 
-        public string UserApprove { get; set; }
+        public string UserApproveId { get; set; }
 
-        public string UserAccountant { get; set; }
+        public string UserPostingId { get; set; }
 
-        public string UserApproveAccounting { get; set; }
+        public string UserApprovePostingId { get; set; }
 
         [Required]
         public OrderStatus Status { get; set; }

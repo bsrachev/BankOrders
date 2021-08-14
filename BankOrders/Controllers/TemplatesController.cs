@@ -21,6 +21,8 @@
     using BankOrders.Services.Details;
     using BankOrders.Services.Currencies;
 
+    using static WebConstants;
+
     public class TemplatesController : Controller
     {
         private readonly ICurrencyService currencyService;
@@ -46,19 +48,7 @@
         [Authorize]
         public IActionResult All()
         {
-            var templates = this.data
-                .Templates
-                .OrderByDescending(c => c.RefNumber)
-                .Select(c => new TemplateServiceModel
-                {
-                    Id = c.Id,
-                    RefNumber = c.RefNumber,
-                    Name = c.Name,
-                    System = c.System,
-                    UserCreate = c.UserCreate,
-                    TimesUsed = c.TimesUsed
-                })
-                .ToList();
+            var templates = this.templateService.GetAllTemplates();
 
             return this.View(templates);
         }
@@ -66,80 +56,9 @@
         [HttpPost]
         public IActionResult All(TemplateSearchFormModel searchModel)
         {
-            var templatesQuery = this.data.Templates.AsQueryable();
-
-            if (searchModel.RefNumber != null)
-            {
-                templatesQuery = templatesQuery.Where(x => x.RefNumber == int.Parse(searchModel.RefNumber));
-            }
-
-            if (searchModel.Name != null)
-            {
-                templatesQuery = templatesQuery.Where(x => x.Name == searchModel.Name);
-            }
-
-            if (searchModel.UserCreate != null)
-            {
-                templatesQuery = templatesQuery.Where(x => x.UserCreate == searchModel.UserCreate);
-            }
-
-            if (searchModel.System != null)
-            {
-                templatesQuery = templatesQuery.Where(x => x.System == (OrderSystem)Enum.Parse(typeof(OrderSystem), searchModel.System));
-            }
-
-            var templates = templatesQuery
-                .OrderByDescending(c => c.RefNumber)
-                .Select(c => new TemplateServiceModel
-                {
-                    Id = c.Id,
-                    RefNumber = c.RefNumber,
-                    Name = c.Name,
-                    System = c.System,
-                    UserCreate = c.UserCreate,
-                    TimesUsed = c.TimesUsed
-                })
-                .ToList();
+            var templates = this.templateService.GetAllTemplates(searchModel);
 
             return this.View(templates);
-        }
-
-        [Authorize]
-        public IActionResult Create() // public IActionResult Create() / async Task<IActionResult>
-        {
-            return this.View();
-        }
-
-        [HttpPost]
-        public IActionResult Create(CreateTemplateFormModel templateModel)
-        {
-            if (!ModelState.IsValid)
-            {
-                return this.View(templateModel);
-            }
-
-            /*if (templateModel.AccountingDate > 2015)
-            {
-                var template = .....
-            }
-            else
-            {
-                ......
-            }*/
-
-            var template = new Template
-            {
-                //RefNumber = 10000001,
-                Name = templateModel.Name,
-                System = (OrderSystem)Enum.Parse(typeof(OrderSystem), templateModel.System, true),
-                UserCreate = this.User.Identity.Name
-            };
-
-            this.data.Templates.Add(template);
-
-            this.data.SaveChanges();
-
-            return this.Redirect("/Templates/All");
         }
 
         [Authorize]
@@ -187,7 +106,7 @@
             query.RefNumber = template.RefNumber;
             query.TimesUsed = template.TimesUsed;
             query.System = template.System;
-            query.UserCreate = template.UserCreate;
+            query.UserCreateId = template.UserCreateId;
             query.Details = templatesDetailsList;//templatesDetailsQuery.ToList();
             query.Currencies = this.currencyService.GetCurrencies();
 
@@ -202,7 +121,7 @@
         [HttpPost]
         public IActionResult Details(DetailFormModel templateDetailModel, int templateId, int? editDetailId) // public IActionResult Create() / async Task<IActionResult>
         {
-            /*if (this.templateService.Details(templateId).UserCreate == this.User.Identity.Name)
+            /*if (this.templateService.Details(templateId).UserCreateId == this.User.Identity.Name)
             {
                 this.ModelState.AddModelError("CustomError", "Cannot appove an template that you have created.");
             }*/

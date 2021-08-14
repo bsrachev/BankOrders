@@ -12,7 +12,7 @@
 
         public OrderSystem System { get; set; }
 
-        public string UserCreate { get; set; }
+        public string UserCreateId { get; set; }
 
         public int TimesUsed { get; set; }
     }

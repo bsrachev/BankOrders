@@ -14,6 +14,6 @@
 
         public string System { get; set; }
 
-        public string UserCreate { get; set; }
+        public string UserCreateId { get; set; }
     }
 }

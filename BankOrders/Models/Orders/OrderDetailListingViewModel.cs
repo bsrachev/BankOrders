@@ -20,7 +20,7 @@
 
         public OrderSystem System { get; set; }
 
-        public string UserCreate { get; set; }
+        public string UserCreateId { get; set; }
 
         public OrderStatus Status { get; set; }
 
