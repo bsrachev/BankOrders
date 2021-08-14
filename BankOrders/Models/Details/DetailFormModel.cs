@@ -44,6 +44,6 @@
 
         public IEnumerable<CurrencyServiceModel> Currencies { get; set; }
 
-        public IEnumerable<TemplateServiceModel> AllTemplates { get; set; }
+        //public IEnumerable<TemplateServiceModel> AllTemplates { get; set; }
     }
 }

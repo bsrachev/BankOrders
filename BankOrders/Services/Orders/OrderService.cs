@@ -118,7 +118,6 @@
 
             switch (status)
             {
-
                 case OrderStatus.ForPosting: 
                     orderData.UserApproveId = userId;
                     break;
@@ -136,6 +135,22 @@
             data.SaveChanges();
 
             return true;
+        }
+
+        public int Create(string accountingDate, string system, string userId)
+        {
+            var order = new Order
+            {
+                AccountingDate = DateTime.ParseExact(accountingDate, "dd.MM.yyyy", CultureInfo.InvariantCulture),
+                System = (OrderSystem)Enum.Parse(typeof(OrderSystem), system, true),
+                UserCreateId = userId
+            };
+
+            this.data.Orders.Add(order);
+
+            this.data.SaveChanges();
+
+            return order.Id;
         }
     }
 }

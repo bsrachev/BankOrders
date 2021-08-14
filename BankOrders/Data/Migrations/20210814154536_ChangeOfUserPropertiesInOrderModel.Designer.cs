@@ -4,14 +4,16 @@ using BankOrders.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BankOrders.Data.Migrations
 {
     [DbContext(typeof(BankOrdersDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210814154536_ChangeOfUserPropertiesInOrderModel")]
+    partial class ChangeOfUserPropertiesInOrderModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -400,9 +402,9 @@ namespace BankOrders.Data.Migrations
             modelBuilder.Entity("BankOrders.Data.Models.Detail", b =>
                 {
                     b.HasOne("BankOrders.Data.Models.Currency", "Currency")
-                        .WithMany("Details")
+                        .WithMany()
                         .HasForeignKey("CurrencyId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("BankOrders.Data.Models.Order", null)
@@ -505,11 +507,6 @@ namespace BankOrders.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("BankOrders.Data.Models.Currency", b =>
-                {
-                    b.Navigation("Details");
                 });
 
             modelBuilder.Entity("BankOrders.Data.Models.Order", b =>

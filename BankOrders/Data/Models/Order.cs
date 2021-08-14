@@ -11,27 +11,24 @@
     {
         public Order()
         {
-            //this.Id = Guid.NewGuid().ToString();
             this.Details = new HashSet<Detail>();
             this.Status = 0;
         }
-
-        //[Key]
-        //[Required]
-        //public string Id { get; set; } = Guid.NewGuid().ToString();
-
-        //[Required]
-        //[MaxLength(20)]
-        //public int RefNumber { get; set; }
 
         [Required]
         public DateTime? AccountingDate { get; set; }
 
         public string UserApproveId { get; set; }
 
+        public User UserApprove { get; set; }
+
         public string UserPostingId { get; set; }
 
+        public User UserPosting { get; set; }
+
         public string UserApprovePostingId { get; set; }
+
+        public User UserApprovePosting { get; set; }
 
         [Required]
         public OrderStatus Status { get; set; }

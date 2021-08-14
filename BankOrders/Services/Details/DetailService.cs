@@ -3,6 +3,7 @@
     using BankOrders.Data;
     using BankOrders.Data.Models;
     using BankOrders.Data.Models.Enums;
+    using BankOrders.Models.Orders;
     using BankOrders.Services.Orders;
     using System.Collections.Generic;
     using System.Linq;
@@ -66,6 +67,7 @@
                 .Where(c => c.OrderOrTemplateRefNum == refNum)
                 .Select(c => new DetailsServiceModel
                 {
+                    Id = c.Id,
                     Account = c.Account,
                     AccountingNumber = c.AccountingNumber,
                     AccountType = c.AccountType,
@@ -101,6 +103,56 @@
 
             template.TimesUsed++;
             this.data.SaveChanges();
+        }
+
+        public OrderDetailListingViewModel GetOrderInfo(int orderId, int? editDetailId)
+        {
+            /*var query = new OrderDetailListingViewModel();
+
+            var order = this.orderService.GetOrderInfo(orderId);
+
+            var ordersDetailsQuery = this.data.Details.AsQueryable();
+
+            ordersDetailsQuery = ordersDetailsQuery.Where(x => x.OrderOrTemplateRefNum == order.RefNumber);
+
+            var ordersDetailsList = new List<DetailFormModel>();
+
+            foreach (var od in ordersDetailsQuery)
+            {
+                ordersDetailsList.Add(new DetailFormModel
+                {
+                    Account = od.Account,
+                    AccountingNumber = od.AccountingNumber,
+                    Branch = od.Branch,
+                    AccountType = od.AccountType,
+                    CostCenter = od.CostCenter,
+                    CurrencyId = od.CurrencyId,
+                    DetailId = od.Id,
+                    Project = od.Project,
+                    Reason = od.Reason,
+                    Sum = od.Sum,
+                    SumBGN = od.SumBGN,
+                    //Currencies = this.currencyService.GetCurrencies(),
+                    //AllTemplates = this.templateService.GetAllTemplatesBySystem(order.System),
+                    OrderSystem = order.System
+                });
+            }
+
+            query.Id = order.Id;
+            query.EditDetailId = editDetailId;
+            query.AccountingDate = order.AccountingDate;
+            query.RefNumber = order.RefNumber;
+            query.Status = order.Status;
+            query.System = order.System;
+            query.UserCreateId = order.UserCreateId;
+            query.Details = ordersDetailsList;*/
+
+            return null;
+        }
+
+        public OrderDetailListingViewModel GetTemplateInfo(int templateId, int? editDetailId)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

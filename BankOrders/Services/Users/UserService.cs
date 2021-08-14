@@ -12,20 +12,37 @@
         public UserService(BankOrdersDbContext data)
             => this.data = data;
 
+        public UserServiceModel GetUserInfo(string userId)
+            => this.data
+                .Users
+                .Where(u => u.Id == userId)
+                .Select(o => new UserServiceModel
+                {
+                    Id = userId,
+                    FullName = o.FullName,
+                    Email = o.Email,
+                    EmployeeNumber = o.EmployeeNumber
+                })
+                .FirstOrDefault();
 
-        public bool IsUserCreateId(int orderId, string user)
+        public bool IsOrderUserCreate(int orderId, string userId)
             => this.data
                 .Orders
-                .Any(o => o.Id == orderId && o.UserCreateId == user);
+                .Any(o => o.Id == orderId && o.UserCreateId == userId);
 
-        public bool IsUserApproveId(int orderId, string user)
+        public bool IsTemplateUserCreate(int templateId, string userId)
             => this.data
                 .Orders
-                .Any(o => o.Id == orderId && o.UserApproveId == user);
+                .Any(o => o.Id == templateId && o.UserCreateId == userId);
 
-        public bool IsUserPostingId(int orderId, string user)
+        public bool IsUserApprove(int orderId, string userId)
             => this.data
                 .Orders
-                .Any(o => o.Id == orderId && o.UserPostingId == user);
+                .Any(o => o.Id == orderId && o.UserApproveId == userId);
+
+        public bool IsUserPosting(int orderId, string userId)
+            => this.data
+                .Orders
+                .Any(o => o.Id == orderId && o.UserPostingId == userId);
     }
 }

@@ -24,7 +24,7 @@
 
         public OrderStatus Status { get; set; }
 
-        public ICollection<DetailFormModel> Details { get; set; }
+        public IEnumerable<DetailFormModel> Details { get; set; }
 
         public IEnumerable<CurrencyServiceModel> Currencies { get; set; }
 

@@ -8,6 +8,8 @@
 
     public interface IOrderService
     {
+        int Create(string accountingDate, string system, string userId);
+
         OrderServiceModel GetOrderInfo(int orderId);
 
         public bool ChangeStatus(int orderId, string userId, OrderStatus status);

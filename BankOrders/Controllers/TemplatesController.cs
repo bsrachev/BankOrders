@@ -29,20 +29,17 @@
         private readonly ITemplateService templateService;
         private readonly IDetailService detailService;
         private readonly IUserService userService;
-        private readonly BankOrdersDbContext data;
 
         public TemplatesController(
             ICurrencyService currencyService,
             ITemplateService templateService,
             IDetailService detailService,
-            IUserService userService,
-            BankOrdersDbContext data)
+            IUserService userService)
         {
             this.currencyService = currencyService;
             this.templateService = templateService;
             this.detailService = detailService;
             this.userService = userService;
-            this.data = data;
         }
 
         [Authorize]
@@ -65,18 +62,10 @@
         public IActionResult Details(int templateId, int? editDetailId) // public IActionResult Create() / async Task<IActionResult>
         {
             var query = new TemplateDetailListingViewModel();
-            //[FromQuery] TemplateDetailListingViewModel query
 
             var template = this.templateService.GetTemplateInfo(templateId);
 
-            /*var template = this.data
-                .Templates
-                .Where(c => c.Id == id)
-                .FirstOrDefault();*/
-
-            var templatesDetailsQuery = this.data.Details.AsQueryable();
-
-            templatesDetailsQuery = templatesDetailsQuery.Where(x => x.OrderOrTemplateRefNum == template.RefNumber);
+            var templatesDetailsQuery = this.detailService.GetDetails(template.RefNumber);
 
             var templatesDetailsList = new List<DetailFormModel>();
 
@@ -107,13 +96,8 @@
             query.TimesUsed = template.TimesUsed;
             query.System = template.System;
             query.UserCreateId = template.UserCreateId;
-            query.Details = templatesDetailsList;//templatesDetailsQuery.ToList();
+            query.Details = templatesDetailsList;
             query.Currencies = this.currencyService.GetCurrencies();
-
-            /*if (editDetailId != null)
-            {
-                query.EditDetailId = editDetailId;
-            }*/
 
             return View(query);
         }

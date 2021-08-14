@@ -2,10 +2,14 @@
 {
     public interface IUserService
     {
-        public bool IsUserCreateId(int orderId, string user);
+        UserServiceModel GetUserInfo(string userId);
 
-        public bool IsUserApproveId(int orderId, string user);
+        bool IsOrderUserCreate(int orderOrTemplateId, string userId);
 
-        public bool IsUserPostingId(int orderId, string user);
+        bool IsTemplateUserCreate(int templateId, string userId);
+
+        bool IsUserApprove(int orderId, string userId);
+
+        bool IsUserPosting(int orderId, string userId);
     }
 }

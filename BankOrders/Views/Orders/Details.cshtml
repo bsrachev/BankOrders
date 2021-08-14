@@ -153,7 +153,7 @@
     </tbody>
 </table>
 
-@if (Model.Details.Count == 0)
+@if (Model.Details.Count() == 0)
 {
     <strong>Order №@Model.RefNumber has no details.</strong>
 }
