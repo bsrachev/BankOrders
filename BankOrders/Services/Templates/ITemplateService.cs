@@ -9,6 +9,8 @@
     {
         int Create(string name, string system, string userId);
 
+        void Delete(int templateId);
+
         TemplateServiceModel GetTemplateInfo(int carId);
 
         public IEnumerable<TemplateServiceModel> GetAllTemplatesBySystem(OrderSystem system);

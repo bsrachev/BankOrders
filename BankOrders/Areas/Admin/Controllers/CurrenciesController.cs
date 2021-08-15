@@ -7,7 +7,7 @@
     using Microsoft.AspNetCore.Mvc;
     using System.Linq;
 
-    using static Data.DataConstants.Errors;
+    using static Data.DataConstants.ErrorMessages;
     using static Data.DataConstants.SuccessMessages;
     using static WebConstants;
 
@@ -38,7 +38,7 @@
             }
             else
             {
-                TempData[GlobalMessageKey] = SuccessfullyAddedCurrency;
+                TempData[GlobalSuccessKey] = SuccessfullyAddedCurrency;
             }
 
             var currencies = this.currencyService.GetCurrencies();
@@ -57,7 +57,7 @@
 
             this.currencyService.Delete(id);
 
-            TempData[GlobalMessageKey] = SuccessfullyDeletedCurrency;
+            TempData[GlobalSuccessKey] = SuccessfullyDeletedCurrency;
 
             return this.RedirectToAction(nameof(Index));
         }

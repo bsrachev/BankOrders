@@ -21,10 +21,10 @@
             @Html.DisplayFor(model => model.System)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.UserCreateId)
+            @Html.DisplayNameFor(model => model.UserCreate)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.UserCreateId)
+            @Html.DisplayFor(model => model.UserCreate)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.PostingNumber)
@@ -41,7 +41,7 @@
     </dl>
 </div>
 
-@if (Model.EditDetailId == null)
+@if (Model.EditDetailId == null && Model.UserCreate == this.User.Identity.Name)
 {
     <div class="form-row">
         <div class="form-group col-md-12">
@@ -66,13 +66,16 @@
     </div>
 }
 
-<h4>@(Model.EditDetailId == null ? "or add a detail:" : "Edit the detail:")</h4>
-<hr />
-<div>
-    <partial name="_DetailFormPartial" model="@(Model.EditDetailId != null ? Model.Details.First(x => x.DetailId == Model.EditDetailId) : new DetailFormModel { CurrencyId = 1, Currencies = Model.Currencies, OrderSystem = Model.System } )" />
-</div>
+@if (Model.UserCreate == this.User.Identity.Name)
+{
+    <h4>@(Model.EditDetailId == null ? "or add a detail:" : "Edit the detail:")</h4>
+    <hr />
+    <div>
+        <partial name="_DetailFormPartial" model="@(Model.EditDetailId != null ? Model.Details.First(x => x.DetailId == Model.EditDetailId) : new DetailFormModel { CurrencyId = 1, Currencies = Model.Currencies, OrderSystem = Model.System } )" />
+    </div>
 
-<br />
+    <br />
+}
 
 <table class="table">
     <thead>
@@ -158,28 +161,28 @@
 
 @if (Model.Details.Count() == 0)
 {
-    <strong>Order №@Model.RefNumber has no details.</strong>
+    <h5>Order №@Model.RefNumber has no details.</h5>
 }
 
 <div class="container-fluid border-top">
     <div class="form-group">
         <br />
-        @if (Model.Status == OrderStatus.Draft || Model.Status == OrderStatus.ForCorrection)
+        @if ((Model.Status == OrderStatus.Draft || Model.Status == OrderStatus.ForCorrection) && Model.UserCreate == this.User.Identity.Name)
         {
-            <a asp-controller="Orders" asp-action="SendForApproval" asp-route-id="@Model.Id" class="btn btn-warning">Send for approval</a>
+            <a asp-controller="Orders" asp-action="SendForApproval" asp-route-id="@Model.Id" class="btn btn-success">Send for approval</a>
         }
         else if (Model.Status == OrderStatus.ForApproval)
         {
-            <a asp-controller="Orders" asp-action="Approve" asp-route-id="@Model.Id" class="btn btn-warning">Approve order</a>
+            <a asp-controller="Orders" asp-action="Approve" asp-route-id="@Model.Id" class="btn btn-success">Approve order</a>
             <a asp-controller="Orders" asp-action="ForCorrection" asp-route-id="@Model.Id" class="btn btn-warning">Send for correction</a>
         }
         else if (Model.Status == OrderStatus.ForPosting || Model.Status == OrderStatus.ForPostingCorrection)
         {
-            <a asp-controller="Orders" asp-action="SendForPostingApproval" asp-route-id="@Model.Id" class="btn btn-warning">Send for post approval</a>
+            <a asp-controller="Orders" asp-action="SendForPostingApproval" asp-route-id="@Model.Id" class="btn btn-success">Send for post approval</a>
         }
         else if (Model.Status == OrderStatus.ForPostingApproval)
         {
-            <a asp-controller="Orders" asp-action="ApprovePosting" asp-route-id="@Model.Id" class="btn btn-warning">Approve posting</a>
+            <a asp-controller="Orders" asp-action="ApprovePosting" asp-route-id="@Model.Id" class="btn btn-success">Approve posting</a>
             <a asp-controller="Orders" asp-action="ForPostingCorrection" asp-route-id="@Model.Id" class="btn btn-warning">Send for correction</a>
         }
         <a asp-controller="Orders" asp-action="All" class="btn btn-dark float-right">Cancel</a>

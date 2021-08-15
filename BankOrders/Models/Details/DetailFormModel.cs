@@ -26,6 +26,8 @@
         public string Account { get; init; }
 
         [Required]
+        //[RegularExpression(@"(BO\d{3})", ErrorMessage = "Account type has to be DT or KT.")] TODO
+
         public AccountType AccountType { get; init; }
 
         [Required]
@@ -36,8 +38,6 @@
 
         [Required]
         public decimal SumBGN { get; init; }
-
-        //public int AccountingNumber { get; init; }
 
         [Required]
         public OrderSystem OrderSystem { get; set; }

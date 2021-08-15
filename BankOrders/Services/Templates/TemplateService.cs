@@ -5,17 +5,21 @@
     using BankOrders.Data.Models.Enums;
     using BankOrders.Models.Templates;
     using BankOrders.Services.Orders;
-
+    using BankOrders.Services.Users;
     using System;
     using System.Collections.Generic;
     using System.Linq;
 
     public class TemplateService : ITemplateService
     {
+        private readonly IUserService userService;
         private readonly BankOrdersDbContext data;
 
-        public TemplateService(BankOrdersDbContext data)
-            => this.data = data;
+        public TemplateService(IUserService userService, BankOrdersDbContext data)
+        {
+            this.userService = userService;
+            this.data = data; 
+        }
 
         public IEnumerable<TemplateServiceModel> GetAllTemplates(TemplateSearchFormModel searchModel = null)
         {
@@ -57,7 +61,7 @@
                     RefNumber = c.RefNumber,
                     Name = c.Name,
                     System = c.System,
-                    UserCreateId = c.UserCreateId,
+                    UserCreateId = this.userService.GetUserInfo(c.UserCreateId).EmployeeNumber,
                     TimesUsed = c.TimesUsed,
                 })
                 .ToList();
@@ -108,6 +112,15 @@
             this.data.SaveChanges();
 
             return template.Id;
+        }
+
+        public void Delete(int templateId)
+        {
+            var template = this.data.Templates.Find(templateId);
+
+            this.data.Templates.Remove(template);
+
+            this.data.SaveChanges();
         }
     }
 }

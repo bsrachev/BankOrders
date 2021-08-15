@@ -1,57 +1,82 @@
-﻿<section class="py-5">
-    <div class="button-holder">
-        <a href="/Orders/Create" class="btn btn-info text-uppercase">Create New Order</a>
-    </div>
+﻿@model AllOrdersQueryModel
 
+@{
+    ViewData["Title"] = "Orders";
+}
+
+<head>
+    <style type="text/css">
+        .btn-circle.btn-md {
+            width: 50px;
+            height: 50px;
+            padding: 7px 10px;
+            border-radius: 125px;
+            font-size: 28px;
+            text-align: center;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+        }
+    </style>
+</head>
+
+<section class="py-5">
     <div class="container">
-        <h1 style="margin: 2%; text-align: center;">Orders</h1>
+        <div class="row" style="margin: 2%;">
+            <div style="margin-left: 43%;">
+                <h1>Orders</h1>
+            </div>
+            <div class="col-md-1">
+                <a href="/Orders/Create" class="btn btn-outline-info btn-circle btn-md">+</a>
+            </div>
+        </div>
         <div style="padding: 5%;">
-
             <div>
                 <partial name="_OrderSearchPartial" model="null" />
             </div>
             <br />
 
-            <table class="table table-striped">
-                <thead class="thead-dark">
-                    <tr>
-                        <th scope="col" style="text-align:center;">Details</th>
-                        <th scope="col" style="text-align:center;">Reference №</th>
-                        <th scope="col" style="text-align:center;">Accounting Date</th>
-                        <th scope="col" style="text-align:center;">System</th>
-                        <th scope="col" style="text-align:center;">Created by</th>
-                        <th scope="col" style="text-align:center;">Approved by</th>
-                        <th scope="col" style="text-align:center;">Posting by</th>
-                        <th scope="col" style="text-align:center;">Posting number</th>
-                        <th scope="col" style="text-align:center;">Posting approved<br />by</th>
-                        <th scope="col" style="text-align:center;">Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var order in Model)
-                    {
-                    <tr>
-                        <td>
-                            <div class="button-holder">
-                                <a href="/Orders/Details?orderId=@order.Id" class="btn btn-info text-uppercase">View</a>
-                            </div>
-                        </td>
-                        <th scope="row">№@order.RefNumber</th>
-                        <td>@order.AccountingDate</td>
-                        <td>@order.System</td>
-                        <td>@order.UserCreateId</td>
-                        <td>@order.UserApproveId</td>
-                        <td>@order.UserPostingId</td>
-                        <td>@order.PostingNumber</td>
-                        <td>@order.UserApprovePostingId</td>
-                        <th scope="row">@order.Status</th>
-                    </tr>
-                    }
-                </tbody>
-            </table>
-            @if (false) //TODO
+            @if (Model.Orders.Count() == 0)
             {
-                <strong>There are no orders.</strong>
+                <h2>There are no orders.</h2>
+            }
+            else
+            {
+                <table class="table table-striped">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col" style="text-align:center;">Details</th>
+                            <th scope="col" style="text-align:center;">Reference №</th>
+                            <th scope="col" style="text-align:center;">Accounting Date</th>
+                            <th scope="col" style="text-align:center;">System</th>
+                            <th scope="col" style="text-align:center;">Created by</th>
+                            <th scope="col" style="text-align:center;">Approved by</th>
+                            <th scope="col" style="text-align:center;">Posting by</th>
+                            <th scope="col" style="text-align:center;">Posting number</th>
+                            <th scope="col" style="text-align:center;">Posting approved<br />by</th>
+                            <th scope="col" style="text-align:center;">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var order in Model.Orders)
+                        {
+                            <tr>
+                                <td>
+                                    <div class="button-holder">
+                                        <a href="/Orders/Details?orderId=@order.Id" class="btn btn-info text-uppercase">View</a>
+                                    </div>
+                                </td>
+                                <th scope="row">№@order.RefNumber</th>
+                                <td>@order.AccountingDate</td>
+                                <td>@order.System</td>
+                                <td>@order.UserCreateId</td>
+                                <td>@order.UserApproveId</td>
+                                <td>@order.UserPostingId</td>
+                                <td>@(order.PostingNumber == 0 ? null : order.PostingNumber)</td>
+                                <td>@order.UserApprovePostingId</td>
+                                <th scope="row">@order.Status</th>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
             }
         </div>
     </div>

@@ -10,7 +10,7 @@
     using System.Net;
     using System.Text.RegularExpressions;
 
-    using static Data.DataConstants.Errors;
+    using static Data.DataConstants.ErrorMessages;
     using static WebConstants;
 
     public class CurrencyService : ICurrencyService

@@ -43,11 +43,11 @@
         }
 
         [Authorize]
-        public IActionResult All()
+        public IActionResult All([FromQuery] AllTemplatesQueryModel query)
         {
-            var templates = this.templateService.GetAllTemplates();
+            query.Templates = this.templateService.GetAllTemplates();
 
-            return this.View(templates);
+            return this.View(query);
         }
 
         [HttpPost]
@@ -55,7 +55,7 @@
         {
             var templates = this.templateService.GetAllTemplates(searchModel);
 
-            return this.View(templates);
+            return this.View(new AllTemplatesQueryModel { Templates = templates });
         }
 
         [Authorize]
@@ -95,7 +95,7 @@
             query.RefNumber = template.RefNumber;
             query.TimesUsed = template.TimesUsed;
             query.System = template.System;
-            query.UserCreateId = template.UserCreateId;
+            query.UserCreate = this.userService.GetUserInfo(template.UserCreateId).EmployeeNumber;
             query.Details = templatesDetailsList;
             query.Currencies = this.currencyService.GetCurrencies();
 
@@ -143,6 +143,13 @@
                                               templateDetailModel.Sum,
                                               templateDetailModel.SumBGN);
             }
+
+            return this.Redirect($"/Templates/Details?templateId={@templateId}");
+        }
+
+        public IActionResult DeleteDetail(int templateId, int detailId)
+        {
+            this.detailService.DeleteDetail(detailId);
 
             return this.Redirect($"/Templates/Details?templateId={@templateId}");
         }

@@ -1,49 +1,80 @@
-﻿<section class="py-5">
-    <div class="button-holder">
-        <a href="/Admin/Templates/Create" class="btn btn-info text-uppercase">New Template</a>
-    </div>
+﻿@model AllTemplatesQueryModel
 
+@{
+    ViewData["Title"] = "Templates";
+}
+
+<head>
+    <style type="text/css">
+        .btn-circle.btn-md {
+            width: 50px;
+            height: 50px;
+            padding: 7px 10px;
+            border-radius: 125px;
+            font-size: 28px;
+            text-align: center;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+        }
+    </style>
+</head>
+
+<section class="py-5">
     <div class="container">
-        <h1 style="margin: 2%; text-align: center;">Templates</h1>
+        <div class="row" style="margin: 2%;">
+            <div style="margin-left: 40%;">
+                <h1>Templates</h1>
+            </div>
+            <div class="col-md-1">
+                <a href="/Admin/Templates/Create" class="btn btn-outline-info btn-circle btn-md">+</a>
+            </div>
+        </div>
         <div style="padding: 5%;">
-
             <div>
                 <partial name="_TemplateSearchPartial" model="null" />
             </div>
             <br />
 
-            <table class="table table-striped">
-                <thead class="thead-dark">
-                    <tr>
-                        <th scope="col" style="text-align:center;">Details</th>
-                        <th scope="col" style="text-align:center;">Reference №</th>
-                        <th scope="col" style="text-align:center;">Name</th>
-                        <th scope="col" style="text-align:center;">System</th>
-                        <th scope="col" style="text-align:center;">Created by</th>
-                        <th scope="col" style="text-align:center;">Times Used</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var template in Model)
-                    {
-                        <tr>
-                            <td>
-                                <div class="button-holder">
-                                    <a href="/Templates/Details?templateId=@template.Id" class="btn btn-info text-uppercase">View</a>
-                                </div>
-                            </td>
-                            <th scope="row">№@template.RefNumber</th>
-                            <td>@template.Name</td>
-                            <td>@template.System</td>
-                            <td>@template.UserCreateId</td>
-                            <td>@template.TimesUsed</td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-            @if (false) //TODO
+            @if (Model.Templates.Count() == 0)
             {
-                <strong>There are no templates.</strong>
+                <h5>There are no templates. Would you like to <a href="/Admin/Templates/Create">create</a> the first one?</h5>
+            }
+            else
+            {
+                <table class="table table-striped">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col" style="text-align:center;">Details</th>
+                            <th scope="col" style="text-align:center;">Reference №</th>
+                            <th scope="col" style="text-align:center;">Name</th>
+                            <th scope="col" style="text-align:center;">System</th>
+                            <th scope="col" style="text-align:center;">Created by</th>
+                            @if (this.User.IsAdmin())
+                            {
+                                <th scope="col" style="text-align:center;">Times Used</th>
+                            }
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var template in Model.Templates)
+                        {
+                            <tr>
+                                <td>
+                                    <div class="button-holder">
+                                        <a href="/Templates/Details?templateId=@template.Id" class="btn btn-info text-uppercase">View</a>
+                                    </div>
+                                </td>
+                                <th scope="row">№@template.RefNumber</th>
+                                <td>@template.Name</td>
+                                <td>@template.System</td>
+                                <td>@template.UserCreateId</td>
+                                @if (this.User.IsAdmin())
+                                {
+                                    <td>@template.TimesUsed</td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
             }
         </div>
     </div>

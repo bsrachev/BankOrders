@@ -21,7 +21,8 @@
     using BankOrders.Services.Templates;
     using BankOrders.Services.Currencies;
 
-    using static Data.DataConstants.Errors;
+    using static Data.DataConstants.ErrorMessages;
+    using static Data.DataConstants.SuccessMessages;
     using static WebConstants;
 
     public class OrdersController : Controller
@@ -47,11 +48,11 @@
         }
 
         [Authorize]
-        public IActionResult All()
+        public IActionResult All([FromQuery] AllOrdersQueryModel query)
         {
-            var orders = this.orderService.GetAllOrders();
+            query.Orders = this.orderService.GetAllOrders();
 
-            return this.View(orders);
+            return this.View(query);
         }
 
         [HttpPost]
@@ -60,7 +61,7 @@
         {
             var orders = this.orderService.GetAllOrders(searchModel);
 
-            return this.View(orders);
+            return this.View(new AllOrdersQueryModel { Orders = orders });
         }
 
         [Authorize]
@@ -120,7 +121,7 @@
             query.RefNumber = order.RefNumber;
             query.Status = order.Status;
             query.System = order.System;
-            query.UserCreateId = order.UserCreateId;
+            query.UserCreate = this.userService.GetUserInfo(order.UserCreateId).EmployeeNumber;
             query.PostingNumber = order.PostingNumber;
             query.Details = ordersDetailsList;
             query.Currencies = this.currencyService.GetCurrencies();
@@ -277,7 +278,15 @@
 
         public IActionResult CopyDetailsFromTemplate(int orderId, int templateId)
         {
-            this.detailService.CopyFromTemplate(orderId, templateId);
+            if (templateId == 0)
+            {
+                TempData[GlobalErrorKey] = NoTemplates;
+            }
+            else
+            {
+                this.detailService.CopyFromTemplate(orderId, templateId);
+                TempData[GlobalSuccessKey] = SuccessfullyCopiedDetails;
+            }
 
             return this.Redirect($"/Orders/Details?orderId={@orderId}");
         }

@@ -39,13 +39,13 @@
 
                 if (searchModel.AccountingDateFrom != null)
                 {
-                    var accDateFrom = DateTime.ParseExact(searchModel.AccountingDateFrom, "dd.MM.yyyy", CultureInfo.InvariantCulture);
+                    var accDateFrom = DateTime.ParseExact(searchModel.AccountingDateFrom, "yyyy-MM-dd", CultureInfo.InvariantCulture);
                     ordersQuery = ordersQuery.Where(x => x.AccountingDate >= accDateFrom);
                 }
 
                 if (searchModel.AccountingDateTo != null)
                 {
-                    var accDateTo = DateTime.ParseExact(searchModel.AccountingDateTo, "dd.MM.yyyy", CultureInfo.InvariantCulture);
+                    var accDateTo = DateTime.ParseExact(searchModel.AccountingDateTo, "yyyy-MM-dd", CultureInfo.InvariantCulture);
                     ordersQuery = ordersQuery.Where(x => x.AccountingDate <= accDateTo);
                 }
 
@@ -156,7 +156,7 @@
         {
             var order = new Order
             {
-                AccountingDate = DateTime.ParseExact(accountingDate, "dd.MM.yyyy", CultureInfo.InvariantCulture),
+                AccountingDate = DateTime.ParseExact(accountingDate, "yyyy-MM-dd", CultureInfo.InvariantCulture),
                 System = (OrderSystem)Enum.Parse(typeof(OrderSystem), system, true),
                 UserCreateId = userId
             };

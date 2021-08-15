@@ -33,5 +33,12 @@
 
             return this.Redirect($"/Templates/Details/?templateId={templateId}");
         }
+
+        public IActionResult Delete(int id)
+        {
+            this.templateService.Delete(id);
+
+            return this.Redirect($"/Templates/All");
+        }
     }
 }

@@ -23,11 +23,20 @@
             @Html.DisplayFor(model => model.System)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.UserCreateId)
+            @Html.DisplayNameFor(model => model.UserCreate)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.UserCreateId)
+            @Html.DisplayFor(model => model.UserCreate)
         </dd>
+        @if (this.User.IsAdmin())
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.TimesUsed)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.TimesUsed)
+            </dd>
+        }
     </dl>
 </div>
 
@@ -58,6 +67,7 @@
             <th scope="col">Sum</th>
             <th scope="col">Currency</th>
             <th scope="col">Sum in BGN</th>
+            <th scope="col"></th>
         </tr>
     </thead>
     <tbody>
@@ -111,6 +121,9 @@
                     <td>@detail.Sum</td>
                     <td>@detail.CurrencyId</td>
                     <td>@detail.SumBGN</td>
+                    <td>
+                        <a class="nav-link text-danger" asp-controller="Orders" asp-action="DeleteDetail" asp-route-orderId="@Model.Id" asp-route-detailId="@detail.DetailId">X</a>
+                    </td>
                 </tr>
             }
         }
@@ -119,17 +132,17 @@
 
 @if (Model.Details.Count == 0)
 {
-    <strong>Template №@Model.RefNumber has no details.</strong>
+    <h5>Template №@Model.RefNumber has no details.</h5>
 }
 
 <div class="container-fluid border-top">
     <div class="form-group">
         <br />
-        @if (this.User.IsInRole(AdministratorRoleName))
+        @if (this.User.IsAdmin())
         {
-            <a asp-controller="Templates" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-warning">Delete Template</a>
+            <a asp-area="Admin" asp-controller="Templates" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Delete Template</a>
         }
-        <a asp-controller="Orders" asp-action="All" class="btn btn-dark float-right">Cancel</a>
+        <a asp-controller="Templates" asp-action="All" class="btn btn-dark float-right">Cancel</a>
     </div>
 </div>
 

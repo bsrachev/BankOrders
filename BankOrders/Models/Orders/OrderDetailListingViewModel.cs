@@ -7,6 +7,7 @@
     
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
 
     public class OrderDetailListingViewModel
     {
@@ -16,11 +17,13 @@
 
         public int RefNumber { get; set; }
 
+        [Display(Name = "Accounting Date")]
         public DateTime? AccountingDate { get; set; }
 
         public OrderSystem System { get; set; }
 
-        public string UserCreateId { get; set; }
+        [Display(Name = "Created by")]
+        public string UserCreate { get; set; }
 
         public OrderStatus Status { get; set; }
 
@@ -32,6 +35,7 @@
 
         public IEnumerable<TemplateServiceModel> Templates { get; set; }
 
+        [Display(Name = "Posting Number")]
         public int PostingNumber { get; set; }
     }
 }

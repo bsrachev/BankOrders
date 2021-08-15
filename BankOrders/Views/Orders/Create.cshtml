@@ -8,13 +8,13 @@
 
 <hr />
 <div class="row">
-    <div class="col-md-3">
+    <div class="col-md-4">
         <form method="post" asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group row">
                 <div class="col-md-7">
                     <label asp-for="AccountingDate" class="control-label"></label>
-                    <input asp-for="AccountingDate" class="form-control" placeholder="mm.dd.yyyy" />
+                    <input asp-for="AccountingDate" class="form-control"/>
                     <span asp-validation-for="AccountingDate" class="text-danger"></span>
                 </div>
                 <div class="col-md-5 float-right">

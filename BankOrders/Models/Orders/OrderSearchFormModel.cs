@@ -3,13 +3,16 @@
     using BankOrders.Data.Models.Enums;
 
     using System;
+    using System.ComponentModel.DataAnnotations;
 
-    public class OrderSearchFormModel // formerly OrderQueryServiceModel
+    public class OrderSearchFormModel
     {
         public string RefNumber { get; set; }
 
+        [DataType(DataType.Date)]
         public string AccountingDateFrom { get; set; }
 
+        [DataType(DataType.Date)]
         public string AccountingDateTo { get; set; }
 
         public string System { get; set; }

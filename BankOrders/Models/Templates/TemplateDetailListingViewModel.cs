@@ -5,6 +5,7 @@
     using BankOrders.Services.Currencies.Models;
     
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
 
     public class TemplateDetailListingViewModel
     {
@@ -18,8 +19,10 @@
 
         public OrderSystem System { get; set; }
 
-        public string UserCreateId { get; set; }
+        [Display(Name = "Created by")]
+        public string UserCreate { get; set; }
 
+        [Display(Name = "Times Used")]
         public int TimesUsed { get; set; }
 
         public ICollection<DetailFormModel> Details { get; set; }
