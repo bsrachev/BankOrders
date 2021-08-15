@@ -25,6 +25,6 @@
 
         public decimal SumBGN { get; set; }
 
-        public int AccountingNumber { get; set; }
+        //public int AccountingNumber { get; set; }
     }
 }

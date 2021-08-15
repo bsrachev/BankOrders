@@ -11,5 +11,7 @@
         bool IsUserApprove(int orderId, string userId);
 
         bool IsUserPosting(int orderId, string userId);
+        
+        string GetUserIdByEmployeeNumber(string employeeNumber);
     }
 }

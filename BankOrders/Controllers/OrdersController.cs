@@ -98,7 +98,7 @@
                 ordersDetailsList.Add(new DetailFormModel
                 {
                     Account = od.Account,
-                    AccountingNumber = od.AccountingNumber,
+                    //AccountingNumber = od.AccountingNumber,
                     Branch = od.Branch,
                     AccountType = od.AccountType,
                     CostCenter = od.CostCenter,
@@ -121,6 +121,7 @@
             query.Status = order.Status;
             query.System = order.System;
             query.UserCreateId = order.UserCreateId;
+            query.PostingNumber = order.PostingNumber;
             query.Details = ordersDetailsList;
             query.Currencies = this.currencyService.GetCurrencies();
             query.Templates = this.templateService.GetAllTemplatesBySystem(query.System);

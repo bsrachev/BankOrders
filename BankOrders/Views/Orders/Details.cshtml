@@ -27,6 +27,12 @@
             @Html.DisplayFor(model => model.UserCreateId)
         </dd>
         <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PostingNumber)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PostingNumber)
+        </dd>
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Status)
         </dt>
         <dd class="col-sm-10">
@@ -87,7 +93,6 @@
             <th scope="col">Sum</th>
             <th scope="col">Currency</th>
             <th scope="col">Sum in BGN</th>
-            <th scope="col">Accounting Number</th>
             <th scope="col"></th>
         </tr>
     </thead>
@@ -117,7 +122,6 @@
                     <td>@detail.Sum</td>
                     <td>@detail.CurrencyId</td>
                     <td>@detail.SumBGN</td>
-                    <td>@detail.AccountingNumber</td>
                 </tr>
             }
             else
@@ -143,7 +147,6 @@
                     <td>@detail.Sum</td>
                     <td>@detail.CurrencyId</td>
                     <td>@detail.SumBGN</td>
-                    <td>@detail.AccountingNumber</td>
                     <td>
                         <a class="nav-link text-danger" asp-controller="Orders" asp-action="DeleteDetail" asp-route-orderId="@Model.Id" asp-route-detailId="@detail.DetailId">X</a>
                     </td>

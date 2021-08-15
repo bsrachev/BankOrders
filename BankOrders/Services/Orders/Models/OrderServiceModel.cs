@@ -23,5 +23,7 @@
         public string UserApprovePostingId { get; set; }
 
         public OrderStatus Status { get; set; }
+
+        public int PostingNumber { get; set; }
     }
 }

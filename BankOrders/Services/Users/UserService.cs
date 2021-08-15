@@ -12,6 +12,13 @@
         public UserService(BankOrdersDbContext data)
             => this.data = data;
 
+        public string GetUserIdByEmployeeNumber(string employeeNumber)
+            => this.data
+                .Users
+                .Where(u => u.EmployeeNumber == employeeNumber)
+                .FirstOrDefault()
+                .Id;
+
         public UserServiceModel GetUserInfo(string userId)
             => this.data
                 .Users

@@ -37,7 +37,7 @@
         [Required]
         public decimal SumBGN { get; init; }
 
-        public int AccountingNumber { get; init; }
+        //public int AccountingNumber { get; init; }
 
         [Required]
         public OrderSystem OrderSystem { get; set; }

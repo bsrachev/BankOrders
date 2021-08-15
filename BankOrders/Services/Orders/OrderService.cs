@@ -4,6 +4,7 @@
     using BankOrders.Data.Models;
     using BankOrders.Data.Models.Enums;
     using BankOrders.Models.Orders;
+    using BankOrders.Services.Users;
     using System;
     using System.Collections.Generic;
     using System.Globalization;
@@ -11,10 +12,14 @@
 
     public class OrderService : IOrderService
     {
+        private readonly IUserService userService;
         private readonly BankOrdersDbContext data;
 
-        public OrderService(BankOrdersDbContext data)
-            => this.data = data;
+        public OrderService(IUserService userService, BankOrdersDbContext data)
+        {
+            this.userService = userService;
+            this.data = data;
+        }
 
         public IEnumerable<OrderServiceModel> GetAllOrders(OrderSearchFormModel searchModel = null)
         {
@@ -44,24 +49,32 @@
                     ordersQuery = ordersQuery.Where(x => x.AccountingDate <= accDateTo);
                 }
 
-                if (searchModel.UserCreateId != null)
+                if (searchModel.UserCreate != null)
                 {
-                    ordersQuery = ordersQuery.Where(x => x.UserCreateId == searchModel.UserCreateId);
+                    string userCreateId = this.userService.GetUserIdByEmployeeNumber(searchModel.UserCreate);
+                    
+                    ordersQuery = ordersQuery.Where(x => x.UserCreateId == userCreateId);
                 }
 
-                if (searchModel.UserApproveId != null)
+                if (searchModel.UserApprove != null)
                 {
-                    ordersQuery = ordersQuery.Where(x => x.UserApproveId == searchModel.UserApproveId);
+                    string userApproveId = this.userService.GetUserIdByEmployeeNumber(searchModel.UserApprove);
+                    
+                    ordersQuery = ordersQuery.Where(x => x.UserApproveId == userApproveId);
                 }
 
-                if (searchModel.UserPostingId != null)
+                if (searchModel.UserPosting != null)
                 {
-                    ordersQuery = ordersQuery.Where(x => x.UserPostingId == searchModel.UserPostingId);
+                    string userPostingId = this.userService.GetUserIdByEmployeeNumber(searchModel.UserPosting);
+
+                    ordersQuery = ordersQuery.Where(x => x.UserPostingId == userPostingId);
                 }
 
-                if (searchModel.UserApprovePostingId != null)
+                if (searchModel.UserApprovePosting != null)
                 {
-                    ordersQuery = ordersQuery.Where(x => x.UserApprovePostingId == searchModel.UserApprovePostingId);
+                    string userApprovePostingId = this.userService.GetUserIdByEmployeeNumber(searchModel.UserApprovePosting);
+
+                    ordersQuery = ordersQuery.Where(x => x.UserApprovePostingId == userApprovePostingId);
                 }
 
                 if (searchModel.System != null)
@@ -69,9 +82,9 @@
                     ordersQuery = ordersQuery.Where(x => x.System == (OrderSystem)Enum.Parse(typeof(OrderSystem), searchModel.System));
                 }
 
-                if (searchModel.IsLocked != null)
+                if (searchModel.PostingNumber != null)
                 {
-                    //ordersQuery = ordersQuery.Where(x => x.RefNumber == int.Parse(searchModel.RefNumber));
+                    ordersQuery = ordersQuery.Where(x => x.PostingNumber == int.Parse(searchModel.PostingNumber));
                 }
             }
 
@@ -83,10 +96,12 @@
                     RefNumber = c.RefNumber,
                     AccountingDate = c.AccountingDate,
                     System = c.System,
-                    UserCreateId = c.UserCreateId,
-                    UserApproveId = c.UserApproveId,
-                    UserPostingId = c.UserPostingId,
-                    UserApprovePostingId = c.UserApprovePostingId,
+                    UserCreateId = this.userService.GetUserInfo(c.UserCreateId).EmployeeNumber,
+                    UserApproveId = this.userService.GetUserInfo(c.UserApproveId).EmployeeNumber,
+                    UserPostingId = this.userService.GetUserInfo(c.UserPostingId).EmployeeNumber,
+                    UserApprovePostingId = this.userService.GetUserInfo(c.UserApprovePostingId).EmployeeNumber,
+                    PostingNumber = c.PostingNumber,
+                    Status = c.Status
                 })
                 .ToList();
         }
@@ -105,8 +120,8 @@
                     UserApproveId = c.UserApproveId,
                     UserPostingId = c.UserPostingId,
                     UserApprovePostingId = c.UserApprovePostingId,
-                    Status = c.Status
-                    //AccountingNumbers = c. TODO
+                    Status = c.Status,
+                    PostingNumber = c.PostingNumber
                 })
                 .FirstOrDefault();
 

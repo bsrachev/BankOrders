@@ -22,6 +22,7 @@
                         <th scope="col" style="text-align:center;">Created by</th>
                         <th scope="col" style="text-align:center;">Approved by</th>
                         <th scope="col" style="text-align:center;">Posting by</th>
+                        <th scope="col" style="text-align:center;">Posting number</th>
                         <th scope="col" style="text-align:center;">Posting approved<br />by</th>
                         <th scope="col" style="text-align:center;">Status</th>
                     </tr>
@@ -29,21 +30,22 @@
                 <tbody>
                     @foreach (var order in Model)
                     {
-                        <tr>
-                            <td>
-                                <div class="button-holder">
-                                    <a href="/Orders/Details?orderId=@order.Id" class="btn btn-info text-uppercase">View</a>
-                                </div>
-                            </td>
-                            <th scope="row">№@order.RefNumber</th>
-                            <td>@order.AccountingDate</td>
-                            <td>@order.System</td>
-                            <td>@order.UserCreateId</td>
-                            <td>@order.UserApproveId</td>
-                            <td>@order.UserPostingId</td>
-                            <td>@order.UserApprovePostingId</td>
-                            <th scope="row">@order.Status</th>
-                        </tr>
+                    <tr>
+                        <td>
+                            <div class="button-holder">
+                                <a href="/Orders/Details?orderId=@order.Id" class="btn btn-info text-uppercase">View</a>
+                            </div>
+                        </td>
+                        <th scope="row">№@order.RefNumber</th>
+                        <td>@order.AccountingDate</td>
+                        <td>@order.System</td>
+                        <td>@order.UserCreateId</td>
+                        <td>@order.UserApproveId</td>
+                        <td>@order.UserPostingId</td>
+                        <td>@order.PostingNumber</td>
+                        <td>@order.UserApprovePostingId</td>
+                        <th scope="row">@order.Status</th>
+                    </tr>
                     }
                 </tbody>
             </table>

@@ -69,7 +69,7 @@
                 {
                     Id = c.Id,
                     Account = c.Account,
-                    AccountingNumber = c.AccountingNumber,
+                    //AccountingNumber = c.AccountingNumber,
                     AccountType = c.AccountType,
                     Branch = c.Branch,
                     CostCenter = c.CostCenter,
@@ -122,7 +122,7 @@
                 ordersDetailsList.Add(new DetailFormModel
                 {
                     Account = od.Account,
-                    AccountingNumber = od.AccountingNumber,
+                    //AccountingNumber = od.AccountingNumber,
                     Branch = od.Branch,
                     AccountType = od.AccountType,
                     CostCenter = od.CostCenter,

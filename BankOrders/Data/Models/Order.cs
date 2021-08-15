@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    //using System.Data.Entity;
 
     using BankOrders.Data.Models.Enums;
 
@@ -32,5 +31,7 @@
 
         [Required]
         public OrderStatus Status { get; set; }
+
+        public int PostingNumber { get; set; }
     }
 }

@@ -31,5 +31,7 @@
         public int TemplateId { get; init; }
 
         public IEnumerable<TemplateServiceModel> Templates { get; set; }
+
+        public int PostingNumber { get; set; }
     }
 }

@@ -74,7 +74,7 @@
                 templatesDetailsList.Add(new DetailFormModel
                 {
                     Account = od.Account,
-                    AccountingNumber = od.AccountingNumber,
+                    //AccountingNumber = od.AccountingNumber,
                     Branch = od.Branch,
                     AccountType = od.AccountType,
                     CostCenter = od.CostCenter,
