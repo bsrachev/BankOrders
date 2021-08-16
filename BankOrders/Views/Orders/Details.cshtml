@@ -4,6 +4,8 @@
     ViewData["Title"] = "Details";
 }
 
+@inject ITemplateService templateService
+@inject IDetailService detailService
 @inject IUserService userService
 @{
     var isUserCreate = this.userService.IsOrderUserCreate(Model.Id, this.User.Id());
@@ -60,7 +62,6 @@
                 <hr />
                 <div class="row col-md-12">
                     <h4>Copy details from template:</h4>
-                    <div class="col-md-1"></div>
                     <div class="col-md-6">
                         <select id="templateId" asp-for="TemplateId" class="form-control col-md-12">
                             @foreach (var template in Model.Templates)
@@ -68,10 +69,39 @@
                                 <option value="@template.Id">@template.Name</option>
                             }
                         </select>
-                        <span asp-validation-for="TemplateId" class="text-danger"></span>
                     </div>
                     <div class="col-md-1">
-                        <a class="btn btn-info" onclick="copyFromTemplate(this,'@Url.Action("CopyDetailsFromTemplate", "Orders")')">Copy</a>
+                        <a class="btn btn-info" data-toggle="collapse" data-target="#collapseCard" aria-expanded="false" aria-controls="collapseCard" id="collapsable">▽</a>
+                    </div>
+                    <div class="col-md-1">
+                        <a class="btn btn-primary" onclick="copyFromTemplate(this,'@Url.Action("CopyDetailsFromTemplate", "Orders")')">Copy</a>
+                    </div>
+                </div>
+                <div class="collapse" id="collapseCard">
+                    <div class="card card-body" style="margin-top: 1%;">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Branch</th>
+                                    @if (Model.System == OrderSystem.Internal)
+                                    {
+                                        <th scope="col">Cost Center</th>
+                                    }
+                                    else
+                                    {
+                                        <th scope="col">Project</th>
+                                    }
+                                    <th scope="col">Reason</th>
+                                    <th scope="col">Account</th>
+                                    <th scope="col">Account Type</th>
+                                    <th scope="col">Sum</th>
+                                    <th scope="col">Currency</th>
+                                    <th scope="col">Sum in BGN</th>
+                                </tr>
+                            </thead>
+                            <tbody id="detailsTableAjaxLine">
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -228,12 +258,77 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-
     <script>
-        function copyFromTemplate(item, baseUrl) {
-            var templateId = document.getElementById("templateId");
+        $('#collapsable').on('click', ev => {
+            let template = document.getElementById("templateId");
+            let templateId = template.options[template.selectedIndex].value;
 
-            window.location.href = baseUrl + '?orderId=' + @Model.Id + '&templateId=' + templateId.value;
-        }
+            $.get('/api/templates/?templateId=' + templateId, (data) => {
+                for (var i = 0; i < data.length; i++) {
+                    var node = document.createElement("tr");
+                    document.getElementById("detailsTableAjaxLine").appendChild(node);
+
+                    var branchNode = document.createElement("td");
+                    var branchTextNode = document.createTextNode(data[i].branch);
+                    branchNode.appendChild(branchTextNode);
+
+                    var costCenterNode = document.createElement("td");
+                    var costCenterTextNode = document.createTextNode(data[i].costCenter);
+                    costCenterNode.appendChild(costCenterTextNode);
+
+                    // TODO project or cost center
+
+                    var reasonNode = document.createElement("td");
+                    var reasonTextNode = document.createTextNode(data[i].reason);
+                    reasonNode.appendChild(reasonTextNode);
+
+                    var accountNode = document.createElement("td");
+                    var accountTextNode = document.createTextNode(data[i].account);
+                    accountNode.appendChild(accountTextNode);
+
+                    var accountTypeNode = document.createElement("td");
+                    var accountTypeTextNode = document.createTextNode(data[i].accountType);
+                    accountTypeNode.appendChild(accountTypeTextNode);
+
+                    var sumNode = document.createElement("td");
+                    var sumTextNode = document.createTextNode(data[i].sum);
+                    sumNode.appendChild(sumTextNode);
+
+                    var currencyIdNode = document.createElement("td");
+                    var currencyIdTextNode = document.createTextNode(data[i].currencyId);
+                    currencyIdNode.appendChild(currencyIdTextNode);
+
+                    var sumBGNNode = document.createElement("td");
+                    var sumBGNTextNode = document.createTextNode(data[i].sumBGN);
+                    sumBGNNode.appendChild(sumBGNTextNode);
+
+                    node.appendChild(branchNode);
+                    node.appendChild(costCenterNode);
+                    // node.appendChild(projectNode);
+                    node.appendChild(reasonNode);
+                    node.appendChild(accountNode);
+                    node.appendChild(accountTypeNode);
+                    node.appendChild(sumNode);
+                    node.appendChild(currencyIdNode);
+                    node.appendChild(sumBGNNode);
+                }
+            });
+        });
+    </script>
+    <script>
+        $('#templateId').on('change', ev => {
+            $('#collapseCard').removeClass('show');
+
+            document.getElementById("detailsTableAjaxLine").innerHTML = "";
+        });
     </script>
 }
+
+<script>
+    function copyFromTemplate(item, baseUrl) {
+        var templateId = document.getElementById("templateId");
+
+        window.location.href = baseUrl + '?orderId=' + @Model.Id + '&templateId=' + templateId.value;
+    }
+</script>
+
