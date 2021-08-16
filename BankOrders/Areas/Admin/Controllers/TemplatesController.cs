@@ -1,19 +1,22 @@
 ﻿namespace BankOrders.Areas.Admin.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
-    using BankOrders.Services.Templates;
     using BankOrders.Infrastructure;
     using BankOrders.Models.Templates;
+    using BankOrders.Services.Details;
+    using BankOrders.Services.Templates;
 
     using static WebConstants;
 
     public class TemplatesController : AdminController
     {
         private readonly ITemplateService templateService;
+        private readonly IDetailService detailService;
 
-        public TemplatesController(ITemplateService templateService)
+        public TemplatesController(ITemplateService templateService, IDetailService detailService)
         {
             this.templateService = templateService;
+            this.detailService = detailService;
         }
 
         public IActionResult Create()
@@ -39,6 +42,13 @@
             this.templateService.Delete(id);
 
             return this.Redirect($"/Templates/All");
+        }
+
+        public IActionResult DeleteDetail(int templateId, int detailId)
+        {
+            this.detailService.DeleteDetail(detailId);
+
+            return this.Redirect($"/Templates/Details?templateId={@templateId}");
         }
     }
 }

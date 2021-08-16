@@ -228,12 +228,12 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        function copyFromTemplate(item, baseUrl) {
+            var templateId = document.getElementById("templateId");
+
+            window.location.href = baseUrl + '?orderId=' + @Model.Id + '&templateId=' + templateId.value;
+        }
+    </script>
 }
-
-<script>
-    function copyFromTemplate(item, baseUrl) {
-        var templateId = document.getElementById("templateId");
-
-        window.location.href = baseUrl + '?orderId=' + @Model.Id + '&templateId=' + templateId.value;
-    }
-</script>

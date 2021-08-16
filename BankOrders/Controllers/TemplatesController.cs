@@ -28,18 +28,15 @@
         private readonly ICurrencyService currencyService;
         private readonly ITemplateService templateService;
         private readonly IDetailService detailService;
-        private readonly IUserService userService;
 
         public TemplatesController(
             ICurrencyService currencyService,
             ITemplateService templateService,
-            IDetailService detailService,
-            IUserService userService)
+            IDetailService detailService)
         {
             this.currencyService = currencyService;
             this.templateService = templateService;
             this.detailService = detailService;
-            this.userService = userService;
         }
 
         [Authorize]
@@ -143,13 +140,6 @@
                                               templateDetailModel.Sum,
                                               templateDetailModel.SumBGN);
             }
-
-            return this.Redirect($"/Templates/Details?templateId={@templateId}");
-        }
-
-        public IActionResult DeleteDetail(int templateId, int detailId)
-        {
-            this.detailService.DeleteDetail(detailId);
 
             return this.Redirect($"/Templates/Details?templateId={@templateId}");
         }

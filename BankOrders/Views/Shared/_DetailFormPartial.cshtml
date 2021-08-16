@@ -70,16 +70,15 @@
 <script>
     function changeSumBGN() {
 
-        var sum = document.getElementById("sum");
-        var sumBGN = document.getElementById("sumBGN");
-        var curr = document.getElementById("currency");
-        var exchangeRate = document.getElementById("exchangeRate");
+        let sum = document.getElementById("sum");
+        let sumBGN = document.getElementById("sumBGN");
+        let curr = document.getElementById("currency");
+        let exchangeRate = document.getElementById("exchangeRate");
 
-        var rate = curr.options[curr.selectedIndex].getAttribute("data-exchange-rate");
+        let rate = curr.options[curr.selectedIndex].getAttribute("data-exchange-rate");
 
         exchangeRate.value = rate;
 
         sumBGN.value = (sum.value * rate).toFixed(2);
-
     }
 </script>

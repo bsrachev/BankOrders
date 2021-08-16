@@ -11,7 +11,7 @@
 
         void Delete(int templateId);
 
-        TemplateServiceModel GetTemplateInfo(int carId);
+        TemplateServiceModel GetTemplateInfo(int templateId);
 
         public IEnumerable<TemplateServiceModel> GetAllTemplatesBySystem(OrderSystem system);
 
