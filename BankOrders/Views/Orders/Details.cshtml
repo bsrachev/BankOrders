@@ -272,11 +272,16 @@
                     var branchTextNode = document.createTextNode(data[i].branch);
                     branchNode.appendChild(branchTextNode);
 
-                    var costCenterNode = document.createElement("td");
-                    var costCenterTextNode = document.createTextNode(data[i].costCenter);
-                    costCenterNode.appendChild(costCenterTextNode);
-
-                    // TODO project or cost center
+                    if (@(Model.System == OrderSystem.Internal)) {
+                        var costCenterNode = document.createElement("td");
+                        var costCenterTextNode = document.createTextNode(data[i].costCenter);
+                        costCenterNode.appendChild(costCenterTextNode);
+                    }
+                    else {
+                        var projectNode = document.createElement("td");
+                        var projectTextNode = document.createTextNode(data[i].project);
+                        projectNode.appendChild(projectTextNode);
+                    }
 
                     var reasonNode = document.createElement("td");
                     var reasonTextNode = document.createTextNode(data[i].reason);
@@ -303,8 +308,12 @@
                     sumBGNNode.appendChild(sumBGNTextNode);
 
                     node.appendChild(branchNode);
-                    node.appendChild(costCenterNode);
-                    // node.appendChild(projectNode);
+                    if (@(Model.System == OrderSystem.Internal)) {
+                        node.appendChild(costCenterNode);
+                    }
+                    else {
+                        node.appendChild(projectNode);
+                    }
                     node.appendChild(reasonNode);
                     node.appendChild(accountNode);
                     node.appendChild(accountTypeNode);
@@ -313,6 +322,10 @@
                     node.appendChild(sumBGNNode);
                 }
             });
+
+            if ($('#collapseCard').is('.collapse:not(.show)')) {
+                document.getElementById("detailsTableAjaxLine").innerHTML = "";
+            }
         });
     </script>
     <script>
