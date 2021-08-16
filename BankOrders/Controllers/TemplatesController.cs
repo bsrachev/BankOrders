@@ -59,7 +59,7 @@
         }
 
         [Authorize]
-        public IActionResult Details(int templateId, int? editDetailId) // public IActionResult Create() / async Task<IActionResult>
+        public IActionResult Details(int templateId, int? editDetailId)
         {
             var query = new TemplateDetailListingViewModel();
 
@@ -95,7 +95,7 @@
             query.RefNumber = template.RefNumber;
             query.TimesUsed = template.TimesUsed;
             query.System = template.System;
-            query.UserCreate = this.userService.GetUserInfo(template.UserCreateId).EmployeeNumber;
+            query.UserCreateId = template.UserCreateId;
             query.Details = templatesDetailsList;
             query.Currencies = this.currencyService.GetCurrencies();
 

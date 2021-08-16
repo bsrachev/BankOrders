@@ -105,9 +105,9 @@
             this.data.SaveChanges();
         }
 
-        public OrderDetailListingViewModel GetOrderInfo(int orderId, int? editDetailId)
+        /*public OrderDetailListingViewModel GetOrderInfo(int orderId, int? editDetailId)
         {
-            /*var query = new OrderDetailListingViewModel();
+            var query = new OrderDetailListingViewModel();
 
             var order = this.orderService.GetOrderInfo(orderId);
 
@@ -145,14 +145,29 @@
             query.Status = order.Status;
             query.System = order.System;
             query.UserCreateId = order.UserCreateId;
-            query.Details = ordersDetailsList;*/
+            query.Details = ordersDetailsList;
 
             return null;
-        }
+        }*/
 
-        public OrderDetailListingViewModel GetTemplateInfo(int templateId, int? editDetailId)
+        /*public OrderDetailListingViewModel GetTemplateInfo(int templateId, int? editDetailId)
         {
-            throw new System.NotImplementedException();
+            throw new System.NotImplementedException(); //TODO
+        }*/
+
+        public bool IsDebitEqualToCredit(IEnumerable<DetailsServiceModel> details)
+        {
+            var debitSum = details.Where(at => at.AccountType == AccountType.DT).Sum(s => s.SumBGN);
+            var creditSum = details.Where(at => at.AccountType == AccountType.KT).Sum(s => s.SumBGN);
+
+            if (debitSum == creditSum)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

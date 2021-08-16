@@ -7,9 +7,9 @@
 
     public interface IDetailService
     {
-        OrderDetailListingViewModel GetOrderInfo(int orderId, int? editDetailId);
+        //OrderDetailListingViewModel GetOrderInfo(int orderId, int? editDetailId);
 
-        OrderDetailListingViewModel GetTemplateInfo(int templateId, int? editDetailId);
+        //OrderDetailListingViewModel GetTemplateInfo(int templateId, int? editDetailId);
 
         IEnumerable<DetailsServiceModel> GetDetails(int refNum);
 
@@ -38,5 +38,7 @@
         void CopyFromTemplate(int orderId, int templateId);
 
         void DeleteDetail(int detailId);
+
+        bool IsDebitEqualToCredit(IEnumerable<DetailsServiceModel> details);
     }
 }

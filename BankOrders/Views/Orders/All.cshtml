@@ -4,6 +4,8 @@
     ViewData["Title"] = "Orders";
 }
 
+@inject IUserService userService
+
 <head>
     <style type="text/css">
         .btn-circle.btn-md {
@@ -50,30 +52,34 @@
                             <th scope="col" style="text-align:center;">Created by</th>
                             <th scope="col" style="text-align:center;">Approved by</th>
                             <th scope="col" style="text-align:center;">Posting by</th>
-                            <th scope="col" style="text-align:center;">Posting number</th>
                             <th scope="col" style="text-align:center;">Posting approved<br />by</th>
+                            <th scope="col" style="text-align:center;">Posting number</th>
                             <th scope="col" style="text-align:center;">Status</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (var order in Model.Orders)
                         {
-                            <tr>
-                                <td>
-                                    <div class="button-holder">
-                                        <a href="/Orders/Details?orderId=@order.Id" class="btn btn-info text-uppercase">View</a>
-                                    </div>
-                                </td>
-                                <th scope="row">№@order.RefNumber</th>
-                                <td>@order.AccountingDate</td>
-                                <td>@order.System</td>
-                                <td>@order.UserCreateId</td>
-                                <td>@order.UserApproveId</td>
-                                <td>@order.UserPostingId</td>
-                                <td>@(order.PostingNumber == 0 ? null : order.PostingNumber)</td>
-                                <td>@order.UserApprovePostingId</td>
-                                <th scope="row">@order.Status</th>
-                            </tr>
+                            var userCreate = this.userService.GetUserInfo(order.UserCreateId).EmployeeNumber;
+                            var userApprove = order.UserApproveId == null ? null : this.userService.GetUserInfo(order.UserApproveId).EmployeeNumber;
+                            var userPosting = order.UserPostingId == null ? null : this.userService.GetUserInfo(order.UserPostingId).EmployeeNumber;
+                            var userApprovePosting = order.UserApprovePostingId == null ? null : this.userService.GetUserInfo(order.UserApprovePostingId).EmployeeNumber;
+                        <tr>
+                            <td>
+                                <div class="button-holder">
+                                    <a href="/Orders/Details?orderId=@order.Id" class="btn btn-info text-uppercase">View</a>
+                                </div>
+                            </td>
+                            <th scope="row">№@order.RefNumber</th>
+                            <td>@order.AccountingDate</td>
+                            <td>@order.System</td>
+                            <td>@userCreate</td>
+                            <td>@userApprove</td>
+                            <td>@userPosting</td>
+                            <td>@userApprovePosting</td>
+                            <td>@(order.PostingNumber == 0 ? null : order.PostingNumber)</td>
+                            <th scope="row">@order.Status</th>
+                        </tr>
                         }
                     </tbody>
                 </table>

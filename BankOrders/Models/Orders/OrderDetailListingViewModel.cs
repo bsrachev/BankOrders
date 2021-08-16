@@ -23,7 +23,7 @@
         public OrderSystem System { get; set; }
 
         [Display(Name = "Created by")]
-        public string UserCreate { get; set; }
+        public string UserCreateId { get; set; }
 
         public OrderStatus Status { get; set; }
 

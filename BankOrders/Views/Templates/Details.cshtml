@@ -4,7 +4,10 @@
     ViewData["Title"] = "Details";
 }
 
-<div asp-validation-summary="All" class="text-danger"></div>
+@inject IUserService userService
+@{
+    var isUserCreate = this.userService.IsTemplateUserCreate(Model.Id, this.User.Id());
+}
 
 <div>
     <h4>Template №@Html.DisplayFor(model => model.RefNumber)</h4>
@@ -23,10 +26,10 @@
             @Html.DisplayFor(model => model.System)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.UserCreate)
+            @Html.DisplayNameFor(model => model.UserCreateId)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.UserCreate)
+            @Html.DisplayFor(model => this.userService.GetUserInfo(model.UserCreateId).EmployeeNumber)
         </dd>
         @if (this.User.IsAdmin())
         {
@@ -40,18 +43,24 @@
     </dl>
 </div>
 
-<h4>Add a detail</h4>
-<hr />
-<div>
-    <partial name="_DetailFormPartial" model="@(Model.EditDetailId != null ? Model.Details.First(x => x.DetailId == Model.EditDetailId) : new DetailFormModel { Currencies = Model.Currencies, OrderSystem = Model.System } )" />
-</div>
+@if (isUserCreate)
+{
+    <h4>Add a detail</h4>
+    <hr />
+    <div>
+        <partial name="_DetailFormPartial" model="@(Model.EditDetailId != null ? Model.Details.First(x => x.DetailId == Model.EditDetailId) : new DetailFormModel { Currencies = Model.Currencies, OrderSystem = Model.System } )" />
+    </div>
 
-<br />
+    <br />
+}
 
-<table class="table">
+<table class="table table-striped">
     <thead>
         <tr>
-            <th scope="col">Edit</th>
+            @if (isUserCreate)
+            {
+                <th scope="col">Edit</th>
+            }
             <th scope="col">Branch</th>
             @if (Model.System == OrderSystem.Internal)
             {
@@ -67,7 +76,10 @@
             <th scope="col">Sum</th>
             <th scope="col">Currency</th>
             <th scope="col">Sum in BGN</th>
-            <th scope="col"></th>
+            @if (isUserCreate)
+            {
+                <th scope="col"></th>
+            }
         </tr>
     </thead>
     <tbody>
@@ -76,11 +88,14 @@
             if (Model.EditDetailId == detail.DetailId)
             {
                 <tr>
-                    <th class="thead-dark" scope="row">
-                        <div class="button-holder">
-                            <button type="submit" class="btn btn-info" disabled>Edit</button>
-                        </div>
-                    </th>
+                    @if (isUserCreate)
+                    {
+                        <th class="thead-dark" scope="row">
+                            <div class="button-holder">
+                                <button type="submit" class="btn btn-info" disabled>Edit</button>
+                            </div>
+                        </th>
+                    }
                     <td>@detail.Branch</td>
                     @if (Model.System == OrderSystem.Internal)
                     {
@@ -94,18 +109,22 @@
                     <td>@detail.Account</td>
                     <td>@detail.AccountType</td>
                     <td>@detail.Sum</td>
-                    <td>@detail.CurrencyId</td>
+                    <td>@Model.Currencies.FirstOrDefault(c => c.Id == @detail.CurrencyId).Code</td>
                     <td>@detail.SumBGN</td>
+                    <td></td>
                 </tr>
             }
             else
             {
                 <tr>
-                    <th scope="row">
-                        <div class="button-holder">
-                            <a href="/Templates/Details?templateId=@Model.Id&editDetailId=@detail.DetailId" class="btn btn-info">Edit</a>
-                        </div>
-                    </th>
+                    @if (isUserCreate)
+                    {
+                        <th scope="row">
+                            <div class="button-holder">
+                                <a href="/Templates/Details?templateId=@Model.Id&editDetailId=@detail.DetailId" class="btn btn-info">Edit</a>
+                            </div>
+                        </th>
+                    }
                     <td>@detail.Branch</td>
                     @if (Model.System == OrderSystem.Internal)
                     {
@@ -119,11 +138,14 @@
                     <td>@detail.Account</td>
                     <td>@detail.AccountType</td>
                     <td>@detail.Sum</td>
-                    <td>@detail.CurrencyId</td>
+                    <td>@Model.Currencies.FirstOrDefault(c => c.Id == @detail.CurrencyId).Code</td>
                     <td>@detail.SumBGN</td>
-                    <td>
-                        <a class="nav-link text-danger" asp-controller="Orders" asp-action="DeleteDetail" asp-route-orderId="@Model.Id" asp-route-detailId="@detail.DetailId">X</a>
-                    </td>
+                    @if (isUserCreate)
+                    {
+                        <td>
+                            <a class="nav-link text-danger" asp-controller="Templates" asp-action="DeleteDetail" asp-route-templateId="@Model.Id" asp-route-detailId="@detail.DetailId">X</a>
+                        </td>
+                    }
                 </tr>
             }
         }
@@ -142,7 +164,7 @@
         {
             <a asp-area="Admin" asp-controller="Templates" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Delete Template</a>
         }
-        <a asp-controller="Templates" asp-action="All" class="btn btn-dark float-right">Cancel</a>
+        <a asp-controller="Templates" asp-action="All" class="btn btn-dark float-right" style="margin-bottom: 10%;">Back</a>
     </div>
 </div>
 

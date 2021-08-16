@@ -15,5 +15,9 @@
         public bool ChangeStatus(int orderId, string userId, OrderStatus status);
 
         IEnumerable<OrderServiceModel> GetAllOrders(OrderSearchFormModel searchModel = null);
+        
+        void AddPostingNumber(int orderId, int postingNumber);
+
+        void CancelOrder(int orderId);
     }
 }

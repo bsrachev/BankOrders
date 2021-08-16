@@ -39,8 +39,8 @@
 
         public bool IsTemplateUserCreate(int templateId, string userId)
             => this.data
-                .Orders
-                .Any(o => o.Id == templateId && o.UserCreateId == userId);
+                .Templates
+                .Any(t => t.Id == templateId && t.UserCreateId == userId);
 
         public bool IsUserApprove(int orderId, string userId)
             => this.data

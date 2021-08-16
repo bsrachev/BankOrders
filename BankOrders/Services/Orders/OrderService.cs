@@ -50,31 +50,23 @@
                 }
 
                 if (searchModel.UserCreate != null)
-                {
-                    string userCreateId = this.userService.GetUserIdByEmployeeNumber(searchModel.UserCreate);
-                    
-                    ordersQuery = ordersQuery.Where(x => x.UserCreateId == userCreateId);
+                {                    
+                    ordersQuery = ordersQuery.Where(x => x.UserCreateId == searchModel.UserCreate);
                 }
 
                 if (searchModel.UserApprove != null)
-                {
-                    string userApproveId = this.userService.GetUserIdByEmployeeNumber(searchModel.UserApprove);
-                    
-                    ordersQuery = ordersQuery.Where(x => x.UserApproveId == userApproveId);
+                {                    
+                    ordersQuery = ordersQuery.Where(x => x.UserApproveId == searchModel.UserApprove);
                 }
 
                 if (searchModel.UserPosting != null)
                 {
-                    string userPostingId = this.userService.GetUserIdByEmployeeNumber(searchModel.UserPosting);
-
-                    ordersQuery = ordersQuery.Where(x => x.UserPostingId == userPostingId);
+                    ordersQuery = ordersQuery.Where(x => x.UserPostingId == searchModel.UserPosting);
                 }
 
                 if (searchModel.UserApprovePosting != null)
                 {
-                    string userApprovePostingId = this.userService.GetUserIdByEmployeeNumber(searchModel.UserApprovePosting);
-
-                    ordersQuery = ordersQuery.Where(x => x.UserApprovePostingId == userApprovePostingId);
+                    ordersQuery = ordersQuery.Where(x => x.UserApprovePostingId == searchModel.UserApprovePosting);
                 }
 
                 if (searchModel.System != null)
@@ -96,10 +88,10 @@
                     RefNumber = c.RefNumber,
                     AccountingDate = c.AccountingDate,
                     System = c.System,
-                    UserCreateId = this.userService.GetUserInfo(c.UserCreateId).EmployeeNumber,
-                    UserApproveId = this.userService.GetUserInfo(c.UserApproveId).EmployeeNumber,
-                    UserPostingId = this.userService.GetUserInfo(c.UserPostingId).EmployeeNumber,
-                    UserApprovePostingId = this.userService.GetUserInfo(c.UserApprovePostingId).EmployeeNumber,
+                    UserCreateId = c.UserCreateId,
+                    UserApproveId = c.UserApproveId,
+                    UserPostingId = c.UserPostingId,
+                    UserApprovePostingId = c.UserApprovePostingId,
                     PostingNumber = c.PostingNumber,
                     Status = c.Status
                 })
@@ -166,6 +158,20 @@
             this.data.SaveChanges();
 
             return order.Id;
+        }
+
+        public void AddPostingNumber(int orderId, int postingNumber)
+        {
+            this.data.Orders.Find(orderId).PostingNumber = postingNumber;
+
+            this.data.SaveChanges();
+        }
+
+        public void CancelOrder(int orderId)
+        {
+            this.data.Orders.Find(orderId).Status = OrderStatus.Canceled;
+
+            this.data.SaveChanges();
         }
     }
 }

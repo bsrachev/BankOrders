@@ -121,7 +121,7 @@
             query.RefNumber = order.RefNumber;
             query.Status = order.Status;
             query.System = order.System;
-            query.UserCreate = this.userService.GetUserInfo(order.UserCreateId).EmployeeNumber;
+            query.UserCreateId = order.UserCreateId;
             query.PostingNumber = order.PostingNumber;
             query.Details = ordersDetailsList;
             query.Currencies = this.currencyService.GetCurrencies();
@@ -183,6 +183,13 @@
                 return RedirectToAction(nameof(Details), new { orderId = id });
             }
 
+            if (!this.detailService.IsDebitEqualToCredit(details))
+            {
+                TempData[GlobalErrorKey] = DebitAndCreditAreNotEqual;
+
+                return RedirectToAction(nameof(Details), new { orderId = id });
+            }
+
             var changeStatus = this.orderService.ChangeStatus(id, this.User.Id(), OrderStatus.ForApproval);
 
             if (!changeStatus)
@@ -195,13 +202,22 @@
 
         public IActionResult Approve(int id) // public IActionResult Create() / async Task<IActionResult>
         {
-            var shmest = this.User.Id();
+            var order = this.orderService.GetOrderInfo(id);
+
+            var details = this.detailService.GetDetails(order.RefNumber);
+
+            if (!this.detailService.IsDebitEqualToCredit(details))
+            {
+                TempData[GlobalErrorKey] = DebitAndCreditAreNotEqual;
+
+                return RedirectToAction(nameof(Details), new { orderId = id });
+            }
 
             if (this.userService.IsOrderUserCreate(id, this.User.Id()))
             {
-                var errText = UserCreateIdAndUserApproveIdCannotBeTheSameError;
+                TempData[GlobalErrorKey] = UserCreateIdAndUserApproveIdCannotBeTheSameError;
 
-                return RedirectToAction(nameof(Details), new { orderId = id, errText = errText });
+                return RedirectToAction(nameof(Details), new { orderId = id });
             }
 
             var changeStatus = this.orderService.ChangeStatus(id, this.User.Id(), OrderStatus.ForPosting);
@@ -230,9 +246,16 @@
         {
             if (this.userService.IsUserApprove(id, this.User.Id()))
             {
-                var errText = UserApproveIdAndUserPostingIdCannotBeTheSameError;
+                TempData[GlobalErrorKey] = UserApproveIdAndUserPostingIdCannotBeTheSameError;
 
-                return RedirectToAction(nameof(Details), new { orderId = id, errText = errText });
+                return RedirectToAction(nameof(Details), new { orderId = id });
+            }
+
+            if (this.orderService.GetOrderInfo(id).PostingNumber == 0)
+            {
+                TempData[GlobalErrorKey] = NoPostingNumber;
+
+                return RedirectToAction(nameof(Details), new { orderId = id });
             }
 
             var changeStatus = this.orderService.ChangeStatus(id, this.User.Id(), OrderStatus.ForPostingApproval);
@@ -245,7 +268,7 @@
             return RedirectToAction(nameof(All));
         }
 
-        public IActionResult ForPostingCorrection(int id) // public IActionResult Create() / async Task<IActionResult>
+        public IActionResult ForPostingCorrection(int id)
         {
             var changeStatus = this.orderService.ChangeStatus(id, this.User.Id(), OrderStatus.ForPostingCorrection);
 
@@ -261,9 +284,9 @@
         {
             if (this.userService.IsUserPosting(id, this.User.Id()))
             {
-                var errText = UserPostingIdAndUserApprovePostingIdCannotBeTheSameError;
+                TempData[GlobalErrorKey] = UserPostingIdAndUserApprovePostingIdCannotBeTheSameError;
 
-                return RedirectToAction(nameof(Details), new { orderId = id, errText = errText });
+                return RedirectToAction(nameof(Details), new { orderId = id });
             }
 
             var changeStatus = this.orderService.ChangeStatus(id, this.User.Id(), OrderStatus.Finished);
@@ -296,6 +319,29 @@
             this.detailService.DeleteDetail(detailId);
 
             return this.Redirect($"/Orders/Details?orderId={@orderId}");
+        }
+
+        public IActionResult AddPostingNumber(OrderPostingNumberFormModel postingNumberModel)
+        {
+            if (postingNumberModel.PostingNumber == 0)
+            {
+                TempData[GlobalErrorKey] = NoPostingNumber;
+
+                return this.Redirect($"/Orders/Details?orderId={postingNumberModel.OrderId}");
+            }
+
+            this.orderService.AddPostingNumber(postingNumberModel.OrderId, postingNumberModel.PostingNumber);
+
+            TempData[GlobalSuccessKey] = SuccessfullyAddedPostingNumber;
+
+            return this.Redirect($"/Orders/Details?orderId={postingNumberModel.OrderId}");
+        }
+
+        public IActionResult CancelOrder(int orderId)
+        {
+            this.orderService.CancelOrder(orderId);
+
+            return RedirectToAction(nameof(All));
         }
     }
 }

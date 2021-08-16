@@ -61,7 +61,7 @@
                     RefNumber = c.RefNumber,
                     Name = c.Name,
                     System = c.System,
-                    UserCreateId = this.userService.GetUserInfo(c.UserCreateId).EmployeeNumber,
+                    UserCreateId = c.UserCreateId,
                     TimesUsed = c.TimesUsed,
                 })
                 .ToList();

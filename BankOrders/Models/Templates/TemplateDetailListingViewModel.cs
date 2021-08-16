@@ -20,7 +20,7 @@
         public OrderSystem System { get; set; }
 
         [Display(Name = "Created by")]
-        public string UserCreate { get; set; }
+        public string UserCreateId { get; set; }
 
         [Display(Name = "Times Used")]
         public int TimesUsed { get; set; }
