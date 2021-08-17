@@ -70,15 +70,15 @@
                                     <a href="/Orders/Details?orderId=@order.Id" class="btn btn-info text-uppercase">View</a>
                                 </div>
                             </td>
-                            <th scope="row">№@order.RefNumber</th>
-                            <td>@order.AccountingDate</td>
-                            <td>@order.System</td>
-                            <td>@userCreate</td>
-                            <td>@userApprove</td>
-                            <td>@userPosting</td>
-                            <td>@userApprovePosting</td>
-                            <td>@(order.PostingNumber == 0 ? null : order.PostingNumber)</td>
-                            <th scope="row">@order.Status</th>
+                            <th scope="row" style="text-align:center;">№@order.RefNumber</th>
+                            <td style="text-align:center;">@order.AccountingDate</td>
+                            <td style="text-align:center;">@order.System</td>
+                            <td style="text-align:center;">@userCreate</td>
+                            <td style="text-align:center;">@userApprove</td>
+                            <td style="text-align:center;">@userPosting</td>
+                            <td style="text-align:center;">@userApprovePosting</td>
+                            <td style="text-align:center;">@(order.PostingNumber == 0 ? null : order.PostingNumber)</td>
+                            <th style="text-align:center;">@(order.Status.GetAttribute<DisplayAttribute>().Name)</th>
                         </tr>
                         }
                     </tbody>

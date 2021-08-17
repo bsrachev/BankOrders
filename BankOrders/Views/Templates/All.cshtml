@@ -69,13 +69,13 @@
                                         <a href="/Templates/Details?templateId=@template.Id" class="btn btn-info text-uppercase">View</a>
                                     </div>
                                 </td>
-                                <th scope="row">№@template.RefNumber</th>
+                                <th scope="row" style="text-align:center;">№@template.RefNumber</th>
                                 <td>@template.Name</td>
-                                <td>@template.System</td>
-                                <td>@userCreate</td>
+                                <td style="text-align:center;">@template.System</td>
+                                <td style="text-align:center;">@userCreate</td>
                                 @if (this.User.IsAdmin())
                                 {
-                                    <td>@template.TimesUsed</td>
+                                    <td style="text-align:center;">@template.TimesUsed</td>
                                 }
                             </tr>
                         }

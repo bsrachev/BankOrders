@@ -45,7 +45,7 @@
             </dd>
         }
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Status)
+            @Html.DisplayNameFor(model => model.Status.GetAttribute<DisplayAttribute>().Name)
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Status)
@@ -70,11 +70,11 @@
                             }
                         </select>
                     </div>
-                    <div class="col-md-1">
-                        <a class="btn btn-info" data-toggle="collapse" data-target="#collapseCard" aria-expanded="false" aria-controls="collapseCard" id="collapsable">▽</a>
+                    <div>
+                        <a class="btn btn-info" data-toggle="collapse" data-target="#collapseCard" aria-expanded="false" aria-controls="collapseCard" id="collapsable" style="color: whitesmoke;">Show Details ▽</a>
                     </div>
                     <div class="col-md-1">
-                        <a class="btn btn-primary" onclick="copyFromTemplate(this,'@Url.Action("CopyDetailsFromTemplate", "Orders")')">Copy</a>
+                        <a class="btn btn-primary" onclick="copyFromTemplate(this,'@Url.Action("CopyDetailsFromTemplate", "Orders")')" style="color: whitesmoke;">Copy</a>
                     </div>
                 </div>
                 <div class="collapse" id="collapseCard">
@@ -258,7 +258,7 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script>
+<script>
         $('#collapsable').on('click', ev => {
             let template = document.getElementById("templateId");
             let templateId = template.options[template.selectedIndex].value;
@@ -272,7 +272,7 @@
                     var branchTextNode = document.createTextNode(data[i].branch);
                     branchNode.appendChild(branchTextNode);
 
-                    if (@(Model.System == OrderSystem.Internal)) {
+                    if (@(Model.System == OrderSystem.Internal ? "true" : "false")) {
                         var costCenterNode = document.createElement("td");
                         var costCenterTextNode = document.createTextNode(data[i].costCenter);
                         costCenterNode.appendChild(costCenterTextNode);
@@ -308,7 +308,7 @@
                     sumBGNNode.appendChild(sumBGNTextNode);
 
                     node.appendChild(branchNode);
-                    if (@(Model.System == OrderSystem.Internal)) {
+                    if (@(Model.System == OrderSystem.Internal ? "true" : "false")) { 
                         node.appendChild(costCenterNode);
                     }
                     else {
@@ -327,7 +327,7 @@
                 document.getElementById("detailsTableAjaxLine").innerHTML = "";
             }
         });
-    </script>
+</script>
     <script>
         $('#templateId').on('change', ev => {
             $('#collapseCard').removeClass('show');

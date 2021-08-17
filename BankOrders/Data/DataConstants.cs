@@ -18,7 +18,8 @@
             public const string UserApproveIdAndUserPostingIdCannotBeTheSameError = "You cannot do the posting for an order that you have approved.";
             public const string UserPostingIdAndUserApprovePostingIdCannotBeTheSameError = "You cannot approve the posting for an order that you have posted.";
             public const string NoPostingNumber = "The posting number cannot be 0 or empty.";
-            public const string InvalidCurrencyCode = "The currency has already been added or the currency code is invalid.";
+            public const string InvalidCurrencyCode = "The currency code is invalid.";
+            public const string CurrencyCodeAlreadyExists = "The currency already exists.";
             public const string CannotDeleteEURorBGN = "You cannot delete this currency as it is a base one.";
             public const string NoTemplates = "There are no templates for this system.";
         }

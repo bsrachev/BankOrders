@@ -32,7 +32,11 @@
         [HttpPost]
         public IActionResult Index(CurrencyFormModel currencyModel)
         {
-            if (this.currencyService.Add(currencyModel.Code) == 0)
+            if (this.currencyService.GetCurrencies().Any(c => c.Code == currencyModel.Code))
+            {
+                TempData[GlobalErrorKey] = CurrencyCodeAlreadyExists;
+            }
+            else if (this.currencyService.Add(currencyModel.Code) == 0)
             {
                 TempData[GlobalErrorKey] = InvalidCurrencyCode;
             }
