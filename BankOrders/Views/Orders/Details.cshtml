@@ -227,6 +227,10 @@
     <h5>Order №@Model.RefNumber has no details.</h5>
 }
 
+<div>
+    <partial name="_ForwardOrderFormPartial" model="null" />
+</div>
+
 <div class="container-fluid border-top">
     <div class="form-group">
         <br />
@@ -253,6 +257,7 @@
             <a asp-controller="Orders" asp-action="CancelOrder" asp-route-orderId="@Model.Id" class="btn btn-danger">Cancel the order</a>
         }
         <a asp-controller="Orders" asp-action="All" class="btn btn-dark float-right" style="margin-bottom: 10%;">Back</a>
+        <a asp-controller="Orders" asp-action="SendMail" class="btn btn-dark float-right" style="margin-bottom: 10%;">MAIL</a>
     </div>
 </div>
 

@@ -18,7 +18,7 @@
         public int RefNumber { get; set; }
 
         [Display(Name = "Accounting Date")]
-        public DateTime? AccountingDate { get; set; }
+        public DateTime AccountingDate { get; set; }
 
         public OrderSystem System { get; set; }
 

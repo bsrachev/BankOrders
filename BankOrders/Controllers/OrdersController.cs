@@ -20,10 +20,12 @@
     using BankOrders.Services.Details;
     using BankOrders.Services.Templates;
     using BankOrders.Services.Currencies;
+    using BankOrders.Services.Email;
 
     using static Data.DataConstants.ErrorMessages;
     using static Data.DataConstants.SuccessMessages;
     using static WebConstants;
+    using BankOrders.Services.Email.Models;
 
     public class OrdersController : Controller
     {
@@ -32,19 +34,22 @@
         private readonly IOrderService orderService;
         private readonly IDetailService detailService;
         private readonly IUserService userService;
+        private readonly IEmailService emailService;
 
         public OrdersController(
             ICurrencyService currencyService,
             ITemplateService templateService,
             IOrderService orderService,
             IDetailService detailService,
-            IUserService userService)
+            IUserService userService,
+            IEmailService emailService)
         {
             this.currencyService = currencyService;
             this.templateService = templateService;
             this.orderService = orderService;
             this.detailService = detailService;
             this.userService = userService;
+            this.emailService = emailService;
         }
 
         [Authorize]
@@ -340,6 +345,15 @@
         public IActionResult CancelOrder(int orderId)
         {
             this.orderService.CancelOrder(orderId);
+
+            return RedirectToAction(nameof(All));
+        }
+
+        public IActionResult SendMail(EmailServiceModel emailServiceModel)
+        {
+            var orderId = 7;
+
+            this.emailService.ForwardOrder(orderId, this.User.Id(), emailServiceModel.RecepientId);
 
             return RedirectToAction(nameof(All));
         }

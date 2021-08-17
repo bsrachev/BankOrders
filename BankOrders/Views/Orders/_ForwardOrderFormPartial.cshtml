@@ -1,0 +1,32 @@
+﻿@model BankOrders.Services.Email.Models.EmailServiceModel
+
+@inject IUserService userService
+
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="SendMail">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-row col-md-12" style="padding-left: 1%;">
+                <h4 asp-for="RecepientId" class="control-label">Forward the order:</h4>
+                <div class="form-group col-md-5">
+                    <select asp-for="RecepientId" class="form-control">
+                        <option></option>
+                        @foreach (var employee in this.userService.GetAllUsers().Where(u => u.Id != this.User.Id()))
+                        {
+                            <option value="@employee.Id">@employee.EmployeeNumber</option>
+                        }
+                    </select>
+                    <span asp-validation-for="RecepientId" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-2">
+                    <input type="submit" value="Send mail" class="btn btn-primary" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -15,7 +15,7 @@
         }
 
         [Required]
-        public DateTime? AccountingDate { get; set; }
+        public DateTime AccountingDate { get; set; }
 
         public string UserApproveId { get; set; }
 

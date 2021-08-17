@@ -1,8 +1,12 @@
-﻿namespace BankOrders.Services.Users
+﻿using System.Collections.Generic;
+
+namespace BankOrders.Services.Users
 {
     public interface IUserService
     {
         UserServiceModel GetUserInfo(string userId);
+
+        IEnumerable<UserServiceModel> GetAllUsers();
 
         bool IsOrderUserCreate(int orderOrTemplateId, string userId);
 

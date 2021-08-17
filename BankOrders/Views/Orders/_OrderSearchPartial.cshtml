@@ -18,10 +18,14 @@
                     <label asp-for="Status" class="control-label"></label>
                     <select asp-for="Status" class="form-control">
                         <option></option>
-                        <option>Draft</option>
-                        <option>For Approval</option>
-                        <option>For Posting</option>
-                        <option>For Posting Approval</option>
+                        <option value="Draft">Draft</option>
+                        <option value="ForApproval">For approval</option>
+                        <option value="ForCorrection">For correction</option>
+                        <option value="ForPosting">For posting</option>
+                        <option value="ForPostingApproval">For posting approval</option>
+                        <option value="ForCorrection">For posting correction</option>
+                        <option value="Finished">Finished</option>
+                        <option value="Canceled">Canceled</option>
                     </select>
                     <span asp-validation-for="Status" class="text-danger"></span>
                 </div>

@@ -5,6 +5,7 @@
 }
 
 @inject IUserService userService
+@inject IOrderService orderService
 
 <head>
     <style type="text/css">
@@ -38,7 +39,16 @@
 
             @if (Model.Orders.Count() == 0)
             {
-                <h2>There are no orders.</h2>
+                bool noOrders = this.orderService.GetAllOrders().Count() == 0;
+
+                @if (noOrders)
+                {
+                    <h5>There are no orders. Would you like to <a href="/Admin/Orders/Create">create</a> the first one?</h5>
+                }
+                else
+                {
+                    <h5>There are no orders with the above search criteria.</h5>
+                }
             }
             else
             {
@@ -54,7 +64,7 @@
                             <th scope="col" style="text-align:center;">Posting by</th>
                             <th scope="col" style="text-align:center;">Posting approved<br />by</th>
                             <th scope="col" style="text-align:center;">Posting number</th>
-                            <th scope="col" style="text-align:center;">Status</th>
+                            <th class="col-md-2" scope="col" style="text-align:center;">Status</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -64,22 +74,22 @@
                             var userApprove = order.UserApproveId == null ? null : this.userService.GetUserInfo(order.UserApproveId).EmployeeNumber;
                             var userPosting = order.UserPostingId == null ? null : this.userService.GetUserInfo(order.UserPostingId).EmployeeNumber;
                             var userApprovePosting = order.UserApprovePostingId == null ? null : this.userService.GetUserInfo(order.UserApprovePostingId).EmployeeNumber;
-                        <tr>
-                            <td>
-                                <div class="button-holder">
-                                    <a href="/Orders/Details?orderId=@order.Id" class="btn btn-info text-uppercase">View</a>
-                                </div>
-                            </td>
-                            <th scope="row" style="text-align:center;">№@order.RefNumber</th>
-                            <td style="text-align:center;">@order.AccountingDate</td>
-                            <td style="text-align:center;">@order.System</td>
-                            <td style="text-align:center;">@userCreate</td>
-                            <td style="text-align:center;">@userApprove</td>
-                            <td style="text-align:center;">@userPosting</td>
-                            <td style="text-align:center;">@userApprovePosting</td>
-                            <td style="text-align:center;">@(order.PostingNumber == 0 ? null : order.PostingNumber)</td>
-                            <th style="text-align:center;">@(order.Status.GetAttribute<DisplayAttribute>().Name)</th>
-                        </tr>
+                            <tr>
+                                <td>
+                                    <div class="button-holder">
+                                        <a href="/Orders/Details?orderId=@order.Id" class="btn btn-info text-uppercase">View</a>
+                                    </div>
+                                </td>
+                                <th scope="row" style="text-align:center;">№@order.RefNumber</th>
+                                <td style="text-align:center;">@order.AccountingDate.ToShortDateString()</td>
+                                <td style="text-align:center;">@order.System</td>
+                                <td style="text-align:center;">@userCreate</td>
+                                <td style="text-align:center;">@userApprove</td>
+                                <td style="text-align:center;">@userPosting</td>
+                                <td style="text-align:center;">@userApprovePosting</td>
+                                <td style="text-align:center;">@(order.PostingNumber == 0 ? null : order.PostingNumber)</td>
+                                <th style="text-align:center;">@(order.Status.GetAttribute<DisplayAttribute>().Name)</th>
+                            </tr>
                         }
                     </tbody>
                 </table>

@@ -10,7 +10,7 @@
 
         public int RefNumber { get; set; }
 
-        public DateTime? AccountingDate { get; set; }
+        public DateTime AccountingDate { get; set; }
 
         public OrderSystem System { get; set; }
 

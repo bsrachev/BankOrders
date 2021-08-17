@@ -113,7 +113,7 @@ namespace BankOrders.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime?>("AccountingDate")
+                    b.Property<DateTime>("AccountingDate")
                         .IsRequired()
                         .HasColumnType("datetime2");
 

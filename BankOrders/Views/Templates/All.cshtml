@@ -5,6 +5,7 @@
 }
 
 @inject IUserService userService
+@inject ITemplateService templateService
 
 <head>
     <style type="text/css">
@@ -41,7 +42,16 @@
 
             @if (Model.Templates.Count() == 0)
             {
-                <h5>There are no templates. Would you like to <a href="/Admin/Templates/Create">create</a> the first one?</h5>
+                bool noTemplates = this.templateService.GetAllTemplates().Count() == 0;
+
+                @if (noTemplates)
+                {
+                    <h5>There are no templates. Would you like to <a href="/Admin/Templates/Create">create</a> the first one?</h5>
+                }
+                else
+                {
+                    <h5>There are no templates with the above search criteria.</h5>
+                }
             }
             else
             {

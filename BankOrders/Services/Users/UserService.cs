@@ -2,7 +2,7 @@
 {
     using BankOrders.Data;
     using BankOrders.Infrastructure;
-
+    using System.Collections.Generic;
     using System.Linq;
 
     public class UserService : IUserService
@@ -31,6 +31,18 @@
                     EmployeeNumber = o.EmployeeNumber
                 })
                 .FirstOrDefault();
+
+        public IEnumerable<UserServiceModel> GetAllUsers()
+            => this.data
+                .Users
+                .Select(o => new UserServiceModel
+                {
+                    Id = o.Id,
+                    FullName = o.FullName,
+                    Email = o.Email,
+                    EmployeeNumber = o.EmployeeNumber
+                })
+                .ToList();
 
         public bool IsOrderUserCreate(int orderId, string userId)
             => this.data

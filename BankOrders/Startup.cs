@@ -16,6 +16,7 @@ namespace BankOrders
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using BankOrders.Services.Currencies;
+    using BankOrders.Services.Email;
 
     public class Startup
     {
@@ -56,6 +57,16 @@ namespace BankOrders
             services.AddTransient<IDetailService, DetailService>();
             services.AddTransient<ITemplateService, TemplateService>();
             services.AddTransient<ICurrencyService, CurrencyService>();
+            services.AddTransient<IEmailService, EmailService>();
+            services.Configure<EmailSenderOptions>(options =>
+            {
+                options.Host_Address = "smtp-relay.sendinblue.com";
+                options.Host_Port = 587;
+                options.Host_Username = "b.monk@abv.bg";
+                options.Host_Password = "8UsHCm6gk935GpQT";
+                options.Sender_EMail = "notify@bankorders.com";
+                options.Sender_Name = "BankOrders";
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

@@ -7,22 +7,22 @@
         [Display(Name = "Draft")]
         Draft = 0,
 
-        [Display(Name = "For Approval")]
+        [Display(Name = "For approval")]
         ForApproval = 1,
 
-        [Display(Name = "For Posting")]
+        [Display(Name = "For posting")]
         ForPosting = 2,
 
-        [Display(Name = "For Posting Approval")]
+        [Display(Name = "For posting approval")]
         ForPostingApproval = 3,
 
         [Display(Name = "Finished")]
         Finished = 4,
 
-        [Display(Name = "For Correction")]
+        [Display(Name = "For correction")]
         ForCorrection = 5,
 
-        [Display(Name = "For Posting Correction")]
+        [Display(Name = "For posting correction")]
         ForPostingCorrection = 6,
 
         [Display(Name = "Canceled")]
