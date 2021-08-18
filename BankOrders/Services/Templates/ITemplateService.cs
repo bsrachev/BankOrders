@@ -16,5 +16,7 @@
         public IEnumerable<TemplateServiceModel> GetAllTemplatesBySystem(OrderSystem system);
 
         IEnumerable<TemplateServiceModel> GetAllTemplates(TemplateSearchFormModel searchModel = null);
+
+        TemplateDetailListingViewModel GetTemplateWithEveryDetail(int templateId, int? editDetailId);
     }
 }

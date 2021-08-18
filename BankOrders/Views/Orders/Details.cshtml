@@ -21,7 +21,7 @@
             @Html.DisplayNameFor(model => model.AccountingDate)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.AccountingDate)
+            @Model.AccountingDate.ToShortDateString()
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.System)

@@ -3,7 +3,11 @@
     using BankOrders.Data;
     using BankOrders.Data.Models;
     using BankOrders.Data.Models.Enums;
+    using BankOrders.Models.Details;
     using BankOrders.Models.Orders;
+    using BankOrders.Services.Currencies;
+    using BankOrders.Services.Details;
+    using BankOrders.Services.Templates;
     using BankOrders.Services.Users;
     using System;
     using System.Collections.Generic;
@@ -12,11 +16,22 @@
 
     public class OrderService : IOrderService
     {
+        private readonly ICurrencyService currencyService;
+        private readonly ITemplateService templateService;
+        private readonly IDetailService detailService;
         private readonly IUserService userService;
         private readonly BankOrdersDbContext data;
 
-        public OrderService(IUserService userService, BankOrdersDbContext data)
+        public OrderService(
+            IUserService userService,
+            ICurrencyService currencyService,
+            ITemplateService templateService,
+            IDetailService detailService,
+            BankOrdersDbContext data)
         {
+            this.currencyService = currencyService;
+            this.templateService = templateService;
+            this.detailService = detailService;
             this.userService = userService;
             this.data = data;
         }
@@ -172,6 +187,51 @@
             this.data.Orders.Find(orderId).Status = OrderStatus.Canceled;
 
             this.data.SaveChanges();
+        }
+
+        public OrderDetailListingViewModel GetOrderWithEveryDetail(int orderId, int? editDetailId)
+        {
+            var query = new OrderDetailListingViewModel();
+
+            var order = GetOrderInfo(orderId);
+
+            var ordersDetailsQuery = this.detailService.GetDetails(order.RefNumber);
+
+            var ordersDetailsList = new List<DetailFormModel>();
+
+            foreach (var od in ordersDetailsQuery)
+            {
+                ordersDetailsList.Add(new DetailFormModel
+                {
+                    Account = od.Account,
+                    Branch = od.Branch,
+                    AccountType = od.AccountType,
+                    CostCenter = od.CostCenter,
+                    CurrencyId = od.CurrencyId,
+                    DetailId = od.Id,
+                    Project = od.Project,
+                    Reason = od.Reason,
+                    Sum = od.Sum,
+                    SumBGN = od.SumBGN,
+                    Currencies = this.currencyService.GetCurrencies(),
+                    //AllTemplates = this.templateService.GetAllTemplatesBySystem(order.System),
+                    OrderSystem = order.System
+                });
+            }
+
+            query.Id = order.Id;
+            query.EditDetailId = editDetailId;
+            query.AccountingDate = order.AccountingDate;
+            query.RefNumber = order.RefNumber;
+            query.Status = order.Status;
+            query.System = order.System;
+            query.UserCreateId = order.UserCreateId;
+            query.PostingNumber = order.PostingNumber;
+            query.Details = ordersDetailsList;
+            query.Currencies = this.currencyService.GetCurrencies();
+            query.Templates = this.templateService.GetAllTemplatesBySystem(query.System);
+
+            return query;
         }
     }
 }

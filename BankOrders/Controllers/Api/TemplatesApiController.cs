@@ -20,10 +20,6 @@
             this.detailService = detailService;
         }
 
-        /*[HttpGet]
-        public OrderQueryServiceModel All([FromQuery] AllOrdersApiRequestModel query)
-            => this.orderService.GetAllOrders();*/
-
         [HttpGet]
         [Authorize]
         public IEnumerable<DetailsServiceModel> GetDetails(int templateId)

@@ -1,31 +1,25 @@
 ﻿namespace BankOrders.Controllers
 {
     using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
-    using BankOrders.Data;
-    using BankOrders.Data.Models;
     using BankOrders.Data.Models.Enums;
     using BankOrders.Services.Orders;
     using BankOrders.Models.Orders;
     using BankOrders.Infrastructure;
-    using System;
-    using System.Collections.Generic;
-    using System.Globalization;
-    using System.Linq;
-    using System.Security.Claims;
-    using System.Threading.Tasks;
     using BankOrders.Models.Details;
     using BankOrders.Services.Users;
     using BankOrders.Services.Details;
     using BankOrders.Services.Templates;
     using BankOrders.Services.Currencies;
     using BankOrders.Services.Email;
+    using BankOrders.Services.Email.Models;
+
+    using System;
+    using System.Linq;
 
     using static Data.DataConstants.ErrorMessages;
     using static Data.DataConstants.SuccessMessages;
     using static WebConstants;
-    using BankOrders.Services.Email.Models;
 
     public class OrdersController : Controller
     {
@@ -70,12 +64,13 @@
         }
 
         [Authorize]
-        public IActionResult Create() // public IActionResult Create() / async Task<IActionResult>
+        public IActionResult Create()
         {
             return this.View();
         }
 
         [HttpPost]
+        [Authorize]
         public IActionResult Create(CreateOrderFormModel orderModel)
         {
             if (!ModelState.IsValid)
@@ -91,52 +86,14 @@
         [Authorize]
         public IActionResult Details(int orderId, int? editDetailId)
         {
-            var query = new OrderDetailListingViewModel();
-
-            var order = this.orderService.GetOrderInfo(orderId);
-
-            var ordersDetailsQuery = this.detailService.GetDetails(order.RefNumber);
-
-            var ordersDetailsList = new List<DetailFormModel>();
-
-            foreach (var od in ordersDetailsQuery)
-            {
-                ordersDetailsList.Add(new DetailFormModel
-                {
-                    Account = od.Account,
-                    //AccountingNumber = od.AccountingNumber,
-                    Branch = od.Branch,
-                    AccountType = od.AccountType,
-                    CostCenter = od.CostCenter,
-                    CurrencyId = od.CurrencyId,
-                    DetailId = od.Id,
-                    Project = od.Project,
-                    Reason = od.Reason,
-                    Sum = od.Sum,
-                    SumBGN = od.SumBGN,
-                    Currencies = this.currencyService.GetCurrencies(),
-                    //AllTemplates = this.templateService.GetAllTemplatesBySystem(order.System),
-                    OrderSystem = order.System
-                });
-            }
-
-            query.Id = order.Id;
-            query.EditDetailId = editDetailId;
-            query.AccountingDate = order.AccountingDate;
-            query.RefNumber = order.RefNumber;
-            query.Status = order.Status;
-            query.System = order.System;
-            query.UserCreateId = order.UserCreateId;
-            query.PostingNumber = order.PostingNumber;
-            query.Details = ordersDetailsList;
-            query.Currencies = this.currencyService.GetCurrencies();
-            query.Templates = this.templateService.GetAllTemplatesBySystem(query.System);
+            var query = this.orderService.GetOrderWithEveryDetail(orderId, editDetailId);
 
             return View(query);
         }
 
         [HttpPost]
-        public IActionResult Details(DetailFormModel detailModel, int orderId, int? editDetailId) // public IActionResult Create() / async Task<IActionResult>
+        [Authorize]
+        public IActionResult Details(DetailFormModel detailModel, int orderId, int? editDetailId)
         {
             if (!ModelState.IsValid)
             {
@@ -176,7 +133,7 @@
         }
 
         [Authorize]
-        public IActionResult SendForApproval(int id) // public IActionResult Create() / async Task<IActionResult>
+        public IActionResult SendForApproval(int id)
         {
             var order = this.orderService.GetOrderInfo(id);
 
@@ -207,7 +164,7 @@
         }
 
         [Authorize]
-        public IActionResult Approve(int id) // public IActionResult Create() / async Task<IActionResult>
+        public IActionResult Approve(int id)
         {
             var order = this.orderService.GetOrderInfo(id);
 
@@ -238,7 +195,7 @@
         }
 
         [Authorize]
-        public IActionResult ForCorrection(int id) // public IActionResult Create() / async Task<IActionResult>
+        public IActionResult ForCorrection(int id)
         {
             var changeStatus = this.orderService.ChangeStatus(id, this.User.Id(), OrderStatus.ForCorrection);
 
@@ -251,7 +208,7 @@
         }
 
         [Authorize]
-        public IActionResult SendForPostingApproval(int id) // public IActionResult Create() / async Task<IActionResult>
+        public IActionResult SendForPostingApproval(int id)
         {
             if (this.userService.IsUserApprove(id, this.User.Id()))
             {
@@ -291,7 +248,7 @@
         }
 
         [Authorize]
-        public IActionResult ApprovePosting(int id) // public IActionResult Create() / async Task<IActionResult>
+        public IActionResult ApprovePosting(int id)
         {
             if (this.userService.IsUserPosting(id, this.User.Id()))
             {
@@ -326,6 +283,7 @@
             return this.Redirect($"/Orders/Details?orderId={@orderId}");
         }
 
+        [Authorize]
         public IActionResult DeleteDetail(int orderId, int detailId)
         {
             this.detailService.DeleteDetail(detailId);
@@ -358,7 +316,7 @@
             return RedirectToAction(nameof(All));
         }
 
-        //[Authorize]
+        [Authorize]
         public IActionResult SendMail(EmailServiceModel emailServiceModel)
         {
             this.emailService.ForwardOrder(emailServiceModel.OrderId, this.User.Id(), emailServiceModel.RecepientId);

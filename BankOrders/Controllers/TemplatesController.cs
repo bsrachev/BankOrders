@@ -1,40 +1,26 @@
 ﻿namespace BankOrders.Controllers
 {
     using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
-    using BankOrders.Data;
-    using BankOrders.Data.Models;
-    using BankOrders.Data.Models.Enums;
     using BankOrders.Services.Templates;
     using BankOrders.Models.Orders;
-    using BankOrders.Infrastructure;
-    using System;
-    using System.Collections.Generic;
-    using System.Globalization;
-    using System.Linq;
-    using System.Security.Claims;
-    using System.Threading.Tasks;
     using BankOrders.Models.Details;
     using BankOrders.Models.Templates;
-    using BankOrders.Services.Users;
     using BankOrders.Services.Details;
     using BankOrders.Services.Currencies;
-
-    using static WebConstants;
+    using BankOrders.Areas.Admin;
+    
+    using System;
 
     public class TemplatesController : Controller
     {
-        private readonly ICurrencyService currencyService;
         private readonly ITemplateService templateService;
         private readonly IDetailService detailService;
 
         public TemplatesController(
-            ICurrencyService currencyService,
             ITemplateService templateService,
             IDetailService detailService)
         {
-            this.currencyService = currencyService;
             this.templateService = templateService;
             this.detailService = detailService;
         }
@@ -48,6 +34,7 @@
         }
 
         [HttpPost]
+        [Authorize]
         public IActionResult All(TemplateSearchFormModel searchModel)
         {
             var templates = this.templateService.GetAllTemplates(searchModel);
@@ -58,55 +45,15 @@
         [Authorize]
         public IActionResult Details(int templateId, int? editDetailId)
         {
-            var query = new TemplateDetailListingViewModel();
-
-            var template = this.templateService.GetTemplateInfo(templateId);
-
-            var templatesDetailsQuery = this.detailService.GetDetails(template.RefNumber);
-
-            var templatesDetailsList = new List<DetailFormModel>();
-
-            foreach (var od in templatesDetailsQuery)
-            {
-                templatesDetailsList.Add(new DetailFormModel
-                {
-                    Account = od.Account,
-                    //AccountingNumber = od.AccountingNumber,
-                    Branch = od.Branch,
-                    AccountType = od.AccountType,
-                    CostCenter = od.CostCenter,
-                    CurrencyId = od.CurrencyId,
-                    DetailId = od.Id,
-                    Project = od.Project,
-                    Reason = od.Reason,
-                    Sum = od.Sum,
-                    SumBGN = od.SumBGN,
-                    Currencies = this.currencyService.GetCurrencies(),
-                    OrderSystem = template.System
-                });
-            }
-
-            query.Id = template.Id;
-            query.EditDetailId = editDetailId;
-            query.Name = template.Name;
-            query.RefNumber = template.RefNumber;
-            query.TimesUsed = template.TimesUsed;
-            query.System = template.System;
-            query.UserCreateId = template.UserCreateId;
-            query.Details = templatesDetailsList;
-            query.Currencies = this.currencyService.GetCurrencies();
+            var query = this.templateService.GetTemplateWithEveryDetail(templateId, editDetailId);
 
             return View(query);
         }
 
         [HttpPost]
+        [Authorize(Roles = AdminConstants.AdministratorRoleName)]
         public IActionResult Details(DetailFormModel templateDetailModel, int templateId, int? editDetailId) // public IActionResult Create() / async Task<IActionResult>
         {
-            /*if (this.templateService.Details(templateId).UserCreateId == this.User.Identity.Name)
-            {
-                this.ModelState.AddModelError("CustomError", "Cannot appove an template that you have created.");
-            }*/
-
             if (!ModelState.IsValid)
             {
                 return this.View(templateDetailModel);
@@ -140,6 +87,14 @@
                                               templateDetailModel.Sum,
                                               templateDetailModel.SumBGN);
             }
+
+            return this.Redirect($"/Templates/Details?templateId={@templateId}");
+        }
+
+        [Authorize(Roles = AdminConstants.AdministratorRoleName)]
+        public IActionResult DeleteDetail(int templateId, int detailId)
+        {
+            this.detailService.DeleteDetail(detailId);
 
             return this.Redirect($"/Templates/Details?templateId={@templateId}");
         }
