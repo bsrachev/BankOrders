@@ -53,7 +53,10 @@
             var sender = this.userService.GetUserInfo(senderId);
             var recepientMail = this.userService.GetUserInfo(recepientId).Email;
             var subject = "Forwarded order";
-            var text = $"An order was forwarded to you by {sender.EmployeeNumber}. You can view it <a href=\"https://localhost:5001/Orders/Details?orderId={orderId}\">here</a>.";
+            var text = $"An order was forwarded to you by {sender.EmployeeNumber}. You can view it <a href=\"https://localhost:5001/Orders/Details?orderId={orderId}\">here</a>.<br/><br/>"
+                       + "_____________<br/>"
+                       + "<b>BankOrders</b>™<br/>"
+                       + "Accounting services";
 
             SendEmailAsync(recepientMail, subject, text);
         }

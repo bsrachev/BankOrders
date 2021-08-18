@@ -60,11 +60,11 @@ namespace BankOrders
             services.AddTransient<IEmailService, EmailService>();
             services.Configure<EmailSenderOptions>(options =>
             {
-                options.Host_Address = "smtp-relay.sendinblue.com";
+                options.Host_Address = "smtp.gmail.com";
                 options.Host_Port = 587;
-                options.Host_Username = "b.monk@abv.bg";
-                options.Host_Password = "8UsHCm6gk935GpQT";
-                options.Sender_EMail = "notify@bankorders.com";
+                options.Host_Username = "bankordersnotify@gmail.com";
+                options.Host_Password = "bankorders09";
+                options.Sender_EMail = "hector.harmanly@gmail.com";
                 options.Sender_Name = "BankOrders";
             });
         }

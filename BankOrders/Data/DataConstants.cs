@@ -30,6 +30,7 @@
             public const string SuccessfullyDeletedCurrency = "Successfully deleted the currency.";
             public const string SuccessfullyCopiedDetails = "Successfully copied the details.";
             public const string SuccessfullyAddedPostingNumber = "Successfully added the posting number.";
+            public const string SuccessfullyForwardedOrder = "Successfully forwarded the order.";
         }
     }
 }

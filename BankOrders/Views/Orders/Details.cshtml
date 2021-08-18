@@ -227,9 +227,12 @@
     <h5>Order №@Model.RefNumber has no details.</h5>
 }
 
-<div>
-    <partial name="_ForwardOrderFormPartial" model="null" />
-</div>
+@if (Model.Status != OrderStatus.Canceled && Model.Status != OrderStatus.Finished)
+{
+    <div>
+        <partial name="_ForwardOrderFormPartial" model="new EmailServiceModel { OrderId = Model.Id }" />
+    </div>
+}
 
 <div class="container-fluid border-top">
     <div class="form-group">
@@ -257,13 +260,12 @@
             <a asp-controller="Orders" asp-action="CancelOrder" asp-route-orderId="@Model.Id" class="btn btn-danger">Cancel the order</a>
         }
         <a asp-controller="Orders" asp-action="All" class="btn btn-dark float-right" style="margin-bottom: 10%;">Back</a>
-        <a asp-controller="Orders" asp-action="SendMail" class="btn btn-dark float-right" style="margin-bottom: 10%;">MAIL</a>
     </div>
 </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-<script>
+    <script>
         $('#collapsable').on('click', ev => {
             let template = document.getElementById("templateId");
             let templateId = template.options[template.selectedIndex].value;
@@ -313,7 +315,7 @@
                     sumBGNNode.appendChild(sumBGNTextNode);
 
                     node.appendChild(branchNode);
-                    if (@(Model.System == OrderSystem.Internal ? "true" : "false")) { 
+                    if (@(Model.System == OrderSystem.Internal ? "true" : "false")) {
                         node.appendChild(costCenterNode);
                     }
                     else {
@@ -332,7 +334,7 @@
                 document.getElementById("detailsTableAjaxLine").innerHTML = "";
             }
         });
-</script>
+    </script>
     <script>
         $('#templateId').on('change', ev => {
             $('#collapseCard').removeClass('show');

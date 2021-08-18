@@ -175,6 +175,7 @@
             return this.Redirect($"/Orders/Details?orderId={@orderId}");
         }
 
+        [Authorize]
         public IActionResult SendForApproval(int id) // public IActionResult Create() / async Task<IActionResult>
         {
             var order = this.orderService.GetOrderInfo(id);
@@ -205,6 +206,7 @@
             return RedirectToAction(nameof(All));
         }
 
+        [Authorize]
         public IActionResult Approve(int id) // public IActionResult Create() / async Task<IActionResult>
         {
             var order = this.orderService.GetOrderInfo(id);
@@ -235,6 +237,7 @@
             return RedirectToAction(nameof(All));
         }
 
+        [Authorize]
         public IActionResult ForCorrection(int id) // public IActionResult Create() / async Task<IActionResult>
         {
             var changeStatus = this.orderService.ChangeStatus(id, this.User.Id(), OrderStatus.ForCorrection);
@@ -247,6 +250,7 @@
             return RedirectToAction(nameof(All));
         }
 
+        [Authorize]
         public IActionResult SendForPostingApproval(int id) // public IActionResult Create() / async Task<IActionResult>
         {
             if (this.userService.IsUserApprove(id, this.User.Id()))
@@ -273,6 +277,7 @@
             return RedirectToAction(nameof(All));
         }
 
+        [Authorize]
         public IActionResult ForPostingCorrection(int id)
         {
             var changeStatus = this.orderService.ChangeStatus(id, this.User.Id(), OrderStatus.ForPostingCorrection);
@@ -285,6 +290,7 @@
             return RedirectToAction(nameof(All));
         }
 
+        [Authorize]
         public IActionResult ApprovePosting(int id) // public IActionResult Create() / async Task<IActionResult>
         {
             if (this.userService.IsUserPosting(id, this.User.Id()))
@@ -304,6 +310,7 @@
             return RedirectToAction(nameof(All));
         }
 
+        [Authorize]
         public IActionResult CopyDetailsFromTemplate(int orderId, int templateId)
         {
             if (templateId == 0)
@@ -326,6 +333,7 @@
             return this.Redirect($"/Orders/Details?orderId={@orderId}");
         }
 
+        [Authorize]
         public IActionResult AddPostingNumber(OrderPostingNumberFormModel postingNumberModel)
         {
             if (postingNumberModel.PostingNumber == 0)
@@ -342,6 +350,7 @@
             return this.Redirect($"/Orders/Details?orderId={postingNumberModel.OrderId}");
         }
 
+        [Authorize]
         public IActionResult CancelOrder(int orderId)
         {
             this.orderService.CancelOrder(orderId);
@@ -349,13 +358,14 @@
             return RedirectToAction(nameof(All));
         }
 
+        //[Authorize]
         public IActionResult SendMail(EmailServiceModel emailServiceModel)
         {
-            var orderId = 7;
+            this.emailService.ForwardOrder(emailServiceModel.OrderId, this.User.Id(), emailServiceModel.RecepientId);
 
-            this.emailService.ForwardOrder(orderId, this.User.Id(), emailServiceModel.RecepientId);
+            TempData[GlobalSuccessKey] = SuccessfullyForwardedOrder;
 
-            return RedirectToAction(nameof(All));
+            return this.Redirect($"/Orders/Details?orderId={@emailServiceModel.OrderId}");
         }
     }
 }
