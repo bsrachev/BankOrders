@@ -17,6 +17,8 @@ namespace BankOrders
     using Microsoft.Extensions.Hosting;
     using BankOrders.Services.Currencies;
     using BankOrders.Services.Email;
+    using System.Text.Json;
+    using System.IO;
 
     public class Startup
     {
@@ -58,14 +60,18 @@ namespace BankOrders
             services.AddTransient<ITemplateService, TemplateService>();
             services.AddTransient<ICurrencyService, CurrencyService>();
             services.AddTransient<IEmailService, EmailService>();
-            services.Configure<EmailSenderOptions>(options =>
+            
+            var mailSettings = File.ReadAllText("Properties/mailSettings.json");
+            var options = JsonSerializer.Deserialize<EmailSenderOptions>(mailSettings);
+
+            services.Configure<EmailSenderOptions>(o =>
             {
-                options.Host_Address = "smtp.gmail.com";
-                options.Host_Port = 587;
-                options.Host_Username = "bankordersnotify@gmail.com";
-                options.Host_Password = "bankorders09";
-                options.Sender_EMail = "hector.harmanly@gmail.com";
-                options.Sender_Name = "BankOrders";
+                o.Host_Address = options.Host_Address;
+                o.Host_Port = options.Host_Port;
+                o.Host_Username = options.Host_Username;
+                o.Host_Password = options.Host_Password;
+                o.Sender_EMail = options.Sender_EMail;
+                o.Sender_Name = options.Sender_Name;
             });
         }
 

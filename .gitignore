@@ -54,8 +54,8 @@ project.fragment.lock.json
 artifacts/
 **/Properties/launchSettings.json
 
-# Email Properties
-**/EmailProperties
+# Email Settings
+**/Properties/mailSettings.json
 
 # StyleCop
 StyleCopReport.xml
