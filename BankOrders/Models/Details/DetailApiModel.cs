@@ -1,8 +1,6 @@
-﻿namespace BankOrders.Services.Details
+﻿namespace BankOrders.Models.Details
 {
-    using BankOrders.Data.Models.Enums;
-
-    public class DetailsServiceModel
+    public class DetailApiModel
     {
         public int Id { get; set; }
 
@@ -16,11 +14,11 @@
 
         public string Account { get; set; }
 
-        public AccountType AccountType { get; set; }
+        public string AccountTypeName { get; set; }
 
         public decimal Sum { get; set; }
 
-        public int CurrencyId { get; set; }
+        public string CurrencyName { get; set; }
 
         public decimal SumBGN { get; set; }
     }

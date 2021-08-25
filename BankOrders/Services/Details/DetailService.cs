@@ -69,7 +69,6 @@
                 {
                     Id = c.Id,
                     Account = c.Account,
-                    //AccountingNumber = c.AccountingNumber,
                     AccountType = c.AccountType,
                     Branch = c.Branch,
                     CostCenter = c.CostCenter,

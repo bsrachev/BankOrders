@@ -26,8 +26,6 @@
         public string Account { get; init; }
 
         [Required]
-        //[RegularExpression(@"(BO\d{3})", ErrorMessage = "Account type has to be DT or KT.")] TODO
-
         public AccountType AccountType { get; init; }
 
         [Required]
@@ -37,13 +35,12 @@
         public int CurrencyId { get; init; }
 
         [Required]
+        [Display(Name = "Sum in BGN")]
         public decimal SumBGN { get; init; }
 
         [Required]
         public OrderSystem OrderSystem { get; set; }
 
         public IEnumerable<CurrencyServiceModel> Currencies { get; set; }
-
-        //public IEnumerable<TemplateServiceModel> AllTemplates { get; set; }
     }
 }
