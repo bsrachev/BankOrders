@@ -227,7 +227,7 @@
     <h5>Order №@Model.RefNumber has no details.</h5>
 }
 
-@if (Model.Status != OrderStatus.Canceled && Model.Status != OrderStatus.Finished)
+@if (Model.Status != OrderStatus.Canceled && Model.Status != OrderStatus.Finished && false) /* Google SMTP no longer working */
 {
     <div>
         <partial name="_ForwardOrderFormPartial" model="new EmailServiceModel { OrderId = Model.Id }" />
